@@ -339,22 +339,19 @@
             position: absolute;
             inset: 0;
             border-radius: 50%;
-            opacity: 0;
-            filter: drop-shadow(0 0 6px rgba(0, 176, 255, 0.95));
+            opacity: 0.03;
+            filter: drop-shadow(0 0 8px rgba(0, 176, 255, 0.85));
             animation: radarBlips 4s linear infinite;
         }
         .radar-blips::before {
             background:
-                radial-gradient(circle at 29% 33%, rgba(129, 219, 255, 1) 0 1.6%, transparent 2.2%),
-                radial-gradient(circle at 68% 44%, rgba(129, 219, 255, 1) 0 1.5%, transparent 2.1%),
-                radial-gradient(circle at 46% 71%, rgba(129, 219, 255, 1) 0 1.45%, transparent 2%);
+                radial-gradient(circle at 31% 36%, rgba(129, 219, 255, 1) 0 1.55%, transparent 2.15%),
+                radial-gradient(circle at 66% 61%, rgba(129, 219, 255, 1) 0 1.5%, transparent 2.05%);
         }
         .radar-blips::after {
             background:
-                radial-gradient(circle at 57% 24%, rgba(129, 219, 255, 1) 0 1.45%, transparent 2%),
-                radial-gradient(circle at 75% 66%, rgba(129, 219, 255, 1) 0 1.55%, transparent 2.1%),
-                radial-gradient(circle at 24% 58%, rgba(129, 219, 255, 1) 0 1.4%, transparent 2%);
-            animation-delay: -2s;
+                radial-gradient(circle at 54% 26%, rgba(129, 219, 255, 1) 0 1.5%, transparent 2.1%);
+            animation-delay: -1.33s;
         }
 
         .radar-sweep {
@@ -401,13 +398,11 @@
             100% { box-shadow: 0 0 0 0 rgba(0, 176, 255, 0); }
         }
         @keyframes radarBlips {
-            0%, 10%, 100% { opacity: 0; }
-            12%, 16% { opacity: 0.95; }
-            18%, 34% { opacity: 0; }
-            36%, 40% { opacity: 0.85; }
-            42%, 64% { opacity: 0; }
-            66%, 70% { opacity: 0.9; }
-            72%, 98% { opacity: 0; }
+            0%, 11% { opacity: 0.03; }
+            14%, 20% { opacity: 0.92; }
+            32% { opacity: 0.45; }
+            52% { opacity: 0.15; }
+            70%, 100% { opacity: 0.03; }
         }
 
         @media (max-width: 900px) {
