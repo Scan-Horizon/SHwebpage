@@ -268,7 +268,7 @@
             inset: 10px;
             border-radius: 50%;
             background: transparent;
-            z-index: 1;
+            z-index: 2;
         }
         .radar-grid::before,
         .radar-grid::after {
@@ -296,6 +296,18 @@
             border: 1px solid rgba(84, 110, 122, 0.3);
         }
 
+        .real-map {
+            position: absolute;
+            inset: 10px;
+            width: calc(100% - 20px);
+            height: calc(100% - 20px);
+            border-radius: 50%;
+            object-fit: cover;
+            filter: saturate(1.08) contrast(1.05);
+            z-index: 1;
+            pointer-events: none;
+        }
+
         .radar-sweep {
             position: absolute;
             inset: 10px;
@@ -305,34 +317,10 @@
             z-index: 4;
         }
 
-        .island-core {
-            position: absolute;
-            left: 56%;
-            top: 47%;
-            width: 106px;
-            height: 82px;
-            border-radius: 58% 42% 46% 54% / 44% 56% 48% 52%;
-            transform: translate(-50%, -50%);
-            background:
-                radial-gradient(circle at 34% 30%, #9fe8b6 0%, #6ccf95 40%, #3f996f 100%);
-            border: 1.8px solid rgba(235, 255, 244, 0.65);
-            box-shadow: 0 0 14px rgba(38, 100, 74, 0.25), inset 0 0 16px rgba(14, 54, 34, 0.22);
-            z-index: 3;
-            display: grid;
-            place-items: center;
-        }
-        .island-core::before {
-            content: "";
-            position: absolute;
-            inset: 10px 12px 14px 10px;
-            border-radius: 54% 46% 48% 52% / 42% 58% 40% 60%;
-            background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.24) 0%, rgba(255, 255, 255, 0) 58%);
-        }
-
         .gps-point {
             position: absolute;
-            left: 52%;
-            top: 47%;
+            left: 50%;
+            top: 50%;
             width: 14px;
             height: 14px;
             border-radius: 50%;
@@ -341,23 +329,9 @@
             transform: translate(-50%, -50%);
             box-shadow: 0 0 0 0 rgba(0, 176, 255, 0.72);
             animation: gpsPulse 1.9s ease-out infinite;
-            z-index: 2;
-        }
-
-        .blip {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--tactical-active);
-            border: 1.5px solid #ffffff;
-            box-shadow: 0 0 0 0 rgba(0, 176, 255, 0.7);
-            animation: ping 2.2s ease-out infinite;
             z-index: 5;
+            pointer-events: none;
         }
-        .blip.b1 { top: 26%; left: 68%; animation-delay: 0.35s; }
-        .blip.b2 { top: 70%; left: 27%; animation-delay: 1.05s; }
-        .blip.b3 { top: 36%; left: 20%; animation-delay: 1.7s; }
 
         .radar-vignette {
             position: absolute;
@@ -371,12 +345,6 @@
         @keyframes radarSweep {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
-        }
-        @keyframes ping {
-            0% { box-shadow: 0 0 0 0 rgba(0, 176, 255, 0.72); opacity: 0.55; transform: scale(0.86); }
-            45% { opacity: 1; transform: scale(1.06); }
-            75% { box-shadow: 0 0 0 15px rgba(0, 176, 255, 0); opacity: 1; }
-            100% { box-shadow: 0 0 0 0 rgba(0, 176, 255, 0); opacity: 0.65; transform: scale(0.92); }
         }
         @keyframes gpsPulse {
             0% { box-shadow: 0 0 0 0 rgba(0, 176, 255, 0.72); }
@@ -649,12 +617,10 @@
                     </div>
                     <div class="radar-scene" aria-hidden="true">
                         <div class="ocean-ring">
+                            <img class="real-map" src="https://staticmap.openstreetmap.de/staticmap.php?center=21.3069,-157.8583&zoom=8&size=640x640&maptype=mapnik&markers=21.3069,-157.8583,lightblue1" alt="Mini carte Hawaii">
                             <div class="radar-grid"></div>
                             <div class="radar-sweep"></div>
-                            <div class="island-core"><span class="gps-point"></span></div>
-                            <span class="blip b1"></span>
-                            <span class="blip b2"></span>
-                            <span class="blip b3"></span>
+                            <span class="gps-point"></span>
                             <div class="radar-vignette"></div>
                         </div>
                     </div>
@@ -688,12 +654,10 @@
                     </div>
                     <div class="radar-scene" aria-hidden="true">
                         <div class="ocean-ring">
+                            <img class="real-map" src="https://staticmap.openstreetmap.de/staticmap.php?center=21.3069,-157.8583&zoom=8&size=640x640&maptype=mapnik&markers=21.3069,-157.8583,lightblue1" alt="Hawaii mini map">
                             <div class="radar-grid"></div>
                             <div class="radar-sweep"></div>
-                            <div class="island-core"><span class="gps-point"></span></div>
-                            <span class="blip b1"></span>
-                            <span class="blip b2"></span>
-                            <span class="blip b3"></span>
+                            <span class="gps-point"></span>
                             <div class="radar-vignette"></div>
                         </div>
                     </div>
