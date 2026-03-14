@@ -1653,23 +1653,33 @@
         async function fetchLiveStats() {
             const scansUrl = 'https://diffusion-api-production.up.railway.app/api/stats/scans-count';
             const usersUrl = 'https://diffusion-api-production.up.railway.app/api/stats/users-count';
+            const corsProxyPrefix = 'https://corsproxy.io/?';
+
+            async function fetchJsonWithCorsFallback(url) {
+                try {
+                    const directResponse = await fetch(url);
+                    if (!directResponse.ok) {
+                        throw new Error(`HTTP ${directResponse.status}`);
+                    }
+                    return await directResponse.json();
+                } catch (directError) {
+                    const proxyResponse = await fetch(`${corsProxyPrefix}${encodeURIComponent(url)}`);
+                    if (!proxyResponse.ok) {
+                        throw directError;
+                    }
+                    return await proxyResponse.json();
+                }
+            }
 
             try {
                 const [scansResponse, usersResponse] = await Promise.all([
-                    fetch(scansUrl),
-                    fetch(usersUrl)
+                    fetchJsonWithCorsFallback(scansUrl),
+                    fetchJsonWithCorsFallback(usersUrl)
                 ]);
 
-                if (!scansResponse.ok || !usersResponse.ok) {
-                    throw new Error('Erreur API stats');
-                }
-
-                const scansData = await scansResponse.json();
-                const usersData = await usersResponse.json();
-
                 updateStatsCounters({
-                    scans: Number(scansData.total_scans_in_db) || 0,
-                    users: Number(usersData.users_count) || 0
+                    scans: Number(scansResponse.total_scans_in_db) || 0,
+                    users: Number(usersResponse.users_count) || 0
                 });
             } catch (error) {
                 updateStatsCounters({ scans: 0, users: 0 });
