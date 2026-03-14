@@ -1653,12 +1653,12 @@
         async function fetchLiveStats() {
             const scansUrl = 'https://diffusion-api-production.up.railway.app/api/stats/scans-count';
             const usersUrl = 'https://diffusion-api-production.up.railway.app/api/stats/users-count';
+            const cacheBust = `cb=${Date.now()}`;
             const attemptUrls = (url) => [
-                url,
-                `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
-                `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
-                `https://thingproxy.freeboard.io/fetch/${url}`,
-                `https://r.jina.ai/http://${url.replace(/^https?:\/\//, '')}`
+                `${url}?${cacheBust}`,
+                `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(`${url}?${cacheBust}`)}`,
+                `https://api.allorigins.win/get?url=${encodeURIComponent(`${url}?${cacheBust}`)}`,
+                `https://r.jina.ai/http://${url.replace(/^https?:\/\//, '')}?${cacheBust}`
             ];
 
             async function fetchWithTimeout(url, timeoutMs = 5000) {
@@ -1666,7 +1666,7 @@
                 const timer = setTimeout(() => controller.abort(), timeoutMs);
 
                 try {
-                    return await fetch(url, { signal: controller.signal });
+                    return await fetch(url, { signal: controller.signal, cache: 'no-store', mode: 'cors' });
                 } finally {
                     clearTimeout(timer);
                 }
