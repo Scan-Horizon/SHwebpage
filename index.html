@@ -1653,10 +1653,34 @@
         async function fetchLiveStats() {
             const scansUrl = 'https://diffusion-api-production.up.railway.app/api/stats/scans-count';
             const usersUrl = 'https://diffusion-api-production.up.railway.app/api/stats/users-count';
-            const allOriginsPrefix = 'https://api.allorigins.win/raw?url=';
-            const jinaPrefix = 'https://r.jina.ai/http://';
+            const attemptUrls = (url) => [
+                url,
+                `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`,
+                `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(url)}`,
+                `https://thingproxy.freeboard.io/fetch/${url}`,
+                `https://r.jina.ai/http://${url.replace(/^https?:\/\//, '')}`
+            ];
 
-            async function parseJsonFromResponse(response) {
+            async function fetchWithTimeout(url, timeoutMs = 5000) {
+                const controller = new AbortController();
+                const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+                try {
+                    return await fetch(url, { signal: controller.signal });
+                } finally {
+                    clearTimeout(timer);
+                }
+            }
+
+            function extractFirstJsonObject(text) {
+                const jsonMatch = text.match(/\{[\s\S]*?\}/);
+                if (!jsonMatch) {
+                    throw new Error('Aucun objet JSON trouvé');
+                }
+                return JSON.parse(jsonMatch[0]);
+            }
+
+            async function parseToObject(response) {
                 const contentType = (response.headers.get('content-type') || '').toLowerCase();
 
                 if (contentType.includes('application/json')) {
@@ -1664,31 +1688,27 @@
                 }
 
                 const rawText = await response.text();
-                const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+                return extractFirstJsonObject(rawText);
+            }
 
-                if (!jsonMatch) {
-                    throw new Error('Réponse non JSON');
+            function normalizePayload(payload) {
+                if (payload && typeof payload === 'object' && typeof payload.contents === 'string') {
+                    return extractFirstJsonObject(payload.contents);
                 }
-
-                return JSON.parse(jsonMatch[0]);
+                return payload;
             }
 
             async function fetchJsonWithCorsFallback(url) {
-                const attempts = [
-                    url,
-                    `${allOriginsPrefix}${encodeURIComponent(url)}`,
-                    `${jinaPrefix}${url.replace(/^https?:\/\//, '')}`
-                ];
-
                 let lastError = null;
 
-                for (const attemptUrl of attempts) {
+                for (const attemptUrl of attemptUrls(url)) {
                     try {
-                        const response = await fetch(attemptUrl);
+                        const response = await fetchWithTimeout(attemptUrl);
                         if (!response.ok) {
                             throw new Error(`HTTP ${response.status}`);
                         }
-                        return await parseJsonFromResponse(response);
+                        const parsed = await parseToObject(response);
+                        return normalizePayload(parsed);
                     } catch (attemptError) {
                         lastError = attemptError;
                     }
