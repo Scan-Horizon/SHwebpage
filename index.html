@@ -190,15 +190,51 @@
             gap: 0.85rem;
             margin-bottom: 1.4rem;
             max-width: 520px;
+            position: relative;
+            padding: 0.9rem;
+            border-radius: 18px;
+            background: linear-gradient(160deg, rgba(8, 28, 54, 0.72), rgba(8, 18, 34, 0.52));
+            border: 1px solid rgba(0, 210, 255, 0.22);
+            box-shadow: 0 16px 30px rgba(0, 25, 54, 0.35);
+        }
+
+        .live-stats-head {
+            grid-column: 1 / -1;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.9px;
+            text-transform: uppercase;
+            color: #8fdcff;
+            opacity: 0.95;
+            margin-bottom: 0.1rem;
+        }
+
+        .live-stats-head::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #00ff9d;
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.8);
         }
 
         .live-stat-card {
-            border: 1px solid rgba(0, 210, 255, 0.4);
-            background: rgba(7, 24, 45, 0.78);
+            border: 1px solid rgba(0, 210, 255, 0.36);
+            background: linear-gradient(155deg, rgba(10, 31, 57, 0.88), rgba(7, 20, 37, 0.82));
             border-radius: 14px;
-            padding: 0.9rem 1rem;
+            padding: 0.95rem 1rem;
             backdrop-filter: blur(8px);
-            box-shadow: 0 8px 22px rgba(0, 70, 140, 0.22);
+            box-shadow: 0 8px 22px rgba(0, 70, 140, 0.22), inset 0 1px 0 rgba(180, 230, 255, 0.14);
+            transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .live-stat-card:hover {
+            transform: translateY(-2px);
+            border-color: rgba(0, 210, 255, 0.65);
+            box-shadow: 0 12px 24px rgba(0, 95, 170, 0.3), inset 0 1px 0 rgba(180, 230, 255, 0.18);
         }
 
         .live-stat-value {
@@ -207,8 +243,8 @@
             line-height: 1;
             font-weight: 800;
             letter-spacing: 0.4px;
-            color: #ffffff;
-            text-shadow: 0 0 16px rgba(0, 210, 255, 0.33);
+            color: #f3fbff;
+            text-shadow: 0 0 18px rgba(0, 210, 255, 0.28);
         }
 
         .live-stat-label {
@@ -456,6 +492,7 @@
             .live-stats {
                 margin-left: auto;
                 margin-right: auto;
+                padding: 0.8rem;
             }
             .store-buttons {
                 justify-content: center;
@@ -631,6 +668,7 @@
                 max-width: 320px;
                 gap: 0.65rem;
                 margin-bottom: 1rem;
+                padding: 0.65rem;
             }
 
             .live-stat-card {
@@ -919,6 +957,7 @@
                         <h1>Scanne le ciel,<br>collecte les aircrafts.</h1>
                         <p>Visualise l'activité aérienne en temps réel avec une interface claire, rapide et immersive, pensée pour le spotting nouvelle génération.</p>
                         <div class="live-stats" aria-label="Statistiques en direct">
+                            <span class="live-stats-head">Communauté en direct</span>
                             <article class="live-stat-card">
                                 <span class="live-stat-value" data-stat-key="scans">0</span>
                                 <span class="live-stat-label">Avions scannés</span>
@@ -967,6 +1006,7 @@
                         <h1>Scan the sky,<br>collect aircraft.</h1>
                         <p>Track live air activity with a clean, fast and immersive interface built for the next generation of spotting.</p>
                         <div class="live-stats" aria-label="Live stats">
+                            <span class="live-stats-head">Live community</span>
                             <article class="live-stat-card">
                                 <span class="live-stat-value" data-stat-key="scans">0</span>
                                 <span class="live-stat-label">Aircraft scanned</span>
