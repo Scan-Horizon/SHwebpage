@@ -1112,48 +1112,70 @@
             <div class="legal-content">
                 <div class="lang-fr">
                     <p><strong>POLITIQUE DE CONFIDENTIALITÉ ET DE PROTECTION DES DONNÉES</strong></p>
-                    <p>Version : 1.1<br>Date d'entrée en vigueur : 01 Février 2026</p>
-                    
+                    <p>Version : 1.2<br>Date d'entrée en vigueur : 18 mars 2026</p>
+
                     <h3>PRÉAMBULE</h3>
-                    <p>La présente Politique de Confidentialité (ci-après la "Politique") vise à informer les utilisateurs (ci-après les "Utilisateurs") de l'application mobile ScanHorizon (ci-après l'"Application"), éditée par la société SAS SCAN HORIZON (ci-après l'"Éditeur"), des modalités de collecte, de traitement et de protection de leurs données personnelles. L'Éditeur s'engage à respecter scrupuleusement le Règlement (UE) 2016/679 (RGPD) ainsi que la Loi Informatique et Libertés du 6 janvier 1978 modifiée.</p>
+                    <p>La présente Politique de Confidentialité vise à informer les Utilisateurs de l'Application mobile ScanHorizon, éditée par SAS SCAN HORIZON, des modalités de collecte, de traitement et de protection de leurs données personnelles. L'Éditeur s'engage à respecter le Règlement (UE) 2016/679 (RGPD) ainsi que la Loi Informatique et Libertés du 6 janvier 1978 modifiée.</p>
 
                     <h3>ARTICLE 1. DÉFINITIONS</h3>
                     <ul>
-                        <li><strong>Donnée Personnelle :</strong> Toute information identifiant directement ou indirectement une personne physique (ex: localisation, identifiant publicitaire, IP).</li>
+                        <li><strong>Donnée Personnelle :</strong> Toute information identifiant directement ou indirectement une personne physique (ex : localisation, identifiant publicitaire, IP).</li>
                         <li><strong>Traitement :</strong> Toute opération sur ces données (collecte, stockage, suppression).</li>
                         <li><strong>Responsable de Traitement :</strong> La société SAS SCAN HORIZON.</li>
                     </ul>
 
                     <h3>ARTICLE 2. DONNÉES COLLECTÉES</h3>
                     <p>Nous collectons uniquement les données strictement nécessaires au bon fonctionnement du service ("Privacy by Design").</p>
-                    
-                    <h4>2.1. Données techniques et de Géolocalisation</h4>
+
+                    <h4>2.1. Données de compte</h4>
                     <ul>
-                        <li><strong>Géolocalisation (GPS) :</strong> Latitude, longitude, altitude, vitesse. Ces données sont collectées en temps réel lorsque l'Application est active pour identifier les aéronefs via les API aéronautiques.</li>
-                        <li><strong>Données techniques :</strong> Modèle du smartphone, OS (iOS/Android), langue, fuseau horaire, adresse IP.</li>
-                        <li><strong>Identifiants techniques :</strong> UUID généré à l'installation pour la gestion technique.</li>
+                        <li><strong>Identifiant utilisateur (UID Firebase) :</strong> Généré lors de la création du compte, utilisé pour l'authentification et la gestion du profil.</li>
+                        <li><strong>Email, pseudo, avatarId :</strong> Saisis lors de l'inscription ou de la configuration du profil.</li>
+                        <li><strong>Statut du compte et tranche d'âge (ageRange) :</strong> Utilisés pour le contrôle d'accès, la conformité COPPA et le paramétrage des publicités.</li>
+                        <li><strong>Consentements horodatés :</strong> Vos choix de consentement (analytics, crash reporting) et leur horodatage sont stockés à des fins de preuve de conformité.</li>
                     </ul>
 
-                    <h4>2.2. Données liées à la Réalité Augmentée</h4>
+                    <h4>2.2. Données de Géolocalisation et Capteurs</h4>
+                    <ul>
+                        <li><strong>Géolocalisation (GPS) :</strong> Latitude, longitude, altitude. Ces données sont collectées en temps réel lorsque l'Application est active, <strong>uniquement en premier plan</strong> ("foreground"), afin d'identifier les aéronefs via les API aéronautiques. Aucun accès en arrière-plan n'est effectué.</li>
+                        <li><strong>Capteurs d'orientation :</strong> Boussole, accéléromètre, gyroscope (pitch/roll). Ces données sont traitées <strong>localement</strong> sur votre appareil pour le calcul de visée en réalité augmentée et ne sont pas transmises à nos serveurs.</li>
+                    </ul>
+
+                    <h4>2.3. Données Techniques et Sécurité Backend</h4>
+                    <ul>
+                        <li><strong>Adresse IP :</strong> Collectée côté serveur pour la sécurisation du service, la prévention des abus et la conformité légale (LCEN).</li>
+                        <li><strong>En-têtes HTTP techniques :</strong> User-agent, x-forwarded-for, origine de la requête — utilisés à des fins de sécurité et de lutte contre les abus.</li>
+                        <li><strong>Données de position (anti-fraude) :</strong> Les coordonnées GPS peuvent être temporairement traitées côté serveur pour détecter des comportements anormaux (ex : déplacements géographiquement incohérents). Ces données ne sont pas conservées au-delà des durées mentionnées à l'Article 7.</li>
+                        <li><strong>Token FCM :</strong> Le token de notification push (Firebase Cloud Messaging) est collecté pour l'envoi de notifications ; il est révoqué à la déconnexion et renouvelé automatiquement par l'OS.</li>
+                    </ul>
+
+                    <h4>2.4. Données liées à la Réalité Augmentée</h4>
                     <ul>
                         <li><strong>Flux Caméra :</strong> L'Application accède à la caméra arrière pour superposer les informations de vol.</li>
-                        <li><strong>Traitement :</strong> Le traitement d'image est effectué <strong>localement</strong> sur votre appareil. Aucune image n'est transmise à nos serveurs, sauf action manuelle de votre part (ex: envoi d'un rapport de bug avec capture d'écran).</li>
+                        <li><strong>Traitement :</strong> Le traitement d'image est effectué <strong>localement</strong> sur votre appareil. Aucune image n'est transmise à nos serveurs, sauf action manuelle de votre part (ex : envoi d'un rapport de bug avec capture d'écran).</li>
                     </ul>
 
-                    <h4>2.3. Données commerciales (Achats In-App)</h4>
+                    <h4>2.5. Données d'usage et Historique</h4>
+                    <ul>
+                        <li><strong>Historique des scans :</strong> Les scans réalisés (label aéronef, détails, horodatage, statut) sont stockés dans votre compte pour permettre la synchronisation multi-appareils et la consultation de votre historique.</li>
+                        <li><strong>Données de signalement :</strong> En cas de signalement d'un aéronef ou d'envoi de feedback via l'Application, les informations soumises (type de rapport, commentaire libre, données aéronef, horodatage) sont conservées à des fins de qualité et d'amélioration de la base de données aéronautiques.</li>
+                        <li><strong>Compteurs d'usage :</strong> Nombre de scans gratuits, scans bonus, total cumulé — rattachés à votre compte pour la gestion des limites de service.</li>
+                    </ul>
+
+                    <h4>2.6. Données commerciales (Achats In-App)</h4>
                     <ul>
                         <li>Historique des achats et statut de l'abonnement (Free/Pro).</li>
                         <li><strong>Note importante :</strong> L'Éditeur n'a jamais accès à vos coordonnées bancaires. Les transactions sont sécurisées et gérées exclusivement par Apple (App Store) et Google (Play Store).</li>
                     </ul>
 
-                    <h4>2.4. Traceurs Publicitaires (Sous réserve de consentement)</h4>
+                    <h4>2.7. Traceurs Publicitaires (Sous réserve de consentement)</h4>
                     <ul>
                         <li>Identifiants publicitaires mobiles : IDFA (iOS) et GAID (Android).</li>
                         <li>Données de navigation pour la personnalisation des publicités (via AdMob).</li>
                     </ul>
 
-                    <h4>2.5. PROTECTION DE L'ENFANCE (Mineurs de -13 ans)</h4>
-                    <p>Conformément à nos CGU, l'Application est interdite aux moins de 13 ans. L'Éditeur ne collecte pas sciemment de données auprès de mineurs de moins de 13 ans. Pour les utilisateurs adolescents de 13 à 17 ans, des restrictions techniques strictes sont appliquées sur la collecte de données publicitaires (notamment tag TFUA et publicités non personnalisées) afin de respecter le RGPD. Si un parent ou tuteur découvre que son enfant a fourni des données sans autorisation, il peut nous contacter à contact@scan-horizon.com pour exiger la suppression immédiate de ces informations.</p>
+                    <h4>2.8. PROTECTION DE L'ENFANCE (Mineurs de moins de 13 ans)</h4>
+                    <p>Conformément à nos CGU, l'Application est interdite aux moins de 13 ans. Un contrôle d'accès technique est appliqué lors de l'inscription. L'Éditeur ne collecte pas sciemment de données auprès de mineurs de moins de 13 ans. Pour les utilisateurs adolescents de 13 à 17 ans, des restrictions techniques strictes sont appliquées sur la collecte de données publicitaires (notamment tag TFUA et publicités non personnalisées) afin de respecter le RGPD et la réglementation COPPA. Si un parent ou tuteur découvre que son enfant a fourni des données sans autorisation, il peut nous contacter à contact@scan-horizon.com pour exiger la suppression immédiate de ces informations.</p>
 
                     <h3>ARTICLE 3. FINALITÉS ET BASES LÉGALES</h3>
                     <table>
@@ -1165,24 +1187,56 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Fonctionnement du Radar & Identification</td>
-                                <td>Exécution du contrat (Le service ne peut exister sans GPS).</td>
+                                <td>Création et gestion du compte (authentification, profil, restauration)</td>
+                                <td>Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Fonctionnement du Radar &amp; Identification aéronautique</td>
+                                <td>Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Historique des scans et synchronisation multi-appareils</td>
+                                <td>Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Contrôle d'accès mineurs / conformité COPPA</td>
+                                <td>Obligation légale (Art. 6.1.c)</td>
+                            </tr>
+                            <tr>
+                                <td>Envoi de notifications push</td>
+                                <td>Consentement (Art. 6.1.a) + Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Stockage et preuve des consentements horodatés</td>
+                                <td>Consentement (Art. 6.1.a)</td>
                             </tr>
                             <tr>
                                 <td>Gestion des Abonnements Premium</td>
-                                <td>Exécution du contrat (Délivrance du service payé).</td>
+                                <td>Exécution du contrat (Art. 6.1.b)</td>
                             </tr>
                             <tr>
-                                <td>Maintenance & Détection de Crashs</td>
-                                <td>Intérêt Légitime de l'Éditeur à améliorer la stabilité de l'App.</td>
+                                <td>Signalement / support qualité base de données aéronautiques</td>
+                                <td>Intérêt légitime (Art. 6.1.f)</td>
                             </tr>
                             <tr>
-                                <td>Publicité Ciblée & Statistiques</td>
-                                <td>Consentement explicite de l'Utilisateur (recueilli via CMP).</td>
+                                <td>Détection de crashs &amp; supervision technique (Firebase Crashlytics, Sentry)</td>
+                                <td>Consentement (Art. 6.1.a) — collecte conditionnée à votre accord</td>
                             </tr>
                             <tr>
-                                <td>Obligations Légales</td>
-                                <td>Loi (Conservation des logs techniques LCEN).</td>
+                                <td>Sécurité backend, prévention des abus, rate limiting</td>
+                                <td>Intérêt légitime sécurité (Art. 6.1.f)</td>
+                            </tr>
+                            <tr>
+                                <td>Analytics produit (Firebase Analytics)</td>
+                                <td>Consentement (Art. 6.1.a)</td>
+                            </tr>
+                            <tr>
+                                <td>Publicité ciblée (AdMob)</td>
+                                <td>Consentement (Art. 6.1.a)</td>
+                            </tr>
+                            <tr>
+                                <td>Obligations légales (conservation des logs techniques LCEN)</td>
+                                <td>Obligation légale (Art. 6.1.c)</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1190,40 +1244,49 @@
                     <h3>ARTICLE 4. DESTINATAIRES DES DONNÉES</h3>
                     <p>Vos données ne sont <strong>ni vendues ni louées</strong>. Elles sont transmises uniquement à nos sous-traitants techniques pour l'exécution du service :</p>
                     <ul>
-                        <li><strong>Google Cloud / Firebase (Irlande) :</strong> Hébergement sécurisé et authentification.</li>
-                        <li><strong>Railway (Pays-Bas) :</strong> Hébergement applicatif complémentaire avec serveur localisé à Amsterdam.</li>
-                        <li><strong>PlaneFinder (Royaume-Uni) :</strong> API aéronautique (envoi de coordonnées GPS anonymisées).</li>
+                        <li><strong>Google Cloud / Firebase (Irlande) :</strong> Authentification (Firebase Auth), base de données (Firestore), analytics (Firebase Analytics), crash reporting (Crashlytics), notifications push (FCM), configuration à distance (Remote Config), vérification applicative (App Check).</li>
+                        <li><strong>Google Sign-In (Google LLC, USA) :</strong> Authentification via compte Google.</li>
+                        <li><strong>Railway (Pays-Bas) :</strong> Hébergement du backend applicatif avec serveur localisé à Amsterdam. Railway héberge également le cache Redis utilisé pour la sécurité anti-abus.</li>
+                        <li><strong>PlaneFinder (Royaume-Uni) :</strong> API aéronautique temps réel (envoi de coordonnées GPS anonymisées).</li>
                         <li><strong>RevenueCat (USA) :</strong> Gestion des abonnements mobiles.</li>
                         <li><strong>Google AdMob (USA) :</strong> Régie publicitaire (uniquement si vous avez accepté le traçage).</li>
-                        <li><strong>Sentry (UE/USA selon configuration) :</strong> Supervision technique, journalisation des erreurs et rapports de crash afin d'améliorer la stabilité et la sécurité de l'Application.</li>
+                        <li><strong>Sentry (UE/USA selon configuration) :</strong> Supervision technique, journalisation des erreurs et rapports de crash (uniquement si vous avez donné votre consentement).</li>
                     </ul>
 
                     <h3>ARTICLE 5. TRANSFERTS HORS UE</h3>
-                    <p>Certaines données techniques peuvent être traitées en dehors de l'Union européenne, notamment via Google (Firebase/AdMob), RevenueCat, Sentry et, selon les flux de données aéronautiques, PlaneFinder (Royaume-Uni). Ces transferts sont encadrés par des mécanismes appropriés (Clauses Contractuelles Types de la Commission Européenne, et/ou adhésion au Data Privacy Framework lorsque applicable) afin d'assurer un niveau de protection adéquat.</p>
+                    <p>Certaines données peuvent être traitées en dehors de l'Union européenne, notamment via Google (Firebase Auth, Firestore, Analytics, Crashlytics, FCM, Remote Config, AdMob, Google Sign-In), RevenueCat, Sentry et, selon les flux de données aéronautiques, PlaneFinder (Royaume-Uni). Ces transferts sont encadrés par des mécanismes appropriés (Clauses Contractuelles Types de la Commission Européenne, et/ou adhésion au Data Privacy Framework lorsque applicable) afin d'assurer un niveau de protection adéquat.</p>
 
                     <h3>ARTICLE 6. COOKIES ET SDK MOBILES</h3>
                     <p>L'Application n'utilise pas de "cookies" web classiques, mais des SDK (Software Development Kits) et des identifiants mobiles. L'utilisation des traceurs publicitaires et analytiques est soumise à votre consentement préalable, recueilli lors du premier lancement via notre plateforme de gestion des consentements (CMP). Vous pouvez modifier ce choix à tout moment dans les paramètres de l'Application ("Gérer mes choix").</p>
-                    <p>Si vous acceptez les traceurs/cookies via la CMP, nous pouvons également stocker une <strong>tranche d'âge</strong> (ex. 15-17, 18-24, 25-34, etc.) à des fins de personnalisation, d'analyse statistique et d'adaptation des contenus. Nous ne stockons pas votre date de naissance complète dans ce cadre. En l'absence de consentement, cette donnée n'est pas collectée via les traceurs publicitaires/mesure d'audience.</p>
+                    <p>Si vous acceptez les traceurs via la CMP, nous pouvons également stocker une <strong>tranche d'âge</strong> (ex. 15-17, 18-24, 25-34, etc.) à des fins de personnalisation, d'analyse statistique et d'adaptation des contenus. Nous ne stockons pas votre date de naissance complète dans ce cadre. En l'absence de consentement, cette donnée n'est pas collectée via les traceurs publicitaires ou de mesure d'audience.</p>
 
                     <h3>ARTICLE 7. DURÉE DE CONSERVATION</h3>
                     <ul>
-                        <li><strong>Géolocalisation :</strong> Aucune historisation. Donnée écrasée en temps réel (cache max 24h).</li>
-                        <li><strong>Données de Compte & Achats :</strong> Durée de l'utilisation du service + 5 ans (prescription légale).</li>
-                        <li><strong>Données publicitaires :</strong> 13 mois maximum après consentement.</li>
-                        <li><strong>Logs techniques & rapports d'erreur (dont Sentry) :</strong> 12 mois maximum, sauf durée supérieure imposée par une obligation légale ou nécessaire à la gestion d'un incident de sécurité en cours.</li>
-                        <li><strong>Comptes inactifs :</strong> Suppression automatique après 24 mois sans connexion.</li>
+                        <li><strong>Données de position anti-fraude (backend) :</strong> 1 heure maximum.</li>
+                        <li><strong>Rate limiting / contrôles anti-abus court terme :</strong> 1 à 10 minutes.</li>
+                        <li><strong>Strikes et cooldowns anti-fraude :</strong> Jusqu'à 24 heures.</li>
+                        <li><strong>Cache radar temps réel :</strong> Environ 120 secondes.</li>
+                        <li><strong>Protection anti-rejeu transactions publicitaires (AdMob SSV) :</strong> 48 heures.</li>
+                        <li><strong>Token FCM :</strong> Jusqu'à la déconnexion ou révocation par l'OS ; renouvelé automatiquement.</li>
+                        <li><strong>Données de crash &amp; erreurs (Crashlytics, Sentry) :</strong> 90 jours maximum.</li>
+                        <li><strong>Données analytiques (Firebase Analytics) :</strong> 13 mois maximum après consentement.</li>
+                        <li><strong>Données publicitaires (AdMob) :</strong> 13 mois maximum après consentement.</li>
+                        <li><strong>Historique des scans, signalements et données de compte :</strong> Durée d'activité du compte ; suppression à la demande. Comptes inactifs depuis 24 mois : suppression programmée.</li>
+                        <li><strong>Données de compte &amp; Achats (prescription légale) :</strong> Durée d'utilisation du service + 5 ans.</li>
+                        <li><strong>Logs techniques (infrastructure) :</strong> Selon les durées légales applicables (notamment LCEN) et la configuration de notre hébergeur, 12 mois maximum.</li>
+                        <li><strong>Preuve de consentement horodatée :</strong> 3 ans à compter du retrait ou de l'expiration du consentement.</li>
                     </ul>
 
                     <h3>ARTICLE 8. SÉCURITÉ ET NOTIFICATION DE FAILLE</h3>
-                    <p>Nous mettons en œuvre des mesures de sécurité avancées (chiffrement TLS, accès restreints). Conformément à l'article 33 du RGPD, en cas de violation de données présentant un risque pour vos droits, l'Éditeur s'engage à notifier la CNIL dans les 72 heures et, si nécessaire, à informer les utilisateurs concernés.</p>
+                    <p>Nous mettons en œuvre des mesures de sécurité adaptées : chiffrement TLS, authentification des requêtes sensibles par token Firebase, comparaison de secrets en timing-safe, rate limiting Redis, contrôles anti-fraude progressifs (détection de téléportation, cooldown graduel) et vérification cryptographique des transactions publicitaires (SSV AdMob). Conformément à l'article 33 du RGPD, en cas de violation de données présentant un risque pour vos droits, l'Éditeur s'engage à notifier la CNIL dans les 72 heures et, si nécessaire, à informer les utilisateurs concernés.</p>
 
                     <h3>ARTICLE 9. VOS DROITS ET SUPPRESSION DE COMPTE</h3>
-                    <p>Vous disposez d'un droit d'accès, de rectification, d'effacement, de portabilité, de limitation du traitement et d'opposition.</p>
-                    <p>Lorsque le traitement repose sur votre consentement (ex. traceurs publicitaires/mesure d'audience), vous pouvez retirer ce consentement à tout moment, sans effet rétroactif sur les traitements déjà effectués avant ce retrait.</p>
+                    <p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de portabilité, de limitation du traitement et d'opposition. Ces droits sont exercés dans un délai maximum de 30 jours à compter de la réception de votre demande.</p>
+                    <p>Lorsque le traitement repose sur votre consentement (ex. traceurs publicitaires / analytics / crash reporting), vous pouvez retirer ce consentement à tout moment, sans effet rétroactif sur les traitements déjà effectués avant ce retrait.</p>
                     <p><strong>Comment supprimer vos données ?</strong></p>
                     <ul>
                         <li><strong>Dans l'Application :</strong> Via le menu "Paramètres > Confidentialité > Supprimer mon compte".</li>
-                        <li><strong>Sur le Web (Sans l'app) :</strong> Via notre formulaire de suppression dédié accessible sur cette page.</li>
+                        <li><strong>Sur le Web (sans l'app) :</strong> Via notre formulaire de suppression dédié accessible sur cette page.</li>
                         <li><strong>Par Email :</strong> En écrivant à contact@scan-horizon.com.</li>
                     </ul>
                     <p>Vous avez également le droit d'introduire une réclamation auprès de la CNIL (www.cnil.fr).</p>
@@ -1240,48 +1303,70 @@
 
                 <div class="lang-en hidden">
                     <p><strong>PRIVACY AND DATA PROTECTION POLICY</strong></p>
-                    <p>Version: 1.1<br>Effective Date: February 01, 2026</p>
-                    
+                    <p>Version: 1.2<br>Effective Date: March 18, 2026</p>
+
                     <h3>PREAMBLE</h3>
-                    <p>This Privacy Policy (hereinafter the "Policy") aims to inform users (hereinafter "Users") of the mobile application ScanHorizon (hereinafter the "Application"), published by SAS SCAN HORIZON (hereinafter the "Publisher"), about how their personal data is collected, processed, and protected. The Publisher is committed to strictly complying with Regulation (EU) 2016/679 (GDPR) and the Data Protection Act.</p>
+                    <p>This Privacy Policy aims to inform Users of the ScanHorizon mobile application, published by SAS SCAN HORIZON, about how their personal data is collected, processed, and protected. The Publisher is committed to strictly complying with Regulation (EU) 2016/679 (GDPR) and the French Data Protection Act (Loi Informatique et Libertés).</p>
 
                     <h3>ARTICLE 1. DEFINITIONS</h3>
                     <ul>
-                        <li><strong>Personal Data:</strong> Any information identifying a natural person directly or indirectly (e.g., location, ad ID, IP).</li>
+                        <li><strong>Personal Data:</strong> Any information identifying a natural person directly or indirectly (e.g., location, ad ID, IP address).</li>
                         <li><strong>Processing:</strong> Any operation on this data (collection, storage, deletion).</li>
                         <li><strong>Data Controller:</strong> The company SAS SCAN HORIZON.</li>
                     </ul>
 
                     <h3>ARTICLE 2. COLLECTED DATA</h3>
                     <p>We only collect data strictly necessary for the proper functioning of the service ("Privacy by Design").</p>
-                    
-                    <h4>2.1. Technical and Geolocation Data</h4>
+
+                    <h4>2.1. Account Data</h4>
                     <ul>
-                        <li><strong>Geolocation (GPS):</strong> Latitude, longitude, altitude, speed. Collected in real-time when the App is active to identify aircraft via aeronautical APIs.</li>
-                        <li><strong>Technical Data:</strong> Smartphone model, OS (iOS/Android), language, timezone, IP address.</li>
-                        <li><strong>Technical IDs:</strong> UUID generated upon installation for technical management.</li>
+                        <li><strong>User identifier (Firebase UID):</strong> Generated upon account creation, used for authentication and profile management.</li>
+                        <li><strong>Email, username, avatarId:</strong> Entered during registration or profile setup.</li>
+                        <li><strong>Account status and age bracket (ageRange):</strong> Used for access control, COPPA compliance, and advertising configuration.</li>
+                        <li><strong>Timestamped consents:</strong> Your consent choices (analytics, crash reporting) and their timestamps are stored as proof of compliance.</li>
                     </ul>
 
-                    <h4>2.2. Augmented Reality Data</h4>
+                    <h4>2.2. Geolocation and Sensor Data</h4>
+                    <ul>
+                        <li><strong>Geolocation (GPS):</strong> Latitude, longitude, altitude. Collected in real-time when the App is active, <strong>in foreground only</strong>, to identify aircraft via aeronautical APIs. No background location access is performed.</li>
+                        <li><strong>Orientation sensors:</strong> Compass, accelerometer, gyroscope (pitch/roll). This data is processed <strong>locally</strong> on your device for augmented reality targeting and is not transmitted to our servers.</li>
+                    </ul>
+
+                    <h4>2.3. Technical and Backend Security Data</h4>
+                    <ul>
+                        <li><strong>IP address:</strong> Collected server-side for service security, abuse prevention, and legal compliance.</li>
+                        <li><strong>HTTP technical headers:</strong> User-agent, x-forwarded-for, request origin — used for security and anti-abuse purposes.</li>
+                        <li><strong>Position data (anti-fraud):</strong> GPS coordinates may be temporarily processed server-side to detect abnormal behavior (e.g., geographically inconsistent movements). This data is not retained beyond the durations stated in Article 7.</li>
+                        <li><strong>FCM token:</strong> The push notification token (Firebase Cloud Messaging) is collected for sending notifications; it is revoked upon logout and automatically renewed by the OS.</li>
+                    </ul>
+
+                    <h4>2.4. Augmented Reality Data</h4>
                     <ul>
                         <li><strong>Camera Feed:</strong> The App accesses the rear camera to overlay flight information.</li>
                         <li><strong>Processing:</strong> Image processing is performed <strong>locally</strong> on your device. No images are transmitted to our servers, except via manual action by you (e.g., bug report with screenshot).</li>
                     </ul>
 
-                    <h4>2.3. Commercial Data (In-App Purchases)</h4>
+                    <h4>2.5. Usage Data and History</h4>
+                    <ul>
+                        <li><strong>Scan history:</strong> Your completed scans (aircraft label, details, timestamp, status) are stored in your account to enable multi-device synchronization and history consultation.</li>
+                        <li><strong>Report data:</strong> When you submit an aircraft report or feedback, the submitted information (report type, free-text comment, aircraft data, timestamp) is retained for quality and aeronautical database improvement purposes.</li>
+                        <li><strong>Usage counters:</strong> Free scans, bonus scans, cumulative total — linked to your account for service limit management.</li>
+                    </ul>
+
+                    <h4>2.6. Commercial Data (In-App Purchases)</h4>
                     <ul>
                         <li>Purchase history and subscription status (Free/Pro).</li>
                         <li><strong>Important Note:</strong> The Publisher never has access to your banking details. Transactions are secured and managed exclusively by Apple (App Store) and Google (Play Store).</li>
                     </ul>
 
-                    <h4>2.4. Advertising Trackers (Subject to Consent)</h4>
+                    <h4>2.7. Advertising Trackers (Subject to Consent)</h4>
                     <ul>
                         <li>Mobile advertising IDs: IDFA (iOS) and GAID (Android).</li>
                         <li>Navigation data for ad personalization (via AdMob).</li>
                     </ul>
 
-                    <h4>2.5. CHILD PROTECTION (Minors under 13)</h4>
-                    <p>In accordance with our Terms, the App is prohibited for those under 13. The Publisher does not knowingly collect data from minors under 13. For teen users aged 13 to 17, strict technical restrictions are applied to advertising data collection (including TFUA tagging and non-personalized ads) to comply with GDPR requirements. If a parent or guardian discovers their child has provided data without authorization, they may contact us at contact@scan-horizon.com to request immediate deletion.</p>
+                    <h4>2.8. CHILD PROTECTION (Minors under 13)</h4>
+                    <p>In accordance with our Terms, the Application is strictly prohibited for users under 13 years old. A technical access control is applied at registration. The Publisher does not knowingly collect data from children under 13. For users aged 13 to 17, strict technical restrictions are applied to advertising data collection (including TFUA tagging and non-personalized ads) to comply with GDPR and COPPA requirements. If a parent or guardian discovers their child has provided data without authorization, they may contact us at contact@scan-horizon.com to request immediate deletion.</p>
 
                     <h3>ARTICLE 3. PURPOSES AND LEGAL BASES</h3>
                     <table>
@@ -1293,24 +1378,56 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Radar Operation & Identification</td>
-                                <td>Contract Execution (Service cannot exist without GPS).</td>
+                                <td>Account creation and management (authentication, profile, restore)</td>
+                                <td>Contract Execution (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Radar Operation &amp; Aircraft Identification</td>
+                                <td>Contract Execution (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Scan history and multi-device synchronization</td>
+                                <td>Contract Execution (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Minor access control / COPPA compliance</td>
+                                <td>Legal obligation (Art. 6.1.c)</td>
+                            </tr>
+                            <tr>
+                                <td>Sending push notifications</td>
+                                <td>Consent (Art. 6.1.a) + Contract Execution (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Storage and proof of timestamped consents</td>
+                                <td>Consent (Art. 6.1.a)</td>
                             </tr>
                             <tr>
                                 <td>Premium Subscription Management</td>
-                                <td>Contract Execution (Delivery of paid service).</td>
+                                <td>Contract Execution (Art. 6.1.b)</td>
                             </tr>
                             <tr>
-                                <td>Maintenance & Crash Detection</td>
-                                <td>Legitimate Interest of the Publisher to improve App stability.</td>
+                                <td>Reports / aeronautical database quality support</td>
+                                <td>Legitimate Interest (Art. 6.1.f)</td>
                             </tr>
                             <tr>
-                                <td>Targeted Advertising & Statistics</td>
-                                <td>Explicit Consent of the User (collected via CMP).</td>
+                                <td>Crash detection &amp; technical monitoring (Firebase Crashlytics, Sentry)</td>
+                                <td>Consent (Art. 6.1.a) — collection conditional on your agreement</td>
                             </tr>
                             <tr>
-                                <td>Obligations Légales</td>
-                                <td>Law (Retention of LCEN technical logs).</td>
+                                <td>Backend security, abuse prevention, rate limiting</td>
+                                <td>Legitimate Interest – security (Art. 6.1.f)</td>
+                            </tr>
+                            <tr>
+                                <td>Product analytics (Firebase Analytics)</td>
+                                <td>Consent (Art. 6.1.a)</td>
+                            </tr>
+                            <tr>
+                                <td>Targeted advertising (AdMob)</td>
+                                <td>Consent (Art. 6.1.a)</td>
+                            </tr>
+                            <tr>
+                                <td>Legal obligations (technical log retention)</td>
+                                <td>Legal obligation (Art. 6.1.c)</td>
                             </tr>
                         </tbody>
                     </table>
@@ -1318,46 +1435,55 @@
                     <h3>ARTICLE 4. DATA RECIPIENTS</h3>
                     <p>Your data is <strong>neither sold nor rented</strong>. It is transmitted only to our technical subcontractors for service execution:</p>
                     <ul>
-                        <li><strong>Google Cloud / Firebase (Ireland):</strong> Secure hosting and authentication.</li>
-                        <li><strong>Railway (Netherlands):</strong> Additional application hosting with server location in Amsterdam.</li>
-                        <li><strong>PlaneFinder (UK):</strong> Aeronautical API (sending anonymized GPS coordinates).</li>
+                        <li><strong>Google Cloud / Firebase (Ireland):</strong> Authentication (Firebase Auth), database (Firestore), analytics (Firebase Analytics), crash reporting (Crashlytics), push notifications (FCM), remote configuration (Remote Config), app integrity (App Check).</li>
+                        <li><strong>Google Sign-In (Google LLC, USA):</strong> Authentication via Google account.</li>
+                        <li><strong>Railway (Netherlands):</strong> Backend application hosting with server located in Amsterdam. Railway also hosts the Redis cache used for anti-abuse security.</li>
+                        <li><strong>PlaneFinder (UK):</strong> Real-time aeronautical API (sending anonymized GPS coordinates).</li>
                         <li><strong>RevenueCat (USA):</strong> Mobile subscription management.</li>
                         <li><strong>Google AdMob (USA):</strong> Advertising network (only if you accepted tracking).</li>
-                        <li><strong>Sentry (EU/USA depending on configuration):</strong> Technical monitoring, error logging, and crash reporting to improve Application stability and security.</li>
+                        <li><strong>Sentry (EU/USA depending on configuration):</strong> Technical monitoring, error logging, and crash reporting (only if you provided your consent).</li>
                     </ul>
 
-                    <h3>ARTICLE 5. TRANSFERTS OUTSIDE EU</h3>
-                    <p>Some technical data may be processed outside the European Union, notably through Google (Firebase/AdMob), RevenueCat, Sentry and, depending on aeronautical data flows, PlaneFinder (United Kingdom). These transfers are governed by appropriate safeguards (European Commission Standard Contractual Clauses and/or Data Privacy Framework participation where applicable) to ensure an adequate level of protection.</p>
+                    <h3>ARTICLE 5. TRANSFERS OUTSIDE THE EU</h3>
+                    <p>Some data may be processed outside the European Union, notably through Google (Firebase Auth, Firestore, Analytics, Crashlytics, FCM, Remote Config, AdMob, Google Sign-In), RevenueCat, Sentry and, depending on aeronautical data flows, PlaneFinder (United Kingdom). These transfers are governed by appropriate safeguards (European Commission Standard Contractual Clauses and/or Data Privacy Framework participation where applicable) to ensure an adequate level of protection.</p>
 
-                    <h3>ARTICLE 6. COOKIES AND MOBILE SDKS</h3>
-                    <p>The App does not use classic web "cookies" but SDKs (Software Development Kits) and mobile identifiers. The use of advertising and analytical trackers is subject to your prior consent, collected at first launch via our Consent Management Platform (CMP). You can modify this choice at any time in App settings.</p>
-                    <p>If you accept trackers/cookies through the CMP, we may also store an <strong>age bracket</strong> (e.g. 15-17, 18-24, 25-34, etc.) for personalization, audience measurement, and content adaptation. We do not store your full date of birth for this purpose. Without consent, this data is not collected through advertising/analytics trackers.</p>
+                    <h3>ARTICLE 6. COOKIES AND MOBILE SDKs</h3>
+                    <p>The App does not use classic web "cookies" but SDKs (Software Development Kits) and mobile identifiers. The use of advertising and analytical trackers is subject to your prior consent, collected at first launch via our Consent Management Platform (CMP). You can modify this choice at any time in App settings ("Manage my choices").</p>
+                    <p>If you accept trackers via the CMP, we may also store an <strong>age bracket</strong> (e.g. 15-17, 18-24, 25-34, etc.) for personalization, audience measurement, and content adaptation. We do not store your full date of birth for this purpose. Without consent, this data is not collected through advertising or analytics trackers.</p>
 
                     <h3>ARTICLE 7. RETENTION PERIOD</h3>
                     <ul>
-                        <li><strong>Geolocation:</strong> No history stored. Data overwritten in real-time (max cache 24h).</li>
-                        <li><strong>Account & Purchase Data:</strong> Duration of service use + 5 years (legal prescription).</li>
-                        <li><strong>Advertising Data:</strong> 13 months maximum after consent.</li>
-                        <li><strong>Technical logs & error/crash reports (including Sentry):</strong> Up to 12 months, unless a longer period is required by law or strictly necessary to handle an ongoing security incident.</li>
-                        <li><strong>Comptes inactifs :</strong> Suppression automatique après 24 mois sans connexion.</li>
+                        <li><strong>Anti-fraud position data (backend):</strong> Maximum 1 hour.</li>
+                        <li><strong>Rate limiting / short-term anti-abuse controls:</strong> 1 to 10 minutes.</li>
+                        <li><strong>Anti-fraud strikes and cooldowns:</strong> Up to 24 hours.</li>
+                        <li><strong>Real-time radar cache:</strong> Approximately 120 seconds.</li>
+                        <li><strong>AdMob transaction anti-replay protection (SSV):</strong> 48 hours.</li>
+                        <li><strong>FCM token:</strong> Until logout or OS revocation; automatically renewed.</li>
+                        <li><strong>Crash &amp; error data (Crashlytics, Sentry):</strong> Maximum 90 days.</li>
+                        <li><strong>Analytics data (Firebase Analytics):</strong> Maximum 13 months after consent.</li>
+                        <li><strong>Advertising data (AdMob):</strong> Maximum 13 months after consent.</li>
+                        <li><strong>Scan history, reports, and account data:</strong> Duration of account activity; deletion upon request. Accounts inactive for 24 months: scheduled deletion.</li>
+                        <li><strong>Account &amp; Purchase Data (legal prescription):</strong> Duration of service use + 5 years.</li>
+                        <li><strong>Technical logs (infrastructure):</strong> In accordance with applicable legal requirements and our hosting provider's configuration, up to 12 months maximum.</li>
+                        <li><strong>Timestamped consent proof:</strong> 3 years from the date of withdrawal or expiry of consent.</li>
                     </ul>
 
                     <h3>ARTICLE 8. SECURITY AND BREACH NOTIFICATION</h3>
-                    <p>We implement advanced security measures (TLS encryption, restricted access). In accordance with GDPR Article 33, in case of a data breach presenting a risk to your rights, the Publisher commits to notifying the CNIL within 72 hours and, if necessary, informing concerned users.</p>
+                    <p>We implement advanced security measures: TLS encryption, sensitive request authentication via Firebase token, timing-safe secret comparison, Redis rate limiting, progressive anti-fraud controls (teleportation detection, graduated cooldown), and cryptographic transaction verification (AdMob SSV). In accordance with GDPR Article 33, in case of a data breach presenting a risk to your rights, the Publisher commits to notifying the CNIL within 72 hours and, if necessary, informing affected users.</p>
 
                     <h3>ARTICLE 9. YOUR RIGHTS AND ACCOUNT DELETION</h3>
-                    <p>You have the right to access, rectify, erase, port, restrict processing, and object to processing of your personal data.</p>
-                    <p>When processing is based on your consent (e.g. advertising/analytics trackers), you may withdraw consent at any time, without affecting processing already carried out before withdrawal.</p>
+                    <p>Under the GDPR, you have the right to access, rectify, erase, port, restrict processing of, and object to the processing of your personal data. These rights are exercised within a maximum of 30 days from the receipt of your request.</p>
+                    <p>When processing is based on your consent (e.g. advertising / analytics / crash reporting trackers), you may withdraw consent at any time, without affecting processing already carried out before withdrawal.</p>
                     <p><strong>How to delete your data?</strong></p>
                     <ul>
                         <li><strong>In the App:</strong> Via "Settings > Privacy > Delete my account".</li>
-                        <li><strong>On the Web (No app):</strong> Via our dedicated deletion form accessible on this page.</li>
+                        <li><strong>On the Web (no app):</strong> Via our dedicated deletion form accessible on this page.</li>
                         <li><strong>By Email:</strong> Write to contact@scan-horizon.com.</li>
                     </ul>
                     <p>You also have the right to lodge a complaint with the CNIL (www.cnil.fr) or with your local supervisory authority where applicable.</p>
 
-                    <h3>ARTICLE 10. DROIT CALIFORNIEN (CCPA)</h3>
-                    <p>Pour nos utilisateurs résidant en Californie : Nous ne vendons pas vos données personnelles ("Do Not Sell My Personal Information"). Vous bénéficiez des mêmes droits d'accès et de suppression que ceux décrits à l'Article 9.</p>
+                    <h3>ARTICLE 10. CALIFORNIA LAW (CCPA)</h3>
+                    <p>For our users residing in California: We do not sell your personal data ("Do Not Sell My Personal Information"). You benefit from the same rights of access and deletion described in Article 9.</p>
 
                     <h3>ARTICLE 11. CONTACT</h3>
                     <p>For any questions regarding this policy, contact our Data Protection Officer (DPO) at:<br>
