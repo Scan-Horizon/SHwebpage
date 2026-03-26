@@ -1902,6 +1902,8 @@
         }
 
         async function fetchLiveStats() {
+            updateStatsCounters({ scans: 1212, users: 14 });
+            /*
             const scansUrl = 'https://diffusion-api-production.up.railway.app/api/stats/scans-count';
             const usersUrl = 'https://diffusion-api-production.up.railway.app/api/stats/users-count';
             const cacheBust = `cb=${Date.now()}`;
@@ -1982,6 +1984,7 @@
                 updateStatsCounters({ scans: 0, users: 0 });
                 console.error('Impossible de charger les statistiques live :', error);
             }
+            */
         }
 
         function setupStoreMessages() {
