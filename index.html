@@ -1902,8 +1902,7 @@
         }
 
         async function fetchLiveStats() {
-            updateStatsCounters({ scans: 1212, users: 14 });
-            /*
+            const HARDCODED_USERS = 32;
             const scansUrl = 'https://diffusion-api-production.up.railway.app/api/stats/scans-count';
             const usersUrl = 'https://diffusion-api-production.up.railway.app/api/stats/users-count';
             const cacheBust = `cb=${Date.now()}`;
@@ -1978,13 +1977,12 @@
 
                 updateStatsCounters({
                     scans: Number(scansResponse.total_scans_in_db) || 0,
-                    users: Number(usersResponse.users_count) || 0
+                    users: HARDCODED_USERS
                 });
             } catch (error) {
-                updateStatsCounters({ scans: 0, users: 0 });
+                updateStatsCounters({ scans: 0, users: HARDCODED_USERS });
                 console.error('Impossible de charger les statistiques live :', error);
             }
-            */
         }
 
         function setupStoreMessages() {
