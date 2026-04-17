@@ -1021,15 +1021,7 @@
                                 </div>
                                 <span class="live-stat-label">Avions scannés</span>
                             </article>
-                            <article class="live-stat-card">
-                                <div class="live-stat-head">
-                                    <span class="live-stat-icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" role="img"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-4.4 0-8 2.1-8 4.7V21h16v-2.3C20 16.1 16.4 14 12 14z"/></svg>
-                                    </span>
-                                    <span class="live-stat-value" data-stat-key="users">0</span>
-                                </div>
-                                <span class="live-stat-label">Utilisateurs</span>
-                            </article>
+
                         </div>
                         <a href="mailto:contact@scan-horizon.com?subject=Acc%C3%A8s%20b%C3%AAta%20test%20ScanHorizon" class="beta-link">Accès bêta test</a>
                         <div class="store-buttons">
@@ -1085,15 +1077,7 @@
                                 </div>
                                 <span class="live-stat-label">Aircraft scanned</span>
                             </article>
-                            <article class="live-stat-card">
-                                <div class="live-stat-head">
-                                    <span class="live-stat-icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" role="img"><path d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-4.4 0-8 2.1-8 4.7V21h16v-2.3C20 16.1 16.4 14 12 14z"/></svg>
-                                    </span>
-                                    <span class="live-stat-value" data-stat-key="users">0</span>
-                                </div>
-                                <span class="live-stat-label">Users</span>
-                            </article>
+
                         </div>
                         <a href="mailto:contact@scan-horizon.com?subject=ScanHorizon%20beta%20test%20access" class="beta-link">Beta test access</a>
                         <div class="store-buttons">
@@ -1902,9 +1886,7 @@
         }
 
         async function fetchLiveStats() {
-            const HARDCODED_USERS = 32;
             const scansUrl = 'https://diffusion-api-production.up.railway.app/api/stats/scans-count';
-            const usersUrl = 'https://diffusion-api-production.up.railway.app/api/stats/users-count';
             const cacheBust = `cb=${Date.now()}`;
             const attemptUrls = (url) => [
                 `${url}?${cacheBust}`,
@@ -1970,17 +1952,13 @@
             }
 
             try {
-                const [scansResponse, usersResponse] = await Promise.all([
-                    fetchJsonWithCorsFallback(scansUrl),
-                    fetchJsonWithCorsFallback(usersUrl)
-                ]);
+                const scansResponse = await fetchJsonWithCorsFallback(scansUrl);
 
                 updateStatsCounters({
-                    scans: Number(scansResponse.total_scans_in_db) || 0,
-                    users: HARDCODED_USERS
+                    scans: Number(scansResponse.total_scans_in_db) || 0
                 });
             } catch (error) {
-                updateStatsCounters({ scans: 0, users: HARDCODED_USERS });
+                updateStatsCounters({ scans: 0 });
                 console.error('Impossible de charger les statistiques live :', error);
             }
         }
