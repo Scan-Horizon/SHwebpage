@@ -238,6 +238,32 @@
             text-shadow: 0 0 16px rgba(0, 210, 255, 0.33);
         }
 
+        .live-stat-value.is-loading {
+            position: relative;
+            min-height: 1em;
+            color: transparent;
+            text-shadow: none;
+        }
+
+        .live-stat-value.is-loading::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 0.85em;
+            height: 0.85em;
+            margin-left: -0.425em;
+            margin-top: -0.425em;
+            border: 2px solid rgba(168, 215, 255, 0.35);
+            border-top-color: #d8f3ff;
+            border-radius: 50%;
+            animation: statSpin 0.8s linear infinite;
+        }
+
+        @keyframes statSpin {
+            to { transform: rotate(360deg); }
+        }
+
         .live-stat-label {
             display: block;
             margin-top: 0.35rem;
@@ -1017,7 +1043,7 @@
                                     <span class="live-stat-icon" aria-hidden="true">
                                         <svg viewBox="0 0 24 24" role="img"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 1 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5L21 16z"/></svg>
                                     </span>
-                                    <span class="live-stat-value" data-stat-key="scans">...</span>
+                                    <span class="live-stat-value is-loading" data-stat-key="scans" aria-label="Chargement"></span>
                                 </div>
                                 <span class="live-stat-label">Avions scannés</span>
                             </article>
@@ -1073,7 +1099,7 @@
                                     <span class="live-stat-icon" aria-hidden="true">
                                         <svg viewBox="0 0 24 24" role="img"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 1 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5L21 16z"/></svg>
                                     </span>
-                                    <span class="live-stat-value" data-stat-key="scans">...</span>
+                                    <span class="live-stat-value is-loading" data-stat-key="scans" aria-label="Loading"></span>
                                 </div>
                                 <span class="live-stat-label">Aircraft scanned</span>
                             </article>
@@ -1857,6 +1883,10 @@
         function animateCounter(element, targetValue, duration = 1000) {
             const finalValue = Math.max(0, Number.isFinite(targetValue) ? Math.floor(targetValue) : 0);
             const currentValue = Number((element.textContent || '').replace(/[^\d]/g, ''));
+
+            if (element.classList.contains('is-loading')) {
+                element.classList.remove('is-loading');
+            }
 
             if (!Number.isFinite(currentValue)) {
                 element.textContent = finalValue.toLocaleString('fr-FR');
