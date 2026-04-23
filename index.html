@@ -100,22 +100,6 @@
             backdrop-filter: blur(2px); /* Léger flou pour le style */
         }
 
-        /* --- Scan Animation (Gardée car cool) --- */
-        .scan-line {
-            position: fixed; top: 0; left: 0; width: 100%; height: 3px;
-            background: var(--brand-gradient);
-            box-shadow: 0 0 20px var(--sky-blue);
-            z-index: 9999;
-            animation: scanMove 5s linear infinite;
-            pointer-events: none;
-        }
-        @keyframes scanMove {
-            0% { top: -5%; opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { top: 105%; opacity: 0; }
-        }
-
         /* --- Header --- */
         header {
             height: var(--header-height);
@@ -1201,8 +1185,6 @@
     </script>
 </head>
 <body>
-    <div class="scan-line"></div>
-
     <header>
         <div class="logo-container" onclick="navigate('home')" title="Retour Accueil">
             <img src="logo text hor. couleur 1.png" alt="ScanHorizon Logo" class="logo-img logo-desktop">
@@ -1233,7 +1215,7 @@
                             </article>
 
                         </div>
-                        <a href="mailto:contact@scan-horizon.com?subject=Acc%C3%A8s%20b%C3%AAta%20test%20ScanHorizon" class="beta-link">Accès bêta test</a>
+                        <span class="beta-link">Accès bêta test</span>
                         <div class="store-buttons">
                             <button type="button" class="store-badge store-badge-ios js-ios-request" aria-label="Download on the App Store">
                                 <span class="store-badge-logo" aria-hidden="true">
@@ -1298,7 +1280,7 @@
                             </article>
 
                         </div>
-                        <a href="mailto:contact@scan-horizon.com?subject=ScanHorizon%20beta%20test%20access" class="beta-link">Beta test access</a>
+                        <span class="beta-link">Beta test access</span>
                         <div class="store-buttons">
                             <button type="button" class="store-badge store-badge-ios js-ios-request" aria-label="Download on the App Store">
                                 <span class="store-badge-logo" aria-hidden="true">
@@ -2028,6 +2010,9 @@
             </a>
             <a onclick="navigate('delete')" class="danger-link">
                 <span class="lang-fr">Supprimer mes données</span><span class="lang-en hidden">Delete My Data</span>
+            </a>
+            <a href="mailto:contact@scan-horizon.com?subject=Contact%20Scan%20Horizon">
+                <span class="lang-fr">Contact</span><span class="lang-en hidden">Contact Us</span>
             </a>
         </nav>
         <p class="copyright">SCANHORIZON TERMINAL v1.2.0 — © 2026</p>
