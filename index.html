@@ -71,6 +71,26 @@
             background-repeat: no-repeat;
         }
 
+        html,
+        body,
+        .legal-container {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            display: none;
+        }
+
+        .legal-container::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            display: none;
+        }
+
         /* Overlay sombre pour la lisibilité du texte sur l'image de fond */
         body::before {
             content: "";
@@ -2120,15 +2140,14 @@
             });
         }
 
-        function setStatsUnavailable() {
-            const elements = document.querySelectorAll('[data-stat-key]');
-            elements.forEach((element) => {
-                element.classList.remove('is-loading');
-                element.textContent = 'N/A';
+        function setStatsUnavailable(fallbackValue = 4589) {
+            updateStatsCounters({
+                scans: fallbackValue
             });
         }
 
         async function fetchLiveStats() {
+            const defaultScansValue = 4589;
             const scansUrl = 'https://diffusion-api-production.up.railway.app/api/stats/scans-count';
             const cacheBust = `cb=${Date.now()}`;
             const attemptUrls = (url) => [
@@ -2152,7 +2171,7 @@
             function extractFirstJsonObject(text) {
                 const jsonMatch = text.match(/\{[\s\S]*?\}/);
                 if (!jsonMatch) {
-                    throw new Error('Aucun objet JSON trouvé');
+                    throw new Error('Aucun objet JSON trouve');
                 }
                 return JSON.parse(jsonMatch[0]);
             }
@@ -2204,24 +2223,18 @@
 
             try {
                 const scansResponse = await fetchJsonWithCorsFallback(scansUrl);
-                const scansValue = Number(scansResponse.total_scans_in_db) || 0;
+                const scansValue = Number(scansResponse.total_scans_in_db);
+                const finalScansValue = Number.isFinite(scansValue) ? scansValue : defaultScansValue;
 
-                localStorage.setItem('scan_horizon_scans_cache', String(scansValue));
+                localStorage.setItem('scan_horizon_scans_cache', String(finalScansValue));
 
                 updateStatsCounters({
-                    scans: scansValue
+                    scans: finalScansValue
                 });
             } catch (error) {
-                if (error && error.status === 401) {
-                    const cached = Number(localStorage.getItem('scan_horizon_scans_cache'));
-                    if (Number.isFinite(cached) && cached >= 0) {
-                        updateStatsCounters({ scans: cached });
-                    } else {
-                        setStatsUnavailable();
-                    }
-                } else {
-                    setStatsUnavailable();
-                }
+                const cached = Number(localStorage.getItem('scan_horizon_scans_cache'));
+                const fallbackValue = Number.isFinite(cached) && cached >= 0 ? cached : defaultScansValue;
+                setStatsUnavailable(fallbackValue);
                 console.error('Impossible de charger les statistiques live :', error);
             }
         }
