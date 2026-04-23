@@ -291,41 +291,78 @@
 
         .store-buttons {
             display: flex;
-            gap: 0.9rem;
+            gap: 1rem;
             flex-wrap: wrap;
         }
-        .store-btn {
+
+        .store-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            min-width: 308px;
+            height: 92px;
+            padding: 0 1.05rem;
+            border-radius: 11px;
+            border: 1px solid #aeb7c3;
+            background: #050505;
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+            font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Arial', sans-serif;
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+            box-shadow: 0 2px 0 rgba(255, 255, 255, 0.08) inset;
+        }
+
+        .store-badge:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.38);
+        }
+
+        .store-badge-logo {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
-            text-decoration: none;
+            width: 54px;
+            height: 54px;
+            flex: 0 0 54px;
             color: #ffffff;
-            border: 1px solid rgba(134, 196, 255, 0.28);
-            border-radius: 999px;
-            padding: 11px 18px;
-            background: rgba(11, 33, 64, 0.82);
-            backdrop-filter: blur(8px);
-            font-weight: 600;
-            letter-spacing: 0.2px;
-            transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
         }
-        .store-icon {
-            width: 16px;
-            height: 16px;
-            flex: 0 0 16px;
-            display: inline-block;
-        }
-        .store-icon svg {
+
+        .store-badge-logo svg {
             width: 100%;
             height: 100%;
-            display: block;
             fill: currentColor;
+            display: block;
         }
-        .store-btn:hover {
-            transform: translateY(-2px);
-            border-color: rgba(0, 210, 255, 0.75);
-            box-shadow: 0 8px 22px rgba(0, 128, 255, 0.28);
+
+        .store-badge-copy {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .store-badge-small {
+            font-size: 0.86rem;
+            letter-spacing: 0.03em;
+            opacity: 0.95;
+            margin-bottom: 0.22rem;
+            font-weight: 500;
+        }
+
+        .store-badge-large {
+            font-size: 2.02rem;
+            letter-spacing: 0.01em;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .store-badge-google .store-badge-small {
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            font-weight: 600;
         }
 
         .store-feedback {
@@ -346,6 +383,111 @@
 
         .store-feedback .store-btn {
             margin-top: 0.9rem;
+        }
+
+        .ios-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 2100;
+            display: grid;
+            place-items: center;
+            padding: 1rem;
+            background: rgba(2, 8, 16, 0.72);
+            backdrop-filter: blur(5px);
+        }
+
+        .ios-modal-dialog {
+            width: min(540px, 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(134, 196, 255, 0.4);
+            background: linear-gradient(160deg, rgba(6, 23, 44, 0.97) 0%, rgba(7, 18, 34, 0.97) 100%);
+            box-shadow: 0 28px 55px rgba(0, 0, 0, 0.45);
+            padding: 1.2rem;
+        }
+
+        .ios-modal-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .ios-modal-title {
+            margin: 0;
+            font-size: clamp(1.1rem, 2.8vw, 1.35rem);
+            line-height: 1.2;
+        }
+
+        .ios-modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid rgba(134, 196, 255, 0.45);
+            background: transparent;
+            color: #e8f4ff;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .ios-modal-desc {
+            margin: 0 0 0.9rem;
+            color: #d0e4f8;
+            line-height: 1.5;
+        }
+
+        .ios-field-label {
+            display: block;
+            margin-bottom: 0.48rem;
+            color: #e8f4ff;
+            font-size: 0.92rem;
+            font-weight: 600;
+        }
+
+        .ios-email-input {
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid rgba(134, 196, 255, 0.45);
+            background: rgba(0, 0, 0, 0.28);
+            color: #ffffff;
+            font-size: 1rem;
+            padding: 0.74rem 0.8rem;
+            outline: none;
+        }
+
+        .ios-email-input:focus {
+            border-color: rgba(0, 210, 255, 0.9);
+            box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.2);
+        }
+
+        .ios-modal-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.7rem;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .ios-modal-btn {
+            border-radius: 10px;
+            border: 1px solid rgba(134, 196, 255, 0.45);
+            background: transparent;
+            color: #e8f4ff;
+            padding: 0.62rem 0.86rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .ios-modal-btn.primary {
+            background: var(--brand-gradient);
+            border-color: transparent;
+            color: #ffffff;
+        }
+
+        .ios-modal-status {
+            margin-top: 0.82rem;
+            color: #aaf7cb;
+            line-height: 1.45;
         }
 
         .radar-scene {
@@ -699,6 +841,27 @@
                 gap: 0.65rem;
             }
 
+            .store-badge {
+                min-width: min(100%, 320px);
+                width: min(100%, 320px);
+                height: 84px;
+                padding: 0 0.95rem;
+            }
+
+            .store-badge-logo {
+                width: 46px;
+                height: 46px;
+                flex-basis: 46px;
+            }
+
+            .store-badge-small {
+                font-size: 0.72rem;
+            }
+
+            .store-badge-large {
+                font-size: 1.7rem;
+            }
+
             .live-stats {
                 grid-template-columns: 1fr;
                 width: min(100%, 360px);
@@ -740,12 +903,6 @@
                 font-size: 0.72rem;
                 letter-spacing: 0.52px;
                 text-align: left;
-            }
-
-            .store-btn {
-                min-width: 130px;
-                text-align: center;
-                padding: 10px 14px;
             }
 
             .ocean-ring {
@@ -851,8 +1008,13 @@
                 max-height: 30px;
             }
 
-            .store-btn {
+            .store-badge {
                 width: 100%;
+                min-width: 100%;
+            }
+
+            .ios-modal-dialog {
+                padding: 1rem;
             }
 
             .cards-carousel {
@@ -1051,15 +1213,24 @@
                         </div>
                         <a href="mailto:contact@scan-horizon.com?subject=Acc%C3%A8s%20b%C3%AAta%20test%20ScanHorizon" class="beta-link">Accès bêta test</a>
                         <div class="store-buttons">
-                            <button type="button" class="store-btn js-store-trigger" data-target="fr-ios-message"><span class="store-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img"><path d="M16.365 1.43c0 1.14-.414 2.198-1.104 2.983-.789.9-2.074 1.595-3.19 1.51-.141-1.109.446-2.295 1.127-3.042.751-.833 2.057-1.43 3.167-1.451zM20.678 17.156c-.565 1.258-.836 1.818-1.563 2.924-1.014 1.544-2.445 3.468-4.22 3.483-1.58.014-1.987-1.03-4.132-1.017-2.146.013-2.594 1.036-4.174 1.022-1.775-.016-3.13-1.75-4.143-3.293-2.834-4.321-3.134-9.389-1.381-12.08 1.246-1.91 3.21-3.028 5.056-3.028 1.88 0 3.062 1.03 4.616 1.03 1.507 0 2.425-1.033 4.601-1.033 1.645 0 3.389.895 4.634 2.438-4.068 2.23-3.406 8.028.706 9.554z"/></svg></span>iOS</button>
-                            <a class="store-btn" href="https://play.google.com/store/apps/details?id=com.app.flighttracktest" target="_blank" rel="noopener noreferrer"><span class="store-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img"><path d="M3 2.5v19l10.1-9.5L3 2.5zm11.8 11L18 10.7l3 1.7-3 1.7-3.2-0.6zm-1.5.8L3 21.5l11.7-6.8-1.4-0.4zm1.4-4.6L3 2.5l10.3 7.1 1.4-0.9z"/></svg></span>Android</a>
-                        </div>
-                        <div id="fr-ios-message" class="store-feedback hidden">
-                            <p>Version beta iOs dispo le 20 avril !</p>
-                        </div>
-                        <div id="fr-android-message" class="store-feedback hidden">
-                            <p>Version beta prête ! Donne nous ton email Google Play pour obtenir l'accès (France uniquement).</p>
-                            <a href="mailto:contact@scan-horizon.fr?subject=Acc%C3%A8s%20beta%20Android%20ScanHorizon" class="store-btn"><span class="store-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm0 2v.2l9 5.8 9-5.8V7l-9 5.8L3 7z"/></svg></span>contact@scan-horizon.fr</a>
+                            <button type="button" class="store-badge store-badge-ios js-ios-request" aria-label="Download on the App Store">
+                                <span class="store-badge-logo" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" role="img"><path d="M16.365 1.43c0 1.14-.414 2.198-1.104 2.983-.789.9-2.074 1.595-3.19 1.51-.141-1.109.446-2.295 1.127-3.042.751-.833 2.057-1.43 3.167-1.451zM20.678 17.156c-.565 1.258-.836 1.818-1.563 2.924-1.014 1.544-2.445 3.468-4.22 3.483-1.58.014-1.987-1.03-4.132-1.017-2.146.013-2.594 1.036-4.174 1.022-1.775-.016-3.13-1.75-4.143-3.293-2.834-4.321-3.134-9.389-1.381-12.08 1.246-1.91 3.21-3.028 5.056-3.028 1.88 0 3.062 1.03 4.616 1.03 1.507 0 2.425-1.033 4.601-1.033 1.645 0 3.389.895 4.634 2.438-4.068 2.23-3.406 8.028.706 9.554z"/></svg>
+                                </span>
+                                <span class="store-badge-copy">
+                                    <span class="store-badge-small">Download on the</span>
+                                    <span class="store-badge-large">App Store</span>
+                                </span>
+                            </button>
+                            <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.app.flighttracktest" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
+                                <span class="store-badge-logo" aria-hidden="true">
+                                    <svg viewBox="0 0 512 512" role="img"><path fill="#00d2ff" d="M325.3 234.3 97.8 11.8l290.1 165.5-62.6 57z"/><path fill="#00ff9d" d="M63.9 45.3c-7.7 8-12.4 19.7-12.4 34.7v352c0 15.1 4.8 26.8 12.7 34.8L300.9 256 63.9 45.3z"/><path fill="#ffd166" d="m325.3 277.7-63.1-57.1-37.7 35.4 37.3 35.1z"/><path fill="#ff5d5d" d="M97.7 500.2 387.9 334.6l-62.6-56.9z"/></svg>
+                                </span>
+                                <span class="store-badge-copy">
+                                    <span class="store-badge-small">GET IT ON</span>
+                                    <span class="store-badge-large">Google Play</span>
+                                </span>
+                            </a>
                         </div>
                     </div>
                     <div class="radar-scene" aria-hidden="true">
@@ -1107,15 +1278,24 @@
                         </div>
                         <a href="mailto:contact@scan-horizon.com?subject=ScanHorizon%20beta%20test%20access" class="beta-link">Beta test access</a>
                         <div class="store-buttons">
-                            <button type="button" class="store-btn js-store-trigger" data-target="en-ios-message"><span class="store-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img"><path d="M16.365 1.43c0 1.14-.414 2.198-1.104 2.983-.789.9-2.074 1.595-3.19 1.51-.141-1.109.446-2.295 1.127-3.042.751-.833 2.057-1.43 3.167-1.451zM20.678 17.156c-.565 1.258-.836 1.818-1.563 2.924-1.014 1.544-2.445 3.468-4.22 3.483-1.58.014-1.987-1.03-4.132-1.017-2.146.013-2.594 1.036-4.174 1.022-1.775-.016-3.13-1.75-4.143-3.293-2.834-4.321-3.134-9.389-1.381-12.08 1.246-1.91 3.21-3.028 5.056-3.028 1.88 0 3.062 1.03 4.616 1.03 1.507 0 2.425-1.033 4.601-1.033 1.645 0 3.389.895 4.634 2.438-4.068 2.23-3.406 8.028.706 9.554z"/></svg></span>iOS</button>
-                            <a class="store-btn" href="https://play.google.com/store/apps/details?id=com.app.flighttracktest" target="_blank" rel="noopener noreferrer"><span class="store-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img"><path d="M3 2.5v19l10.1-9.5L3 2.5zm11.8 11L18 10.7l3 1.7-3 1.7-3.2-0.6zm-1.5.8L3 21.5l11.7-6.8-1.4-0.4zm1.4-4.6L3 2.5l10.3 7.1 1.4-0.9z"/></svg></span>Android</a>
-                        </div>
-                        <div id="en-ios-message" class="store-feedback hidden">
-                            <p>iOS beta version available on April 5!</p>
-                        </div>
-                        <div id="en-android-message" class="store-feedback hidden">
-                            <p>Beta version ready! Send us your Google Play email to get access (France only).</p>
-                            <a href="mailto:contact@scan-horizon.fr?subject=ScanHorizon%20Android%20beta%20access" class="store-btn"><span class="store-icon" aria-hidden="true"><svg viewBox="0 0 24 24" role="img"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm0 2v.2l9 5.8 9-5.8V7l-9 5.8L3 7z"/></svg></span>contact@scan-horizon.fr</a>
+                            <button type="button" class="store-badge store-badge-ios js-ios-request" aria-label="Download on the App Store">
+                                <span class="store-badge-logo" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" role="img"><path d="M16.365 1.43c0 1.14-.414 2.198-1.104 2.983-.789.9-2.074 1.595-3.19 1.51-.141-1.109.446-2.295 1.127-3.042.751-.833 2.057-1.43 3.167-1.451zM20.678 17.156c-.565 1.258-.836 1.818-1.563 2.924-1.014 1.544-2.445 3.468-4.22 3.483-1.58.014-1.987-1.03-4.132-1.017-2.146.013-2.594 1.036-4.174 1.022-1.775-.016-3.13-1.75-4.143-3.293-2.834-4.321-3.134-9.389-1.381-12.08 1.246-1.91 3.21-3.028 5.056-3.028 1.88 0 3.062 1.03 4.616 1.03 1.507 0 2.425-1.033 4.601-1.033 1.645 0 3.389.895 4.634 2.438-4.068 2.23-3.406 8.028.706 9.554z"/></svg>
+                                </span>
+                                <span class="store-badge-copy">
+                                    <span class="store-badge-small">Download on the</span>
+                                    <span class="store-badge-large">App Store</span>
+                                </span>
+                            </button>
+                            <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.app.flighttracktest" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
+                                <span class="store-badge-logo" aria-hidden="true">
+                                    <svg viewBox="0 0 512 512" role="img"><path fill="#00d2ff" d="M325.3 234.3 97.8 11.8l290.1 165.5-62.6 57z"/><path fill="#00ff9d" d="M63.9 45.3c-7.7 8-12.4 19.7-12.4 34.7v352c0 15.1 4.8 26.8 12.7 34.8L300.9 256 63.9 45.3z"/><path fill="#ffd166" d="m325.3 277.7-63.1-57.1-37.7 35.4 37.3 35.1z"/><path fill="#ff5d5d" d="M97.7 500.2 387.9 334.6l-62.6-56.9z"/></svg>
+                                </span>
+                                <span class="store-badge-copy">
+                                    <span class="store-badge-small">GET IT ON</span>
+                                    <span class="store-badge-large">Google Play</span>
+                                </span>
+                            </a>
                         </div>
                     </div>
                     <div class="radar-scene" aria-hidden="true">
@@ -1142,6 +1322,25 @@
                         <article class="aircraft-card right"><img src="frequent.png" alt="Frequent aircraft card"></article>
                     </div>
                 </section>
+            </div>
+        </div>
+
+        <div id="ios-access-modal" class="ios-modal hidden" aria-hidden="true">
+            <div class="ios-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="ios-modal-title">
+                <div class="ios-modal-head">
+                    <h3 id="ios-modal-title" class="ios-modal-title">Demander un acces iOS beta</h3>
+                    <button type="button" class="ios-modal-close" data-close-ios-modal aria-label="Fermer">X</button>
+                </div>
+                <p id="ios-modal-desc" class="ios-modal-desc">Laisse ton email et on prepare ton acces TestFlight iOS.</p>
+                <form id="ios-access-form" novalidate>
+                    <label for="ios-email" id="ios-email-label" class="ios-field-label">Ton email</label>
+                    <input id="ios-email" class="ios-email-input" type="email" inputmode="email" autocomplete="email" required placeholder="ton@email.com">
+                    <div class="ios-modal-actions">
+                        <button type="button" class="ios-modal-btn" data-close-ios-modal id="ios-cancel-btn">Annuler</button>
+                        <button type="submit" class="ios-modal-btn primary" id="ios-submit-btn">Envoyer la demande</button>
+                    </div>
+                    <p id="ios-modal-status" class="ios-modal-status hidden" aria-live="polite"></p>
+                </form>
             </div>
         </div>
 
@@ -1921,6 +2120,14 @@
             });
         }
 
+        function setStatsUnavailable() {
+            const elements = document.querySelectorAll('[data-stat-key]');
+            elements.forEach((element) => {
+                element.classList.remove('is-loading');
+                element.textContent = 'N/A';
+            });
+        }
+
         async function fetchLiveStats() {
             const scansUrl = 'https://diffusion-api-production.up.railway.app/api/stats/scans-count';
             const cacheBust = `cb=${Date.now()}`;
@@ -1972,7 +2179,9 @@
                 const attempts = attemptUrls(url).map(async (attemptUrl) => {
                     const response = await fetchWithTimeout(attemptUrl, 2200);
                     if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}`);
+                        const error = new Error(`HTTP ${response.status}`);
+                        error.status = response.status;
+                        throw error;
                     }
                     const parsed = await parseToObject(response);
                     return normalizePayload(parsed);
@@ -1981,41 +2190,154 @@
                 try {
                     return await Promise.any(attempts);
                 } catch (error) {
+                    if (error instanceof AggregateError && Array.isArray(error.errors)) {
+                        const unauthorized = error.errors.find((err) => err && err.status === 401);
+                        if (unauthorized) {
+                            const authError = new Error('HTTP 401');
+                            authError.status = 401;
+                            throw authError;
+                        }
+                    }
                     throw new Error('Impossible de charger les stats');
                 }
             }
 
             try {
                 const scansResponse = await fetchJsonWithCorsFallback(scansUrl);
+                const scansValue = Number(scansResponse.total_scans_in_db) || 0;
+
+                localStorage.setItem('scan_horizon_scans_cache', String(scansValue));
 
                 updateStatsCounters({
-                    scans: Number(scansResponse.total_scans_in_db) || 0
+                    scans: scansValue
                 });
             } catch (error) {
-                updateStatsCounters({ scans: 0 });
+                if (error && error.status === 401) {
+                    const cached = Number(localStorage.getItem('scan_horizon_scans_cache'));
+                    if (Number.isFinite(cached) && cached >= 0) {
+                        updateStatsCounters({ scans: cached });
+                    } else {
+                        setStatsUnavailable();
+                    }
+                } else {
+                    setStatsUnavailable();
+                }
                 console.error('Impossible de charger les statistiques live :', error);
             }
         }
 
-        function setupStoreMessages() {
-            const triggers = document.querySelectorAll('.js-store-trigger');
+        function setupIosAccessFlow() {
+            const modal = document.getElementById('ios-access-modal');
+            const modalTitle = document.getElementById('ios-modal-title');
+            const modalDesc = document.getElementById('ios-modal-desc');
+            const emailLabel = document.getElementById('ios-email-label');
+            const emailInput = document.getElementById('ios-email');
+            const submitBtn = document.getElementById('ios-submit-btn');
+            const cancelBtn = document.getElementById('ios-cancel-btn');
+            const status = document.getElementById('ios-modal-status');
+            const form = document.getElementById('ios-access-form');
+            const openButtons = document.querySelectorAll('.js-ios-request');
 
-            triggers.forEach((trigger) => {
-                trigger.addEventListener('click', () => {
-                    const heroCopy = trigger.closest('.hero-copy');
-                    const targetId = trigger.getAttribute('data-target');
-                    const target = document.getElementById(targetId);
+            if (!modal || !emailInput || !form || !status) {
+                return;
+            }
 
-                    if (!heroCopy || !target) {
-                        return;
-                    }
+            const textByLang = {
+                fr: {
+                    title: 'Demander un acces iOS beta',
+                    desc: 'Laisse ton email et on prepare ton acces TestFlight iOS.',
+                    emailLabel: 'Ton email',
+                    emailPlaceholder: 'ton@email.com',
+                    cancel: 'Annuler',
+                    submit: 'Envoyer la demande',
+                    success: 'Merci ! Ton client mail va souvrir avec la demande pre-remplie pour contact@scan-horizon.com.',
+                    invalid: 'Entre une adresse email valide.'
+                },
+                en: {
+                    title: 'Request iOS beta access',
+                    desc: 'Share your email and we will prepare your TestFlight iOS access.',
+                    emailLabel: 'Your email',
+                    emailPlaceholder: 'you@email.com',
+                    cancel: 'Cancel',
+                    submit: 'Send request',
+                    success: 'Thanks! Your email app will open with a pre-filled request to contact@scan-horizon.com.',
+                    invalid: 'Please enter a valid email address.'
+                }
+            };
 
-                    heroCopy.querySelectorAll('.store-feedback').forEach((panel) => {
-                        panel.classList.add('hidden');
-                    });
+            function applyModalLanguage() {
+                const copy = textByLang[state.lang] || textByLang.fr;
+                modalTitle.textContent = copy.title;
+                modalDesc.textContent = copy.desc;
+                emailLabel.textContent = copy.emailLabel;
+                emailInput.placeholder = copy.emailPlaceholder;
+                cancelBtn.textContent = copy.cancel;
+                submitBtn.textContent = copy.submit;
+            }
 
-                    target.classList.remove('hidden');
-                });
+            function openModal() {
+                applyModalLanguage();
+                status.classList.add('hidden');
+                status.textContent = '';
+                modal.classList.remove('hidden');
+                modal.setAttribute('aria-hidden', 'false');
+                setTimeout(() => {
+                    emailInput.focus();
+                }, 0);
+            }
+
+            function closeModal() {
+                modal.classList.add('hidden');
+                modal.setAttribute('aria-hidden', 'true');
+            }
+
+            function isValidEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+
+            openButtons.forEach((btn) => {
+                btn.addEventListener('click', openModal);
+            });
+
+            modal.querySelectorAll('[data-close-ios-modal]').forEach((btn) => {
+                btn.addEventListener('click', closeModal);
+            });
+
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const email = emailInput.value.trim();
+                const copy = textByLang[state.lang] || textByLang.fr;
+
+                if (!isValidEmail(email)) {
+                    status.textContent = copy.invalid;
+                    status.classList.remove('hidden');
+                    return;
+                }
+
+                const subject = state.lang === 'en'
+                    ? 'iOS beta access request - Scan Horizon'
+                    : 'Demande acces beta iOS - Scan Horizon';
+                const body = state.lang === 'en'
+                    ? `Hello Scan Horizon,%0D%0A%0D%0AI would like to test the iOS beta.%0D%0AEmail: ${encodeURIComponent(email)}%0D%0ADate: ${encodeURIComponent(new Date().toISOString())}%0D%0A%0D%0AThanks.`
+                    : `Bonjour Scan Horizon,%0D%0A%0D%0AJe souhaite tester la beta iOS.%0D%0AEmail: ${encodeURIComponent(email)}%0D%0ADate: ${encodeURIComponent(new Date().toISOString())}%0D%0A%0D%0AMerci.`;
+
+                const mailtoUrl = `mailto:contact@scan-horizon.com?subject=${encodeURIComponent(subject)}&body=${body}`;
+                window.location.href = mailtoUrl;
+
+                status.textContent = copy.success;
+                status.classList.remove('hidden');
             });
         }
 
@@ -2033,8 +2355,8 @@
             // Stats live
             fetchLiveStats();
 
-            // Messages App Stores
-            setupStoreMessages();
+            // Demande d'acces iOS
+            setupIosAccessFlow();
         });
     </script>
 </body>
