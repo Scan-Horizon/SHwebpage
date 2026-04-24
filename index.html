@@ -466,6 +466,23 @@
             box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.2);
         }
 
+        .ios-select-input {
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid rgba(134, 196, 255, 0.45);
+            background: rgba(0, 0, 0, 0.28);
+            color: #ffffff;
+            font-size: 1rem;
+            padding: 0.74rem 0.8rem;
+            outline: none;
+            margin-bottom: 0.85rem;
+        }
+
+        .ios-select-input:focus {
+            border-color: rgba(0, 210, 255, 0.9);
+            box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.2);
+        }
+
         .ios-modal-actions {
             margin-top: 1rem;
             display: flex;
@@ -1215,7 +1232,7 @@
                             </article>
 
                         </div>
-                        <span class="beta-link">Accès bêta test</span>
+                        <span class="beta-link">Accès bêta test - France only</span>
                         <div class="store-buttons">
                             <button type="button" class="store-badge store-badge-ios js-ios-request" aria-label="Download on the App Store">
                                 <span class="store-badge-logo" aria-hidden="true">
@@ -1280,7 +1297,7 @@
                             </article>
 
                         </div>
-                        <span class="beta-link">Beta test access</span>
+                        <span class="beta-link">Beta test access - France only</span>
                         <div class="store-buttons">
                             <button type="button" class="store-badge store-badge-ios js-ios-request" aria-label="Download on the App Store">
                                 <span class="store-badge-logo" aria-hidden="true">
@@ -1337,6 +1354,16 @@
                 </div>
                 <p id="ios-modal-desc" class="ios-modal-desc">Laisse ton email et on prepare ton acces ScanHorizon iOS.</p>
                 <form id="ios-access-form" novalidate>
+                    <label for="ios-source" id="ios-source-label" class="ios-field-label">Comment avez-vous entendu parler de l'app ?</label>
+                    <select id="ios-source" class="ios-select-input" required>
+                        <option value="" selected>Choisis une option</option>
+                        <option value="social">Réseaux Sociaux</option>
+                        <option value="friend">Ami</option>
+                        <option value="ai">IA</option>
+                        <option value="other">Autres</option>
+                    </select>
+                    <label for="ios-source-other" id="ios-source-other-label" class="ios-field-label hidden">Précise la source</label>
+                    <input id="ios-source-other" class="ios-email-input hidden" type="text" autocomplete="off" placeholder="Précise ici">
                     <label for="ios-email" id="ios-email-label" class="ios-field-label">Ton email</label>
                     <input id="ios-email" class="ios-email-input" type="email" inputmode="email" autocomplete="email" required placeholder="ton@email.com">
                     <div class="ios-modal-actions">
@@ -2230,6 +2257,10 @@
             const modal = document.getElementById('ios-access-modal');
             const modalTitle = document.getElementById('ios-modal-title');
             const modalDesc = document.getElementById('ios-modal-desc');
+            const sourceLabel = document.getElementById('ios-source-label');
+            const sourceSelect = document.getElementById('ios-source');
+            const sourceOtherLabel = document.getElementById('ios-source-other-label');
+            const sourceOtherInput = document.getElementById('ios-source-other');
             const emailLabel = document.getElementById('ios-email-label');
             const emailInput = document.getElementById('ios-email');
             const submitBtn = document.getElementById('ios-submit-btn');
@@ -2238,37 +2269,95 @@
             const form = document.getElementById('ios-access-form');
             const openButtons = document.querySelectorAll('.js-ios-request');
 
-            if (!modal || !emailInput || !form || !status) {
+            if (!modal || !emailInput || !form || !status || !sourceSelect || !sourceOtherInput) {
                 return;
             }
 
             const textByLang = {
                 fr: {
                     title: 'Demander un accès iOS bêta',
-                    desc: 'Laisse ton email et on prépare ton accès ScanHorizon iOS.',
+                    desc: 'Réponds au sondage puis laisse ton email pour préparer ton accès ScanHorizon iOS.',
+                    sourceLabel: 'Comment avez-vous entendu parler de l\'app ?',
+                    sourcePlaceholder: 'Choisis une option',
+                    sourceSocial: 'Réseaux Sociaux',
+                    sourceFriend: 'Ami',
+                    sourceAi: 'IA',
+                    sourceOther: 'Autres (préciser)',
+                    sourceOtherLabel: 'Précise la source',
+                    sourceOtherPlaceholder: 'Précise ici',
                     emailLabel: 'Ton email',
                     emailPlaceholder: 'ton@email.com',
                     cancel: 'Annuler',
                     submit: 'Envoyer la demande',
                     success: 'Merci ! Ton client mail va s\'ouvrir avec la demande pré-remplie pour contact@scan-horizon.com.',
-                    invalid: 'Entre une adresse email valide.'
+                    invalid: 'Entre une adresse email valide.',
+                    invalidSource: 'Merci de sélectionner comment tu as entendu parler de l\'app.',
+                    invalidSourceOther: 'Merci de préciser la source dans "Autres (préciser)".'
                 },
                 en: {
                     title: 'Request iOS beta access',
-                    desc: 'Share your email and we will prepare your ScanHorizon iOS access.',
+                    desc: 'Answer the survey, then share your email to prepare your ScanHorizon iOS access.',
+                    sourceLabel: 'How did you hear about the app?',
+                    sourcePlaceholder: 'Choose an option',
+                    sourceSocial: 'Social Media',
+                    sourceFriend: 'Friend',
+                    sourceAi: 'AI',
+                    sourceOther: 'Other (specify)',
+                    sourceOtherLabel: 'Specify your source',
+                    sourceOtherPlaceholder: 'Specify here',
                     emailLabel: 'Your email',
                     emailPlaceholder: 'you@email.com',
                     cancel: 'Cancel',
                     submit: 'Send request',
                     success: 'Thanks! Your email app will open with a pre-filled request to contact@scan-horizon.com.',
-                    invalid: 'Please enter a valid email address.'
+                    invalid: 'Please enter a valid email address.',
+                    invalidSource: 'Please select how you heard about the app.',
+                    invalidSourceOther: 'Please specify your source in "Other (specify)".'
                 }
             };
+
+            function updateSourceOtherVisibility() {
+                const showOther = sourceSelect.value === 'other';
+                sourceOtherLabel.classList.toggle('hidden', !showOther);
+                sourceOtherInput.classList.toggle('hidden', !showOther);
+                if (!showOther) {
+                    sourceOtherInput.value = '';
+                }
+            }
+
+            function getSelectedSourceForEmail(copy) {
+                if (sourceSelect.value === 'social') {
+                    return copy.sourceSocial;
+                }
+                if (sourceSelect.value === 'friend') {
+                    return copy.sourceFriend;
+                }
+                if (sourceSelect.value === 'ai') {
+                    return copy.sourceAi;
+                }
+                if (sourceSelect.value === 'other') {
+                    return `${copy.sourceOther}: ${sourceOtherInput.value.trim()}`;
+                }
+                return '';
+            }
 
             function applyModalLanguage() {
                 const copy = textByLang[state.lang] || textByLang.fr;
                 modalTitle.textContent = copy.title;
                 modalDesc.textContent = copy.desc;
+                sourceLabel.textContent = copy.sourceLabel;
+                sourceOtherLabel.textContent = copy.sourceOtherLabel;
+                sourceOtherInput.placeholder = copy.sourceOtherPlaceholder;
+
+                const sourceOptions = sourceSelect.options;
+                if (sourceOptions.length >= 5) {
+                    sourceOptions[0].textContent = copy.sourcePlaceholder;
+                    sourceOptions[1].textContent = copy.sourceSocial;
+                    sourceOptions[2].textContent = copy.sourceFriend;
+                    sourceOptions[3].textContent = copy.sourceAi;
+                    sourceOptions[4].textContent = copy.sourceOther;
+                }
+
                 emailLabel.textContent = copy.emailLabel;
                 emailInput.placeholder = copy.emailPlaceholder;
                 cancelBtn.textContent = copy.cancel;
@@ -2279,10 +2368,13 @@
                 applyModalLanguage();
                 status.classList.add('hidden');
                 status.textContent = '';
+                sourceSelect.value = '';
+                sourceOtherInput.value = '';
+                updateSourceOtherVisibility();
                 modal.classList.remove('hidden');
                 modal.setAttribute('aria-hidden', 'false');
                 setTimeout(() => {
-                    emailInput.focus();
+                    sourceSelect.focus();
                 }, 0);
             }
 
@@ -2303,6 +2395,8 @@
                 btn.addEventListener('click', closeModal);
             });
 
+            sourceSelect.addEventListener('change', updateSourceOtherVisibility);
+
             modal.addEventListener('click', (event) => {
                 if (event.target === modal) {
                     closeModal();
@@ -2319,6 +2413,19 @@
                 event.preventDefault();
                 const email = emailInput.value.trim();
                 const copy = textByLang[state.lang] || textByLang.fr;
+                const sourceOther = sourceOtherInput.value.trim();
+
+                if (!sourceSelect.value) {
+                    status.textContent = copy.invalidSource;
+                    status.classList.remove('hidden');
+                    return;
+                }
+
+                if (sourceSelect.value === 'other' && !sourceOther) {
+                    status.textContent = copy.invalidSourceOther;
+                    status.classList.remove('hidden');
+                    return;
+                }
 
                 if (!isValidEmail(email)) {
                     status.textContent = copy.invalid;
@@ -2326,12 +2433,14 @@
                     return;
                 }
 
+                const sourceForEmail = getSelectedSourceForEmail(copy);
+
                 const subject = state.lang === 'en'
                     ? 'iOS beta access request - Scan Horizon'
                     : 'Demande accès bêta iOS - Scan Horizon';
                 const body = state.lang === 'en'
-                    ? `Hello Scan Horizon,%0D%0A%0D%0AI would like to test the iOS beta.%0D%0AEmail: ${encodeURIComponent(email)}%0D%0ADate: ${encodeURIComponent(new Date().toISOString())}%0D%0A%0D%0AThanks.`
-                    : `Bonjour Scan Horizon,%0D%0A%0D%0AJe souhaite tester la beta iOS.%0D%0AEmail: ${encodeURIComponent(email)}%0D%0ADate: ${encodeURIComponent(new Date().toISOString())}%0D%0A%0D%0AMerci.`;
+                    ? `Hello Scan Horizon,%0D%0A%0D%0AI would like to test the iOS beta.%0D%0AHow I heard about the app: ${encodeURIComponent(sourceForEmail)}%0D%0AEmail: ${encodeURIComponent(email)}%0D%0ADate: ${encodeURIComponent(new Date().toISOString())}%0D%0A%0D%0AThanks.`
+                    : `Bonjour Scan Horizon,%0D%0A%0D%0AJe souhaite tester la beta iOS.%0D%0AComment j'ai entendu parler de l'app: ${encodeURIComponent(sourceForEmail)}%0D%0AEmail: ${encodeURIComponent(email)}%0D%0ADate: ${encodeURIComponent(new Date().toISOString())}%0D%0A%0D%0AMerci.`;
 
                 const mailtoUrl = `mailto:contact@scan-horizon.com?subject=${encodeURIComponent(subject)}&body=${body}`;
                 window.location.href = mailtoUrl;
