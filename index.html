@@ -1514,13 +1514,14 @@
                     </table>
 
                     <h3>ARTICLE 4. DESTINATAIRES DES DONNÉES</h3>
-                    <p>Vos données ne sont <strong>ni vendues ni louées</strong>. Elles sont transmises uniquement à nos sous-traitants techniques pour l'exécution du service :</p>
+                    <p>À la date de dernière mise à jour de la présente politique, vos données ne font pas l'objet d'une <strong>vente</strong> au sens usuel. Elles sont transmises à nos sous-traitants techniques pour l'exécution du service, et peuvent l'être à d'autres destinataires lorsque cela est nécessaire à la fourniture du service, fondé sur une base légale valable et, le cas échéant, sur votre consentement :</p>
                     <ul>
                         <li><strong>Google Cloud / Firebase (Irlande) :</strong> Authentification (Firebase Auth), base de données (Firestore), analytics (Firebase Analytics), crash reporting (Crashlytics), notifications push (FCM), configuration à distance (Remote Config), vérification applicative (App Check).</li>
                         <li><strong>Google Sign-In (Google LLC, USA) :</strong> Authentification via compte Google.</li>
                         <li><strong>Railway (Pays-Bas) :</strong> Hébergement du backend applicatif avec serveur localisé à Amsterdam. Railway héberge également le cache Redis utilisé pour la sécurité anti-abus.</li>
                         <li><strong>PlaneFinder (Royaume-Uni) :</strong> API aéronautique temps réel (envoi de coordonnées GPS anonymisées).</li>
                         <li><strong>RevenueCat (USA) :</strong> Gestion des abonnements mobiles.</li>
+                        <li><strong>Resend (USA) :</strong> Envoi d'emails transactionnels liés au compte (ex. confirmation de suppression).</li>
                         <li><strong>Google AdMob (USA) :</strong> Régie publicitaire (uniquement si vous avez accepté le traçage).</li>
                         <li><strong>Sentry (UE/USA selon configuration) :</strong> Supervision technique, journalisation des erreurs et rapports de crash (uniquement si vous avez donné votre consentement).</li>
                     </ul>
@@ -1534,26 +1535,18 @@
 
                     <h3>ARTICLE 7. DURÉE DE CONSERVATION</h3>
                     <ul>
-                        <li><strong>Données de position anti-fraude (backend) :</strong> 1 heure maximum.</li>
-                        <li><strong>Rate limiting / contrôles anti-abus court terme :</strong> 1 à 10 minutes.</li>
-                        <li><strong>Strikes et cooldowns anti-fraude :</strong> Jusqu'à 24 heures.</li>
-                        <li><strong>Cache radar temps réel :</strong> Environ 120 secondes.</li>
-                        <li><strong>Protection anti-rejeu transactions publicitaires (AdMob SSV) :</strong> 48 heures.</li>
-                        <li><strong>Token FCM :</strong> Jusqu'à la déconnexion ou révocation par l'OS ; renouvelé automatiquement.</li>
-                        <li><strong>Données de crash &amp; erreurs (Crashlytics, Sentry) :</strong> 90 jours maximum.</li>
-                        <li><strong>Données analytiques (Firebase Analytics) :</strong> 13 mois maximum après consentement.</li>
-                        <li><strong>Données publicitaires (AdMob) :</strong> 13 mois maximum après consentement.</li>
-                        <li><strong>Historique des scans, signalements et données de compte :</strong> Durée d'activité du compte ; suppression à la demande. Comptes inactifs depuis 24 mois : suppression programmée.</li>
-                        <li><strong>Données de compte &amp; Achats (prescription légale) :</strong> Durée d'utilisation du service + 5 ans.</li>
-                        <li><strong>Logs techniques (infrastructure) :</strong> Selon les durées légales applicables (notamment LCEN) et la configuration de notre hébergeur, 12 mois maximum.</li>
-                        <li><strong>Preuve de consentement horodatée :</strong> 3 ans à compter du retrait ou de l'expiration du consentement.</li>
+                        <li><strong>Données de compte et d'usage :</strong> Conservées pendant la durée d'activité du compte, puis supprimées ou anonymisées selon la politique d'effacement applicable.</li>
+                        <li><strong>Données de consentement :</strong> Conservées à des fins de preuve de conformité pendant la durée nécessaire au respect de nos obligations légales.</li>
+                        <li><strong>Données de sécurité et anti-abus :</strong> Conservées pour une durée limitée et proportionnée à la protection du service, puis supprimées ou anonymisées.</li>
+                        <li><strong>Données analytiques, publicitaires et de mesure d'erreurs :</strong> Conservées selon vos choix de consentement, les paramétrages des plateformes concernées et les durées légales applicables.</li>
+                        <li><strong>Données soumises à obligations légales spécifiques :</strong> Conservées pendant la durée prévue par la réglementation applicable.</li>
                     </ul>
 
                     <h3>ARTICLE 8. SÉCURITÉ ET NOTIFICATION DE FAILLE</h3>
-                    <p>Nous mettons en œuvre des mesures de sécurité adaptées : chiffrement TLS, authentification des requêtes sensibles par token Firebase, comparaison de secrets en timing-safe, rate limiting Redis, contrôles anti-fraude progressifs (détection de téléportation, cooldown graduel) et vérification cryptographique des transactions publicitaires (SSV AdMob). Conformément à l'article 33 du RGPD, en cas de violation de données présentant un risque pour vos droits, l'Éditeur s'engage à notifier la CNIL dans les 72 heures et, si nécessaire, à informer les utilisateurs concernés.</p>
+                    <p>Nous mettons en œuvre des mesures techniques et organisationnelles adaptées (chiffrement en transit, contrôles d'accès, mécanismes anti-abus, journalisation de sécurité, supervision). Certaines mesures automatisées de protection (ex. limitation temporaire de certaines actions) peuvent être appliquées en cas d'anomalie ou d'abus détecté ; elles sont proportionnées et peuvent faire l'objet d'une demande de réexamen via contact@scan-horizon.com. Conformément à l'article 33 du RGPD, en cas de violation de données présentant un risque pour vos droits, l'Éditeur s'engage à notifier la CNIL dans les 72 heures et, si nécessaire, à informer les utilisateurs concernés.</p>
 
                     <h3>ARTICLE 9. VOS DROITS ET SUPPRESSION DE COMPTE</h3>
-                    <p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de portabilité, de limitation du traitement et d'opposition. Ces droits sont exercés dans un délai maximum de 30 jours à compter de la réception de votre demande.</p>
+                    <p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de portabilité, de limitation du traitement et d'opposition. Ces droits sont exercés dans un délai maximum de 30 jours à compter de la réception de votre demande. Pour certaines demandes, une vérification raisonnable d'identité peut être requise.</p>
                     <p>Lorsque le traitement repose sur votre consentement (ex. traceurs publicitaires / analytics / crash reporting), vous pouvez retirer ce consentement à tout moment, sans effet rétroactif sur les traitements déjà effectués avant ce retrait.</p>
                     <p><strong>Comment supprimer vos données ?</strong></p>
                     <ul>
@@ -1564,7 +1557,7 @@
                     <p>Vous avez également le droit d'introduire une réclamation auprès de la CNIL (www.cnil.fr).</p>
 
                     <h3>ARTICLE 10. DROIT CALIFORNIEN (CCPA)</h3>
-                    <p>Pour nos utilisateurs résidant en Californie : Nous ne vendons pas vos données personnelles ("Do Not Sell My Personal Information"). Vous bénéficiez des mêmes droits d'accès et de suppression que ceux décrits à l'Article 9.</p>
+                    <p>Pour nos utilisateurs résidant en Californie : à la date de dernière mise à jour, nous ne vendons pas vos données personnelles au sens applicable du CCPA. Si cette situation évolue, nous appliquerons les mécanismes requis (information, options d'opposition et, le cas échéant, consentement) conformément au droit applicable. Vous bénéficiez des mêmes droits d'accès et de suppression que ceux décrits à l'Article 9.</p>
 
                     <h3>ARTICLE 11. CONTACT</h3>
                     <p>Pour toute question relative à cette politique, contactez notre Délégué à la Protection des Données (DPO) à :<br>
@@ -1575,7 +1568,7 @@
 
                 <div class="lang-en hidden">
                     <p><strong>PRIVACY AND DATA PROTECTION POLICY</strong></p>
-                    <p>Version: 1.2<br>Effective Date: March 18, 2026</p>
+                    <p>Version: 1.3<br>Effective Date: May 17, 2026</p>
 
                     <h3>PREAMBLE</h3>
                     <p>This Privacy Policy aims to inform Users of the ScanHorizon mobile application, published by SAS SCAN HORIZON, about how their personal data is collected, processed, and protected. The Publisher is committed to strictly complying with Regulation (EU) 2016/679 (GDPR) and the French Data Protection Act (Loi Informatique et Libertés).</p>
@@ -1705,13 +1698,14 @@
                     </table>
 
                     <h3>ARTICLE 4. DATA RECIPIENTS</h3>
-                    <p>Your data is <strong>neither sold nor rented</strong>. It is transmitted only to our technical subcontractors for service execution:</p>
+                    <p>As of the latest update of this policy, your data is not subject to <strong>sale</strong> in the usual sense. It is shared with our technical subprocessors for service delivery, and may also be shared with other recipients when necessary to provide the service, based on a valid legal basis and, where required, your consent:</p>
                     <ul>
                         <li><strong>Google Cloud / Firebase (Ireland):</strong> Authentication (Firebase Auth), database (Firestore), analytics (Firebase Analytics), crash reporting (Crashlytics), push notifications (FCM), remote configuration (Remote Config), app integrity (App Check).</li>
                         <li><strong>Google Sign-In (Google LLC, USA):</strong> Authentication via Google account.</li>
                         <li><strong>Railway (Netherlands):</strong> Backend application hosting with server located in Amsterdam. Railway also hosts the Redis cache used for anti-abuse security.</li>
                         <li><strong>PlaneFinder (UK):</strong> Real-time aeronautical API (sending anonymized GPS coordinates).</li>
                         <li><strong>RevenueCat (USA):</strong> Mobile subscription management.</li>
+                        <li><strong>Resend (USA):</strong> Transactional emails related to account lifecycle (e.g. deletion confirmation).</li>
                         <li><strong>Google AdMob (USA):</strong> Advertising network (only if you accepted tracking).</li>
                         <li><strong>Sentry (EU/USA depending on configuration):</strong> Technical monitoring, error logging, and crash reporting (only if you provided your consent).</li>
                     </ul>
@@ -1725,26 +1719,18 @@
 
                     <h3>ARTICLE 7. RETENTION PERIOD</h3>
                     <ul>
-                        <li><strong>Anti-fraud position data (backend):</strong> Maximum 1 hour.</li>
-                        <li><strong>Rate limiting / short-term anti-abuse controls:</strong> 1 to 10 minutes.</li>
-                        <li><strong>Anti-fraud strikes and cooldowns:</strong> Up to 24 hours.</li>
-                        <li><strong>Real-time radar cache:</strong> Approximately 120 seconds.</li>
-                        <li><strong>AdMob transaction anti-replay protection (SSV):</strong> 48 hours.</li>
-                        <li><strong>FCM token:</strong> Until logout or OS revocation; automatically renewed.</li>
-                        <li><strong>Crash &amp; error data (Crashlytics, Sentry):</strong> Maximum 90 days.</li>
-                        <li><strong>Analytics data (Firebase Analytics):</strong> Maximum 13 months after consent.</li>
-                        <li><strong>Advertising data (AdMob):</strong> Maximum 13 months after consent.</li>
-                        <li><strong>Scan history, reports, and account data:</strong> Duration of account activity; deletion upon request. Accounts inactive for 24 months: scheduled deletion.</li>
-                        <li><strong>Account &amp; Purchase Data (legal prescription):</strong> Duration of service use + 5 years.</li>
-                        <li><strong>Technical logs (infrastructure):</strong> In accordance with applicable legal requirements and our hosting provider's configuration, up to 12 months maximum.</li>
-                        <li><strong>Timestamped consent proof:</strong> 3 years from the date of withdrawal or expiry of consent.</li>
+                        <li><strong>Account and usage data:</strong> Retained for the duration of account activity, then deleted or anonymized according to the applicable deletion policy.</li>
+                        <li><strong>Consent records:</strong> Retained as compliance evidence for the period required by applicable legal obligations.</li>
+                        <li><strong>Security and anti-abuse data:</strong> Retained for a limited period proportionate to service protection, then deleted or anonymized.</li>
+                        <li><strong>Analytics, advertising and error-monitoring data:</strong> Retained according to your consent choices, platform settings, and applicable legal requirements.</li>
+                        <li><strong>Data subject to specific legal obligations:</strong> Retained for the duration required by applicable regulation.</li>
                     </ul>
 
                     <h3>ARTICLE 8. SECURITY AND BREACH NOTIFICATION</h3>
-                    <p>We implement advanced security measures: TLS encryption, sensitive request authentication via Firebase token, timing-safe secret comparison, Redis rate limiting, progressive anti-fraud controls (teleportation detection, graduated cooldown), and cryptographic transaction verification (AdMob SSV). In accordance with GDPR Article 33, in case of a data breach presenting a risk to your rights, the Publisher commits to notifying the CNIL within 72 hours and, if necessary, informing affected users.</p>
+                    <p>We implement appropriate technical and organizational security measures (encryption in transit, access controls, anti-abuse mechanisms, security logging, monitoring). Some automated protective measures (e.g. temporary limitation of certain actions) may be applied in case of detected anomaly or abuse; these measures are proportionate and may be reviewed upon request at contact@scan-horizon.com. In accordance with GDPR Article 33, in case of a data breach presenting a risk to your rights, the Publisher commits to notifying the CNIL within 72 hours and, if necessary, informing affected users.</p>
 
                     <h3>ARTICLE 9. YOUR RIGHTS AND ACCOUNT DELETION</h3>
-                    <p>Under the GDPR, you have the right to access, rectify, erase, port, restrict processing of, and object to the processing of your personal data. These rights are exercised within a maximum of 30 days from the receipt of your request.</p>
+                    <p>Under the GDPR, you have the right to access, rectify, erase, port, restrict processing of, and object to the processing of your personal data. These rights are exercised within a maximum of 30 days from the receipt of your request. For certain requests, reasonable identity verification may be required.</p>
                     <p>When processing is based on your consent (e.g. advertising / analytics / crash reporting trackers), you may withdraw consent at any time, without affecting processing already carried out before withdrawal.</p>
                     <p><strong>How to delete your data?</strong></p>
                     <ul>
@@ -1755,7 +1741,7 @@
                     <p>You also have the right to lodge a complaint with the CNIL (www.cnil.fr) or with your local supervisory authority where applicable.</p>
 
                     <h3>ARTICLE 10. CALIFORNIA LAW (CCPA)</h3>
-                    <p>For our users residing in California: We do not sell your personal data ("Do Not Sell My Personal Information"). You benefit from the same rights of access and deletion described in Article 9.</p>
+                    <p>For users residing in California: as of the latest update, we do not sell personal data as defined by applicable CCPA rules. If this changes, we will implement required mechanisms (notice, opt-out choices, and where applicable consent) in accordance with applicable law. You benefit from the same rights of access and deletion described in Article 9.</p>
 
                     <h3>ARTICLE 11. CONTACT</h3>
                     <p>For any questions regarding this policy, contact our Data Protection Officer (DPO) at:<br>
@@ -1775,7 +1761,7 @@
             <div class="legal-content">
                 <div class="lang-fr">
                     <p><strong>CONDITIONS GÉNÉRALES D'UTILISATION ET DE VENTE</strong></p>
-                    <p>Dernière mise à jour : 01 Février 2026</p>
+                    <p>Dernière mise à jour : 17 Mai 2026</p>
 
                     <h3>PRÉAMBULE ET ACCEPTATION</h3>
                     <p>Les présentes Conditions Générales (ci-après le "Contrat") régissent l'utilisation de l'application ScanHorizon (ci-après l'"Application") éditée par la SAS SCAN HORIZON (ci-après l'"Éditeur").</p>
@@ -1806,17 +1792,22 @@
                     <h3>ARTICLE 4. PROPRIÉTÉ INTELLECTUELLE</h3>
                     <p>L'ensemble de l'Application (code source, bases de données, design, sons) est la propriété exclusive de la SAS SCAN HORIZON. Interdiction de Scraping : Il est formellement interdit d'extraire la totalité ou une partie substantielle du contenu de la base de données (Art L.341-1 du CPI).</p>
                     <p>Les photos d'aéronefs utilisées dans l'Application et/ou sur le site sont créditées avec mention du photographe et, lorsque cela s'applique, du site source. Malgré le soin apporté à l'attribution, une erreur peut survenir. En cas de réclamation, de demande de correction, de retrait ou de précision de crédit, merci de nous contacter à <strong>support@scan-horizon.com</strong>. Nous nous engageons à répondre dans les meilleurs délais et à respecter le travail de chaque photographe.</p>
+                    <p><strong>Cession des retours utilisateurs :</strong> Tout retour, suggestion, idée d'amélioration, recommandation, correction ou proposition transmis par un Utilisateur, testeur ou tout autre contributeur, par quelque canal que ce soit, est cédé à l'Éditeur à titre gratuit, exclusif, irrévocable et définitif dès sa transmission, pour le monde entier et pour toute la durée légale de protection applicable. Cette cession inclut notamment les droits de reproduction, représentation, adaptation, traduction, modification, exploitation, commercialisation et sous-licence, sur tout support et par tout procédé, sans contrepartie ni obligation de mention.</p>
 
                     <h3>ARTICLE 5. DISPONIBILITÉ</h3>
                     <p>L'Application est fournie "en l'état". L'Éditeur ne garantit pas une disponibilité 100%.</p>
+                    <p>L'Application peut dépendre de services, SDK, API, réseaux ou plateformes tiers (notamment stores, fournisseurs cloud, services de paiement, messagerie, analytics, publicité, cartographie ou données externes). L'Éditeur ne garantit ni la disponibilité continue, ni l'exactitude, ni la performance de ces services tiers et ne saurait être tenu responsable des indisponibilités, erreurs, changements, restrictions, suspensions ou dommages résultant de leur fonctionnement.</p>
 
                     <h3>TITRE II : CONDITIONS GÉNÉRALES DE VENTE (CGV)</h3>
 
                     <h3>ARTICLE 6. PRODUITS ET SERVICES PAYANTS</h3>
                     <p>L'Application propose des achats intégrés via les stores : Abonnements "PRO" (renouvelables tacitement) et Consommables (Skins, Crédits).</p>
+                    <p>Les caractéristiques, la durée, les avantages inclus, les éventuelles périodes d'essai et les conditions commerciales applicables à chaque offre sont celles affichées au moment de l'achat sur la fiche produit du Store.</p>
 
                     <h3>ARTICLE 7. PRIX ET MODALITÉS DE PAIEMENT</h3>
                     <p>La transaction est gérée exclusivement par la plateforme du Store (Apple ou Google). L'Éditeur ne collecte aucune donnée bancaire.</p>
+                    <p>Les prix peuvent évoluer à tout moment. Sauf indication contraire imposée par le Store ou la loi, une évolution de prix s'applique à compter du cycle de facturation suivant.</p>
+                    <p>Les conditions de facturation, de prélèvement, de taxe, de devise, de remboursement et d'annulation du Store applicable prévalent en cas de contradiction avec les présentes CGV.</p>
 
                     <h3>ARTICLE 8. DROIT DE RÉTRACTATION (RENONCIATION)</h3>
                     <p>Conformément à l'article L.221-28 du Code de la Consommation, le droit de rétractation ne peut être exercé pour les contrats de fourniture d'un contenu numérique sans support matériel dont l'exécution a commencé.</p>
@@ -1824,6 +1815,9 @@
 
                     <h3>ARTICLE 9. RÉSILIATION DE L'ABONNEMENT</h3>
                     <p>L'Utilisateur doit résilier son abonnement via les réglages de son téléphone (Compte Apple ou Google Play). La suppression de l'Application ou du compte ScanHorizon n'arrête pas l'abonnement facturé par le Store.</p>
+                    <p>La résiliation prend effet à la fin de la période d'abonnement en cours, sauf disposition différente prévue par le Store. Sauf règle impérative ou politique Store contraire, aucun remboursement prorata temporis n'est dû pour une période déjà commencée.</p>
+                    <p>En cas d'échec de paiement, de refus de prélèvement ou de suspension par le Store, les avantages liés à l'abonnement peuvent être suspendus ou interrompus jusqu'à régularisation.</p>
+                    <p>La restauration des achats est possible via les mécanismes prévus par Apple/Google, sous réserve du même compte Store et des règles techniques/commerciales du Store concerné.</p>
 
                     <h3>ARTICLE 10. SUPPRESSION DE COMPTE</h3>
                     <p>En cas de suppression de compte, l'Utilisateur perd définitivement l'accès à ses achats "Consommables" et à son historique, sans recours ni remboursement.</p>
@@ -1831,7 +1825,9 @@
                     <h3>TITRE III : DISPOSITIONS FINALES</h3>
 
                     <h3>ARTICLE 11. MODIFICATION</h3>
-                    <p>En cas de modification substantielle du contrat, l'Utilisateur sera informé au moins 30 jours avant l'entrée en vigueur.</p>
+                    <p>L'Éditeur peut modifier unilatéralement les présentes CGU/CGV et documents contractuels associés (dont Politique de confidentialité et Mentions légales), notamment pour des raisons légales, réglementaires, techniques, de sécurité ou d'évolution du service.</p>
+                    <p>Les modifications sont portées à la connaissance de l'Utilisateur au lancement de l'Application, sans préavis.</p>
+                    <p>Si l'Utilisateur accepte les conditions modifiées, elles s'appliquent immédiatement. En cas de refus, l'Utilisateur ne peut plus utiliser l'Application ni les informations qui y sont proposées et doit cesser tout usage du service.</p>
 
                     <h3>ARTICLE 12. MÉDIATION DE LA CONSOMMATION</h3>
                     <p>Conformément aux articles L.612-1 et suivants du Code de la consommation, en cas de litige non résolu par notre service client, l'Utilisateur peut recourir gratuitement au médiateur de la consommation :</p>
@@ -1844,7 +1840,7 @@
 
                 <div class="lang-en hidden">
                     <p><strong>TERMS OF USE AND SALE</strong></p>
-                    <p>Last update: February 01, 2026</p>
+                    <p>Last update: May 17, 2026</p>
 
                     <h3>PREAMBLE AND ACCEPTANCE</h3>
                     <p>These General Terms (hereinafter the "Contract") govern the use of the ScanHorizon application (hereinafter the "Application") published by SAS SCAN HORIZON (hereinafter the "Publisher").</p>
@@ -1875,17 +1871,22 @@
                     <h3>ARTICLE 4. INTELLECTUAL PROPERTY</h3>
                     <p>The entire ScanHorizon application (Flutter source code, algorithms, design, "Cyberpunk" graphics) is protected by French and international copyright law. Any unauthorized reproduction is strictly prohibited and constitutes infringement.</p>
                     <p>Aircraft photos used in the Application and/or on the website include attribution to the photographer and, where applicable, to the source website. Despite our best efforts, attribution errors may occur. For any claim, correction request, takedown request, or credit update, please contact <strong>support@scan-horizon.com</strong>. We will respond as quickly as possible and we respect the work of every photographer.</p>
+                    <p><strong>Assignment of user feedback:</strong> Any feedback, suggestion, improvement idea, recommendation, correction, or proposal submitted by a User, tester, or any contributor through any channel is assigned to the Publisher free of charge, on an exclusive, irrevocable, and final basis upon submission, worldwide and for the full legal term of protection. This assignment includes, in particular, rights of reproduction, representation, adaptation, translation, modification, exploitation, commercialization, and sublicensing, on any medium and by any process, without compensation and without attribution obligation.</p>
 
                     <h3>ARTICLE 5. AVAILABILITY</h3>
                     <p>The Application is provided "as is". The Publisher does not guarantee 100% availability.</p>
+                    <p>The Application may rely on third-party services, SDKs, APIs, networks, or platforms (including stores, cloud providers, payment services, messaging, analytics, advertising, mapping, or external data providers). The Publisher does not guarantee the continuous availability, accuracy, or performance of such third-party services and shall not be liable for outages, errors, changes, restrictions, suspensions, or damages resulting from their operation.</p>
 
                     <h3>TITLE II: TERMS OF SALE (TOS)</h3>
 
                     <h3>ARTICLE 6. PAID PRODUCTS AND SERVICES</h3>
                     <p>The App offers In-App Purchases via stores: "PRO" Subscriptions (automatically renewable) and Consumables (Skins, Crédits).</p>
+                    <p>The features, duration, included benefits, any trial periods, and commercial terms applicable to each offer are those displayed at the time of purchase on the relevant Store product page.</p>
 
                     <h3>ARTICLE 7. PRICE AND PAYMENT</h3>
                     <p>Transactions are handled exclusively by the Store platform (Apple or Google). The Publisher does not collect any banking data.</p>
+                    <p>Prices may change at any time. Unless otherwise required by the Store or applicable law, a price change applies from the next billing cycle.</p>
+                    <p>The applicable Store terms for billing, charges, taxes, currency, refunds, and cancellation prevail in case of conflict with these Terms of Sale.</p>
 
                     <h3>ARTICLE 8. RIGHT OF WITHDRAWAL (WAIVER)</h3>
                     <p>In accordance with consumer law regarding digital content supplied without a tangible medium:</p>
@@ -1893,14 +1894,19 @@
 
                     <h3>ARTICLE 9. SUBSCRIPTION TERMINATION</h3>
                     <p>The User must cancel their subscription via their phone settings (Apple Account or Google Play). Deleting the App or ScanHorizon account does not stop the subscription charged by the Store.</p>
+                    <p>Cancellation takes effect at the end of the current subscription period, unless the Store provides otherwise. Unless mandatory law or Store policy states otherwise, no pro-rata refund is due for a period already started.</p>
+                    <p>In case of payment failure, charge refusal, or Store suspension, subscription benefits may be suspended or interrupted until regularization.</p>
+                    <p>Purchase restoration is available through Apple/Google mechanisms, subject to the same Store account and to the technical/commercial rules of the relevant Store.</p>
 
                     <h3>ARTICLE 10. ACCOUNT DELETION</h3>
                     <p>In case of account deletion, the User permanently loses access to their "Consumable" purchases and history, with no recourse or refund possible.</p>
 
-                    <h3>TITRE III: FINAL PROVISIONS</h3>
+                    <h3>TITLE III: FINAL PROVISIONS</h3>
 
                     <h3>ARTICLE 11. MODIFICATION</h3>
-                    <p>In case of substantial modification of the contract, the User will be informed at least 30 days before entry into force.</p>
+                    <p>The Publisher may unilaterally amend these Terms of Use/Sale and related contractual documents (including the Privacy Policy and Legal Notice), in particular for legal, regulatory, technical, security, or service-evolution reasons.</p>
+                    <p>Changes are brought to the User's attention when launching the Application, without prior notice.</p>
+                    <p>If the User accepts the amended terms, they apply immediately. If the User refuses, they may no longer use the Application or the information made available through it and must cease all use of the service.</p>
 
                     <h3>ARTICLE 12. MEDIATION</h3>
                     <p>In case of unresolved dispute, the User may have free recourse to the consumer mediator: <strong>SMP</strong>.</p>
@@ -1920,7 +1926,7 @@
             <div class="legal-content">
                 <div class="lang-fr">
                     <p><strong>MENTIONS LÉGALES</strong></p>
-                    <p>En vigueur au 01/02/2026</p>
+                    <p>En vigueur au 17/05/2026</p>
                     <p>Conformément aux dispositions des Articles 6-III et 19 de la Loi n°2004-575 du 21 juin 2004 pour la Confiance dans l'Économie Numérique (LCEN), il est porté à la connaissance des utilisateurs de l'application ScanHorizon les présentes mentions légales.</p>
 
                     <h3>1. ÉDITEUR DE L'APPLICATION</h3>
@@ -1946,6 +1952,8 @@
                         <li><strong>Hébergeur Gestion Abonnements :</strong><br>
                         RevenueCat, Inc.<br>
                         1032 E Brandon Blvd #3003, Brandon, FL 33511, ÉTATS-UNIS</li>
+                        <li><strong>Prestataire emailing transactionnel :</strong><br>
+                        Resend, Inc. (USA)</li>
                     </ul>
 
                     <h3>3. PROPRIÉTÉ INTELLECTUELLE (AVERTISSEMENT)</h3>
@@ -1960,7 +1968,7 @@
 
                 <div class="lang-en hidden">
                     <p><strong>LEGAL NOTICE</strong></p>
-                    <p>Effective Date: February 01, 2026</p>
+                    <p>Effective Date: May 17, 2026</p>
 
                     <h3>1. APP PUBLISHER</h3>
                     <p>The ScanHorizon application is published by <strong>SAS SCAN HORIZON</strong>, a Simplified Joint Stock Company with a capital of 1000 euros.</p>
@@ -1983,6 +1991,8 @@
                         <li><strong>Subscription Management Host:</strong><br>
                         RevenueCat, Inc.<br>
                         1032 E Brandon Blvd #3003, Brandon, FL 33511, USA</li>
+                        <li><strong>Transactional Email Provider:</strong><br>
+                        Resend, Inc. (USA)</li>
                     </ul>
 
                     <h3>3. INTELLECTUAL PROPERTY</h3>
@@ -2042,7 +2052,7 @@
                 <span class="lang-fr">Contact</span><span class="lang-en hidden">Contact Us</span>
             </a>
         </nav>
-        <p class="copyright">SCANHORIZON TERMINAL v1.2.0 — © 2026</p>
+        <p class="copyright">SCANHORIZON TERMINAL v1.3.0 — © 2026</p>
     </footer>
 
     <script>
