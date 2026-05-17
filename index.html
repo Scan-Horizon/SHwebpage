@@ -1183,6 +1183,8 @@
         .footer-links a.danger-link { color: #ff5e85; }
         .footer-links a.danger-link:hover { color: var(--alert-red); text-shadow: 0 0 10px var(--alert-red); }
         .copyright { font-family: monospace; font-size: 0.75rem; color: #666; }
+        
+        .footer-location-notice { font-size: 0.8rem; color: var(--text-dim); margin-top: 1rem; }
 
         .hidden { display: none !important; }
     </style>
@@ -1384,7 +1386,7 @@
             <div class="legal-content">
                 <div class="lang-fr">
                     <p><strong>POLITIQUE DE CONFIDENTIALITÉ ET DE PROTECTION DES DONNÉES</strong></p>
-                    <p>Version : 1.2<br>Date d'entrée en vigueur : 18 mars 2026</p>
+                    <p>Version : 1.3<br>Date d'entrée en vigueur : 17 mai 2026</p>
 
                     <h3>PRÉAMBULE</h3>
                     <p>La présente Politique de Confidentialité vise à informer les Utilisateurs de l'Application mobile ScanHorizon, éditée par SAS SCAN HORIZON, des modalités de collecte, de traitement et de protection de leurs données personnelles. L'Éditeur s'engage à respecter le Règlement (UE) 2016/679 (RGPD) ainsi que la Loi Informatique et Libertés du 6 janvier 1978 modifiée.</p>
@@ -1524,13 +1526,14 @@
                         <li><strong>Resend (USA) :</strong> Envoi d'emails transactionnels liés au compte (ex. confirmation de suppression).</li>
                         <li><strong>Google AdMob (USA) :</strong> Régie publicitaire (uniquement si vous avez accepté le traçage).</li>
                         <li><strong>Sentry (UE/USA selon configuration) :</strong> Supervision technique, journalisation des erreurs et rapports de crash (uniquement si vous avez donné votre consentement).</li>
+                        <li><strong>Google Forms (USA) :</strong> Hébergement et traitement des demandes de suppression de compte transmises via formulaire de demande de suppression de données.</li>
                     </ul>
 
                     <h3>ARTICLE 5. TRANSFERTS HORS UE</h3>
                     <p>Certaines données peuvent être traitées en dehors de l'Union européenne, notamment via Google (Firebase Auth, Firestore, Analytics, Crashlytics, FCM, Remote Config, AdMob, Google Sign-In), RevenueCat, Sentry et, selon les flux de données aéronautiques, PlaneFinder (Royaume-Uni). Ces transferts sont encadrés par des mécanismes appropriés (Clauses Contractuelles Types de la Commission Européenne, et/ou adhésion au Data Privacy Framework lorsque applicable) afin d'assurer un niveau de protection adéquat.</p>
 
                     <h3>ARTICLE 6. COOKIES ET SDK MOBILES</h3>
-                    <p>L'Application n'utilise pas de "cookies" web classiques, mais des SDK (Software Development Kits) et des identifiants mobiles. L'utilisation des traceurs publicitaires et analytiques est soumise à votre consentement préalable, recueilli lors du premier lancement via notre plateforme de gestion des consentements (CMP). Vous pouvez modifier ce choix à tout moment dans les paramètres de l'Application ("Gérer mes choix").</p>
+                    <p>L'Application n'utilise pas de "cookies" web classiques, mais des SDK (Software Development Kits) et des identifiants mobiles. L'utilisation des traceurs publicitaires et analytiques est soumise à votre consentement préalable, recueilli lors du premier lancement via notre plateforme de gestion des consentements (CMP) <strong>intégrée à l'Application mobile</strong>. Cette CMP n'est pas disponible sur le site web. Vous pouvez modifier ce choix à tout moment dans les paramètres de l'Application ("Gérer mes choix").</p>
                     <p>Si vous acceptez les traceurs via la CMP, nous pouvons également stocker une <strong>tranche d'âge</strong> (ex. 15-17, 18-24, 25-34, etc.) à des fins de personnalisation, d'analyse statistique et d'adaptation des contenus. Nous ne stockons pas votre date de naissance complète dans ce cadre. En l'absence de consentement, cette donnée n'est pas collectée via les traceurs publicitaires ou de mesure d'audience.</p>
 
                     <h3>ARTICLE 7. DURÉE DE CONSERVATION</h3>
@@ -1538,7 +1541,7 @@
                         <li><strong>Données de compte et d'usage :</strong> Conservées pendant la durée d'activité du compte, puis supprimées ou anonymisées selon la politique d'effacement applicable.</li>
                         <li><strong>Données de consentement :</strong> Conservées à des fins de preuve de conformité pendant la durée nécessaire au respect de nos obligations légales.</li>
                         <li><strong>Données de sécurité et anti-abus :</strong> Conservées pour une durée limitée et proportionnée à la protection du service, puis supprimées ou anonymisées.</li>
-                        <li><strong>Données analytiques, publicitaires et de mesure d'erreurs :</strong> Conservées selon vos choix de consentement, les paramétrages des plateformes concernées et les durées légales applicables.</li>
+                        <li><strong>Données analytiques, publicitaires et de mesure d'erreurs :</strong> Firebase Analytics conservées 14 mois par défaut (selon configuration Google). Autres traceurs conservés selon vos choix de consentement et paramétrages des plateformes concernées.</li>
                         <li><strong>Données soumises à obligations légales spécifiques :</strong> Conservées pendant la durée prévue par la réglementation applicable.</li>
                     </ul>
 
@@ -1546,7 +1549,7 @@
                     <p>Nous mettons en œuvre des mesures techniques et organisationnelles adaptées (chiffrement en transit, contrôles d'accès, mécanismes anti-abus, journalisation de sécurité, supervision). Certaines mesures automatisées de protection (ex. limitation temporaire de certaines actions) peuvent être appliquées en cas d'anomalie ou d'abus détecté ; elles sont proportionnées et peuvent faire l'objet d'une demande de réexamen via contact@scan-horizon.com. Conformément à l'article 33 du RGPD, en cas de violation de données présentant un risque pour vos droits, l'Éditeur s'engage à notifier la CNIL dans les 72 heures et, si nécessaire, à informer les utilisateurs concernés.</p>
 
                     <h3>ARTICLE 9. VOS DROITS ET SUPPRESSION DE COMPTE</h3>
-                    <p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de portabilité, de limitation du traitement et d'opposition. Ces droits sont exercés dans un délai maximum de 30 jours à compter de la réception de votre demande. Pour certaines demandes, une vérification raisonnable d'identité peut être requise.</p>
+                    <p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de portabilité, de limitation du traitement et d'opposition. Vous recevrez une réponse à votre demande dans un délai maximum de 30 jours à compter de la réception. Pour certaines demandes, une vérification raisonnable d'identité peut être requise.</p>
                     <p>Lorsque le traitement repose sur votre consentement (ex. traceurs publicitaires / analytics / crash reporting), vous pouvez retirer ce consentement à tout moment, sans effet rétroactif sur les traitements déjà effectués avant ce retrait.</p>
                     <p><strong>Comment supprimer vos données ?</strong></p>
                     <ul>
@@ -1554,7 +1557,7 @@
                         <li><strong>Sur le Web (sans l'app) :</strong> Via notre formulaire de suppression dédié accessible sur cette page.</li>
                         <li><strong>Par Email :</strong> En écrivant à contact@scan-horizon.com.</li>
                     </ul>
-                    <p>Vous avez également le droit d'introduire une réclamation auprès de la CNIL (www.cnil.fr).</p>
+                    <p>Vous avez également le droit d'introduire une réclamation auprès de la CNIL : <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a></p>
 
                     <h3>ARTICLE 10. DROIT CALIFORNIEN (CCPA)</h3>
                     <p>Pour nos utilisateurs résidant en Californie : à la date de dernière mise à jour, nous ne vendons pas vos données personnelles au sens applicable du CCPA. Si cette situation évolue, nous appliquerons les mécanismes requis (information, options d'opposition et, le cas échéant, consentement) conformément au droit applicable. Vous bénéficiez des mêmes droits d'accès et de suppression que ceux décrits à l'Article 9.</p>
@@ -1563,7 +1566,8 @@
                     <p>Pour toute question relative à cette politique, contactez notre Délégué à la Protection des Données (DPO) à :<br>
                     SAS SCAN HORIZON<br>
                     10 impasse du Pegan, 01210 Ferney Voltaire, France<br>
-                    Email : contact@scan-horizon.com</p>
+                    Email : contact@scan-horizon.com<br><br>
+                    Vous pouvez également introduire une réclamation auprès de la CNIL : <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a></p>
                 </div>
 
                 <div class="lang-en hidden">
@@ -1708,13 +1712,14 @@
                         <li><strong>Resend (USA):</strong> Transactional emails related to account lifecycle (e.g. deletion confirmation).</li>
                         <li><strong>Google AdMob (USA):</strong> Advertising network (only if you accepted tracking).</li>
                         <li><strong>Sentry (EU/USA depending on configuration):</strong> Technical monitoring, error logging, and crash reporting (only if you provided your consent).</li>
+                        <li><strong>Google Forms (USA):</strong> Hosting and processing of account deletion requests submitted via our data deletion request form.</li>
                     </ul>
 
                     <h3>ARTICLE 5. TRANSFERS OUTSIDE THE EU</h3>
                     <p>Some data may be processed outside the European Union, notably through Google (Firebase Auth, Firestore, Analytics, Crashlytics, FCM, Remote Config, AdMob, Google Sign-In), RevenueCat, Sentry and, depending on aeronautical data flows, PlaneFinder (United Kingdom). These transfers are governed by appropriate safeguards (European Commission Standard Contractual Clauses and/or Data Privacy Framework participation where applicable) to ensure an adequate level of protection.</p>
 
                     <h3>ARTICLE 6. COOKIES AND MOBILE SDKs</h3>
-                    <p>The App does not use classic web "cookies" but SDKs (Software Development Kits) and mobile identifiers. The use of advertising and analytical trackers is subject to your prior consent, collected at first launch via our Consent Management Platform (CMP). You can modify this choice at any time in App settings ("Manage my choices").</p>
+                    <p>The App does not use classic web "cookies" but SDKs (Software Development Kits) and mobile identifiers. The use of advertising and analytical trackers is subject to your prior consent, collected at first launch via our Consent Management Platform (CMP) <strong>integrated into the mobile application</strong>. This CMP is not available on the website. You can modify this choice at any time in App settings ("Manage my choices").</p>
                     <p>If you accept trackers via the CMP, we may also store an <strong>age bracket</strong> (e.g. 15-17, 18-24, 25-34, etc.) for personalization, audience measurement, and content adaptation. We do not store your full date of birth for this purpose. Without consent, this data is not collected through advertising or analytics trackers.</p>
 
                     <h3>ARTICLE 7. RETENTION PERIOD</h3>
@@ -1722,7 +1727,7 @@
                         <li><strong>Account and usage data:</strong> Retained for the duration of account activity, then deleted or anonymized according to the applicable deletion policy.</li>
                         <li><strong>Consent records:</strong> Retained as compliance evidence for the period required by applicable legal obligations.</li>
                         <li><strong>Security and anti-abuse data:</strong> Retained for a limited period proportionate to service protection, then deleted or anonymized.</li>
-                        <li><strong>Analytics, advertising and error-monitoring data:</strong> Retained according to your consent choices, platform settings, and applicable legal requirements.</li>
+                        <li><strong>Analytics, advertising and error-monitoring data:</strong> Firebase Analytics retained for 14 months by default (per Google configuration). Other trackers retained according to your consent choices and platform settings.</li>
                         <li><strong>Data subject to specific legal obligations:</strong> Retained for the duration required by applicable regulation.</li>
                     </ul>
 
@@ -1730,7 +1735,7 @@
                     <p>We implement appropriate technical and organizational security measures (encryption in transit, access controls, anti-abuse mechanisms, security logging, monitoring). Some automated protective measures (e.g. temporary limitation of certain actions) may be applied in case of detected anomaly or abuse; these measures are proportionate and may be reviewed upon request at contact@scan-horizon.com. In accordance with GDPR Article 33, in case of a data breach presenting a risk to your rights, the Publisher commits to notifying the CNIL within 72 hours and, if necessary, informing affected users.</p>
 
                     <h3>ARTICLE 9. YOUR RIGHTS AND ACCOUNT DELETION</h3>
-                    <p>Under the GDPR, you have the right to access, rectify, erase, port, restrict processing of, and object to the processing of your personal data. These rights are exercised within a maximum of 30 days from the receipt of your request. For certain requests, reasonable identity verification may be required.</p>
+                    <p>Under the GDPR, you have the right to access, rectify, erase, port, restrict processing of, and object to the processing of your personal data. You will receive a response to your request within a maximum of 30 days from receipt. For certain requests, reasonable identity verification may be required.</p>
                     <p>When processing is based on your consent (e.g. advertising / analytics / crash reporting trackers), you may withdraw consent at any time, without affecting processing already carried out before withdrawal.</p>
                     <p><strong>How to delete your data?</strong></p>
                     <ul>
@@ -1738,7 +1743,7 @@
                         <li><strong>On the Web (no app):</strong> Via our dedicated deletion form accessible on this page.</li>
                         <li><strong>By Email:</strong> Write to contact@scan-horizon.com.</li>
                     </ul>
-                    <p>You also have the right to lodge a complaint with the CNIL (www.cnil.fr) or with your local supervisory authority where applicable.</p>
+                    <p>You also have the right to lodge a complaint with the CNIL: <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a> or with your local supervisory authority where applicable.</p>
 
                     <h3>ARTICLE 10. CALIFORNIA LAW (CCPA)</h3>
                     <p>For users residing in California: as of the latest update, we do not sell personal data as defined by applicable CCPA rules. If this changes, we will implement required mechanisms (notice, opt-out choices, and where applicable consent) in accordance with applicable law. You benefit from the same rights of access and deletion described in Article 9.</p>
@@ -1976,7 +1981,7 @@
                         <li><strong>Headquarters:</strong> 10 impasse du Pegan, 01210 Ferney-Voltaire, France.</li>
                         <li><strong>Registration:</strong> 101 177 517 R.C.S. Bourg-en-Bresse.</li>
                         <li><strong>EUID:</strong> FR0101.101177517.</li>
-                        <li><strong>VAT Number:</strong> <strong>FR 49 101 177 517</strong>.</li>
+                        <li><strong>VAT Number:</strong> <strong>FR 66 101 177 517</strong>.</li>
                         <li><strong>Publication Director:</strong> Paulin BANCKAERT</li>
                         <li><strong>Contact:</strong> contact@scan-horizon.com</li>
                     </ul>
@@ -2053,6 +2058,7 @@
             </a>
         </nav>
         <p class="copyright">SCANHORIZON TERMINAL v1.3.0 — © 2026</p>
+        <p class="footer-location-notice"><span class="lang-fr">⚠️ Application destinée à la France</span><span class="lang-en hidden">⚠️ Application restricted to France</span></p>
     </footer>
 
     <script>
