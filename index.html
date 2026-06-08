@@ -11,18 +11,20 @@
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="theme-color" content="#050a15">
     <link rel="canonical" href="https://scan-horizon.com/">
-    <link rel="alternate" hreflang="fr" href="https://scan-horizon.com/">
-    <link rel="alternate" hreflang="en" href="https://scan-horizon.com/">
     <link rel="alternate" hreflang="x-default" href="https://scan-horizon.com/">
+    <meta name="apple-itunes-app" content="app-id=6761936970">
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://scan-horizon.com/">
     <meta property="og:title" content="ScanHorizon | Augmented Reality Flight Tracking & Aircraft Card Collection">
     <meta property="og:description" content="Point your phone at aircraft to identify planes in the sky using geolocation, compass direction, and live ADS-B data. Unlock aircraft cards and grow your virtual hangar.">
     <meta property="og:image" content="https://scan-horizon.com/Fav2.jpg">
+    <meta property="og:image:alt" content="ScanHorizon app visual">
     <meta property="og:site_name" content="ScanHorizon">
     <meta property="og:locale" content="fr_FR">
     <meta property="og:locale:alternate" content="en_US">
+    <meta property="al:ios:app_store_id" content="6761936970">
+    <meta property="al:android:package" content="com.app.flighttracktest">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="ScanHorizon | Augmented Reality Flight Tracking App">
@@ -71,13 +73,8 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            
-            /* Intégration de l'image de fond fournie */
-            background-image: url('couleur 1.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
+            position: relative;
+            isolation: isolate;
         }
 
         html,
@@ -105,8 +102,34 @@
             content: "";
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(5, 10, 21, 0.85); /* 85% d'opacité noire/bleue */
-            z-index: -1;
+            z-index: -2;
             backdrop-filter: blur(2px); /* Léger flou pour le style */
+        }
+
+        /* Image décorative semi-transparente, rognée sur la gauche */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: min(70vw, 760px);
+            height: 100vh;
+            background-image: url('A380.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: left center;
+            opacity: 0.28;
+            transform: translateX(-50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            body::after {
+                width: 85vw;
+                opacity: 0.24;
+                transform: translateX(-58%);
+            }
         }
 
         /* --- Header --- */
@@ -1144,48 +1167,52 @@
         .hidden { display: none !important; }
     </style>
     
-        <script type="application/ld+json">
-        {
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            "name": "ScanHorizon",
-            "url": "https://scan-horizon.com/",
-            "operatingSystem": "Android",
-            "applicationCategory": "GameApplication, UtilitiesApplication",
-            "applicationSubCategory": "Flight Tracking, Augmented Reality, Card Collecting Game",
-            "offers": {
-                "@type": "Offer",
-                "price": "0",
-                "priceCurrency": "USD"
-            },
-            "description": "ScanHorizon revolutionizes flight tracking with a gamified Augmented Reality experience. Point your smartphone at any aircraft in the sky: the app cross-references your location and orientation with live ADS-B data to identify the plane. Unlock unique aircraft cards and collect them in your personal virtual hangar.",
-            "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "5.0",
-                "reviewCount": "5",
-                "bestRating": "5",
-                "worstRating": "1",
-                "description": "Initial 5-star feedback collected from the iOS App Store platform."
-            },
-            "featureList": [
-                "Real-time flight tracking via live ADS-B and PlaneFinder data stream",
-                "Directional pointing-based aircraft identification (Passive Augmented Reality)",
-                "Aviation card collecting gamification system",
-                "Personalized virtual hangar management"
-            ],
-            "keywords": "augmented reality flight tracking, identify planes in the sky, aircraft card collection, virtual hangar app, live ADS-B tracker, ScanHorizon, innovative aviation game",
-            "publisher": {
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
                 "@type": "Organization",
+                "@id": "https://scan-horizon.com/#organization",
                 "name": "SAS SCAN HORIZON",
-                "url": "https://scan-horizon.com/"
+                "url": "https://scan-horizon.com/",
+                "email": "contact@scan-horizon.com"
             },
-            "author": {
-                "@type": "Organization",
-                "name": "SAS SCAN HORIZON",
-                "url": "https://scan-horizon.com/"
+            {
+                "@type": "WebSite",
+                "@id": "https://scan-horizon.com/#website",
+                "url": "https://scan-horizon.com/",
+                "name": "ScanHorizon",
+                "publisher": {
+                    "@id": "https://scan-horizon.com/#organization"
+                }
+            },
+            {
+                "@type": "SoftwareApplication",
+                "@id": "https://scan-horizon.com/#application",
+                "name": "ScanHorizon",
+                "url": "https://scan-horizon.com/",
+                "description": "ScanHorizon revolutionizes flight tracking with a gamified augmented reality experience. Point your smartphone at aircraft in the sky to identify the plane with live ADS-B data, then unlock aircraft cards and build your virtual hangar.",
+                "applicationCategory": "UtilitiesApplication",
+                "operatingSystem": "Android, iOS",
+                "isAccessibleForFree": true,
+                "featureList": [
+                    "Real-time flight tracking via live ADS-B and PlaneFinder data stream",
+                    "Directional pointing-based aircraft identification",
+                    "Aviation card collecting gameplay",
+                    "Personalized virtual hangar"
+                ],
+                "sameAs": [
+                    "https://apps.apple.com/fr/app/scanhorizon/id6761936970",
+                    "https://play.google.com/store/apps/details?id=com.app.flighttracktest"
+                ],
+                "publisher": {
+                    "@id": "https://scan-horizon.com/#organization"
+                }
             }
-        }
-        </script>
+        ]
+    }
+    </script>
 </head>
 <body>
     <header>
