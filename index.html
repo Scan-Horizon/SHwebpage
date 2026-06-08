@@ -124,11 +124,33 @@
             pointer-events: none;
         }
 
+        .plane-bg-right {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: min(68vw, 740px);
+            height: 100vh;
+            background-image: url('planes_AS50.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: right center;
+            opacity: 0.26;
+            transform: translateX(50%) scaleX(-1);
+            z-index: -1;
+            pointer-events: none;
+        }
+
         @media (max-width: 768px) {
             body::after {
                 width: 85vw;
                 opacity: 0.24;
                 transform: translateX(-58%);
+            }
+
+            .plane-bg-right {
+                width: 88vw;
+                opacity: 0.2;
+                transform: translateX(56%) scaleX(-1);
             }
         }
 
@@ -1215,6 +1237,7 @@
     </script>
 </head>
 <body>
+    <div class="plane-bg-right" aria-hidden="true"></div>
     <header>
         <div class="logo-container" onclick="navigate('home')" title="Retour Accueil">
             <img src="logo text hor. couleur 1.png" alt="ScanHorizon Logo" class="logo-img logo-desktop">
