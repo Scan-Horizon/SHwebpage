@@ -312,6 +312,35 @@
             flex-wrap: wrap;
         }
 
+        .store-rating {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            margin-top: 0.75rem;
+            padding: 0.34rem 0.62rem;
+            border-radius: 999px;
+            border: 1px solid rgba(186, 219, 255, 0.35);
+            background: rgba(7, 22, 40, 0.52);
+            color: #eaf5ff;
+            width: fit-content;
+        }
+
+        .store-rating-score {
+            font-size: 0.95rem;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: 0.02em;
+        }
+
+        .store-rating-stars {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.06rem;
+            color: #ffd96a;
+            font-size: 0.9rem;
+            line-height: 1;
+        }
+
         .store-badge {
             display: inline-flex;
             align-items: center;
@@ -535,10 +564,27 @@
             display: block;
             filter: drop-shadow(0 18px 36px rgba(0, 0, 0, 0.38));
             pointer-events: none;
+            opacity: 1;
+            transition: opacity 0.22s ease;
         }
 
         .hero-rotating-logo.is-card-pop {
             animation: cardPopIn 0.34s cubic-bezier(0.2, 0.9, 0.2, 1);
+        }
+
+        .hero-rotating-logo.is-card-fadeout {
+            opacity: 0.78;
+        }
+
+        .hero-scan-status {
+            margin-top: 0.55rem;
+            color: #b9d8f6;
+            font-family: monospace;
+            font-size: 0.9rem;
+            letter-spacing: 0.08em;
+            text-transform: lowercase;
+            text-align: center;
+            min-height: 1.2em;
         }
 
         @keyframes cardPopIn {
@@ -575,8 +621,9 @@
                 justify-content: center;
             }
 
-            .reviews-head {
-                align-items: center;
+            .store-rating {
+                margin-left: auto;
+                margin-right: auto;
             }
         }
 
@@ -591,117 +638,6 @@
             border: 1px solid rgba(0, 210, 255, 0.24);
             background: rgba(7, 21, 39, 0.72);
             backdrop-filter: blur(8px);
-        }
-
-        .reviews-section {
-            margin-top: 3.6rem;
-            padding: 1.3rem;
-            border-radius: 18px;
-            border: 1px solid rgba(188, 218, 255, 0.22);
-            background: linear-gradient(180deg, rgba(8, 19, 34, 0.9) 0%, rgba(6, 14, 27, 0.86) 100%);
-            box-shadow: 0 14px 28px rgba(0, 0, 0, 0.22);
-            backdrop-filter: blur(10px);
-        }
-
-        .reviews-head {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: flex-end;
-            gap: 0.85rem;
-            margin-bottom: 0.9rem;
-        }
-
-        .reviews-rating-card {
-            display: flex;
-            align-items: center;
-            gap: 0.55rem;
-            padding: 0;
-            border: 0;
-            background: transparent;
-            box-shadow: none;
-            flex-wrap: wrap;
-        }
-
-        .reviews-rating-label {
-            display: block;
-            margin-bottom: 0;
-            color: #b5d8ff;
-            letter-spacing: 0.9px;
-            text-transform: uppercase;
-            font-family: monospace;
-            font-size: 0.74rem;
-        }
-
-        .reviews-stars {
-            display: flex;
-            gap: 0.1rem;
-            margin-bottom: 0;
-            color: #ffd96a;
-            font-size: 1rem;
-            line-height: 1;
-            text-shadow: none;
-        }
-
-        .reviews-score {
-            display: block;
-            font-size: clamp(1.1rem, 2.3vw, 1.35rem);
-            font-weight: 700;
-            line-height: 1;
-            color: #ffffff;
-            margin-bottom: 0;
-        }
-
-        .reviews-meta {
-            color: #b6cae1;
-            line-height: 1.45;
-            font-size: 0.84rem;
-        }
-
-        .reviews-intro h2 {
-            font-size: clamp(1.1rem, 2.4vw, 1.5rem);
-            margin-bottom: 0;
-        }
-
-        .reviews-intro p {
-            margin-top: 0.45rem;
-            color: #bfd6ee;
-            line-height: 1.45;
-            max-width: 520px;
-            font-size: 0.9rem;
-        }
-
-        .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(240px, 1fr));
-            gap: 0.7rem;
-        }
-
-        .review-quote {
-            margin: 0;
-            padding: 0.8rem 0.9rem;
-            border-radius: 12px;
-            border: 1px solid rgba(142, 207, 255, 0.18);
-            background: rgba(7, 22, 40, 0.6);
-        }
-
-        .review-quote p {
-            margin: 0;
-            color: #ecf6ff;
-            line-height: 1.45;
-            font-size: 0.92rem;
-        }
-
-        .review-quote footer {
-            margin-top: 0.45rem;
-            padding: 0;
-            border: 0;
-            background: transparent;
-            backdrop-filter: none;
-            text-align: left;
-            color: #9dc8ef;
-            font-family: monospace;
-            font-size: 0.74rem;
         }
 
         .mechanics-title {
@@ -989,24 +925,6 @@
                 padding: 1.1rem;
             }
 
-            .reviews-section {
-                margin-top: 2.4rem;
-                padding: 1.1rem;
-            }
-
-            .reviews-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .reviews-stars {
-                justify-content: center;
-            }
-
-            .reviews-rating-card,
-            .reviews-intro {
-                text-align: center;
-            }
-
             .mechanics-grid {
                 grid-template-columns: 1fr;
             }
@@ -1287,7 +1205,7 @@
                 <section class="hero">
                     <div class="hero-copy">
                         <h1>Scanne le ciel,<br>capture chaque avion.</h1>
-                        <p>Avec ScanHorizon, tu pointes ton smartphone vers un avion réel, tu l'identifies grâce aux données ADS-B en direct, puis tu ajoutes sa carte à ta collection dans ton hangar virtuel.</p>
+                        <p>Avec ScanHorizon, tu pointes ton smartphone vers un avion réel, tu le scannes, puis tu ajoutes sa carte à ta collection dans ton hangar virtuel.</p>
                         <div class="live-stats" aria-label="Statistiques en direct">
                             <article class="live-stat-card is-loading">
                                 <div class="live-stat-head">
@@ -1321,9 +1239,20 @@
                                 </span>
                             </a>
                         </div>
+                        <div class="store-rating" aria-label="Note moyenne 5.0 sur 5">
+                            <span class="store-rating-score">5.0</span>
+                            <span class="store-rating-stars" aria-hidden="true">
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                            </span>
+                        </div>
                     </div>
                     <div class="radar-scene" aria-hidden="true">
                         <img class="hero-rotating-logo" src="loading.gif" alt="Logo ScanHorizon">
+                        <p class="hero-scan-status" aria-live="polite">scanning...</p>
                     </div>
                 </section>
 
@@ -1340,47 +1269,6 @@
                     </div>
                 </section>
 
-                <section class="mechanics-section" aria-label="Mécaniques principales ScanHorizon">
-                    <h2 class="mechanics-title">Comment ScanHorizon fonctionne</h2>
-                    <p class="mechanics-intro">L'application croise ta position, l'orientation de ton téléphone et les données ADS-B en temps réel pour identifier les avions autour de toi.</p>
-                    <div class="mechanics-grid">
-                        <article class="mechanics-item"><strong>Identification intuitive :</strong> tu vises simplement l'avion avec ton téléphone pour lancer la recherche.</article>
-                        <article class="mechanics-item"><strong>Données ADS-B en direct :</strong> l'app compare GPS, boussole et flux PlaneFinder pour trouver l'aéronef le plus probable.</article>
-                        <article class="mechanics-item"><strong>Collection de cartes :</strong> chaque avion reconnu débloque une carte unique à conserver.</article>
-                        <article class="mechanics-item"><strong>Progression :</strong> suis ton historique, chasse les raretés et fais grandir ton hangar au fil des sessions.</article>
-                    </div>
-                </section>
-
-                <section class="reviews-section" aria-label="Témoignages et avis App Store">
-                    <div class="reviews-head">
-                        <div class="reviews-rating-card">
-                            <span class="reviews-rating-label">Premiers avis iOS</span>
-                            <div class="reviews-stars" aria-label="5 étoiles sur 5">
-                                <span aria-hidden="true">&#9733;</span>
-                                <span aria-hidden="true">&#9733;</span>
-                                <span aria-hidden="true">&#9733;</span>
-                                <span aria-hidden="true">&#9733;</span>
-                                <span aria-hidden="true">&#9733;</span>
-                            </div>
-                            <strong class="reviews-score">5,0/5 sur l'App Store</strong>
-                            <p class="reviews-meta">5 avis</p>
-                        </div>
-                        <div class="reviews-intro">
-                            <h2>Avis utilisateurs</h2>
-                            <p>Simple, immersif, efficace.</p>
-                        </div>
-                    </div>
-                    <div class="reviews-grid">
-                        <blockquote class="review-quote">
-                            <p>"Application elegante et immersive."</p>
-                            <footer>App Store review summary, 31 mai, ENES INC.</footer>
-                        </blockquote>
-                        <blockquote class="review-quote">
-                            <p>"Ludique, claire, tres agreable a utiliser."</p>
-                            <footer>App Store review summary, 30 mai, ibdo99</footer>
-                        </blockquote>
-                    </div>
-                </section>
             </div>
 
             <div class="lang-en hidden">
@@ -1400,7 +1288,6 @@
                             </article>
 
                         </div>
-                        <span class="beta-link">Beta access</span>
                         <div class="store-buttons">
                             <a class="store-badge store-badge-ios" href="https://apps.apple.com/fr/app/scanhorizon/id6761936970" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
                                 <span class="store-badge-logo" aria-hidden="true">
@@ -1421,9 +1308,20 @@
                                 </span>
                             </a>
                         </div>
+                        <div class="store-rating" aria-label="Average rating 5.0 out of 5">
+                            <span class="store-rating-score">5.0</span>
+                            <span class="store-rating-stars" aria-hidden="true">
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                            </span>
+                        </div>
                     </div>
                     <div class="radar-scene" aria-hidden="true">
                         <img class="hero-rotating-logo" src="loading.gif" alt="ScanHorizon logo">
+                        <p class="hero-scan-status" aria-live="polite">scanning...</p>
                     </div>
                 </section>
 
@@ -1440,47 +1338,6 @@
                     </div>
                 </section>
 
-                <section class="mechanics-section" aria-label="ScanHorizon core mechanics">
-                    <h2 class="mechanics-title">How ScanHorizon works</h2>
-                    <p class="mechanics-intro">The app combines your location, phone direction, and real-time ADS-B data to identify aircraft around you.</p>
-                    <div class="mechanics-grid">
-                        <article class="mechanics-item"><strong>Simple targeting:</strong> point your phone at an aircraft to start identification.</article>
-                        <article class="mechanics-item"><strong>Live ADS-B matching:</strong> ScanHorizon compares GPS, heading, and PlaneFinder streams to find the best match.</article>
-                        <article class="mechanics-item"><strong>Card collection:</strong> each confirmed aircraft unlocks a unique card.</article>
-                        <article class="mechanics-item"><strong>Progression:</strong> track your history, chase rarities, and expand your hangar over time.</article>
-                    </div>
-                </section>
-
-                <section class="reviews-section" aria-label="Testimonials and App Store reviews">
-                    <div class="reviews-head">
-                        <div class="reviews-rating-card">
-                            <span class="reviews-rating-label">Early iOS reviews</span>
-                            <div class="reviews-stars" aria-label="5 out of 5 stars">
-                                <span aria-hidden="true">&#9733;</span>
-                                <span aria-hidden="true">&#9733;</span>
-                                <span aria-hidden="true">&#9733;</span>
-                                <span aria-hidden="true">&#9733;</span>
-                                <span aria-hidden="true">&#9733;</span>
-                            </div>
-                            <strong class="reviews-score">5.0/5 on the App Store</strong>
-                            <p class="reviews-meta">5 reviews</p>
-                        </div>
-                        <div class="reviews-intro">
-                            <h2>User reviews</h2>
-                            <p>Clean, immersive, straight to the point.</p>
-                        </div>
-                    </div>
-                    <div class="reviews-grid">
-                        <blockquote class="review-quote">
-                            <p>"Elegant and immersive."</p>
-                            <footer>App Store review summary, May 31, ENES INC.</footer>
-                        </blockquote>
-                        <blockquote class="review-quote">
-                            <p>"Playful, clear, and very enjoyable."</p>
-                            <footer>App Store review summary, May 30, ibdo99</footer>
-                        </blockquote>
-                    </div>
-                </section>
             </div>
         </div>
 
@@ -2651,19 +2508,31 @@
 
             const gifPath = 'loading.gif';
             const cardSequence = ['common.png', 'frequent.png', 'rare.png', 'epic.png', 'legendary.png'];
-            const gifLoopDurationMs = 3200;
+            const gifLoopDurationMs = 3800;
             const cardDisplayDurationMs = 3000;
+            const cardFadeOutMs = 220;
+
+            function setStatusText(image, text) {
+                const statusElement = image.parentElement ? image.parentElement.querySelector('.hero-scan-status') : null;
+                if (statusElement) {
+                    statusElement.textContent = text;
+                }
+            }
 
             function restartGif(image) {
                 image.classList.remove('is-card-pop');
+                image.classList.remove('is-card-fadeout');
                 image.src = `${gifPath}?v=${Date.now()}`;
+                setStatusText(image, 'scanning...');
             }
 
             function showCardWithPop(image, cardPath) {
                 image.src = cardPath;
                 image.classList.remove('is-card-pop');
+                image.classList.remove('is-card-fadeout');
                 void image.offsetWidth;
                 image.classList.add('is-card-pop');
+                setStatusText(image, 'plane found !');
             }
 
             heroImages.forEach((image) => {
@@ -2676,7 +2545,10 @@
                         showCardWithPop(image, cardSequence[cardIndex]);
                         cardIndex = (cardIndex + 1) % cardSequence.length;
 
-                        setTimeout(runCycle, cardDisplayDurationMs);
+                        setTimeout(() => {
+                            image.classList.add('is-card-fadeout');
+                            setTimeout(runCycle, cardFadeOutMs);
+                        }, cardDisplayDurationMs);
                     }, gifLoopDurationMs);
                 }
 
