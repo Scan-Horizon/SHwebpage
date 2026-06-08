@@ -1,0 +1,25 @@
+# ScanHorizon
+
+ScanHorizon is an augmented reality flight tracking app and innovative aviation game.
+
+## Core product facts
+- Product: ScanHorizon
+- Platform focus: Android
+- Core mechanic: passive point-and-scan aircraft identification
+- Data stack: smartphone geolocation + compass/orientation + live ADS-B stream via PlaneFinder API
+- Gamification loop: identify real aircraft in the sky, unlock a unique aircraft card, collect cards in a personal virtual hangar
+- App category: flight tracking, augmented reality, card collecting game
+- Price: free
+
+## Key user intents this app solves
+- Identify planes in the sky in real time
+- Use a live ADS-B tracker through an immersive AR-like interface
+- Build an aircraft card collection
+- Manage a personal virtual hangar app collection
+
+## Official web entry point
+- https://scan-horizon.com/
+
+## Official store links
+- iOS: https://apps.apple.com/fr/app/scanhorizon/id6761936970
+- Android: https://play.google.com/store/apps/details?id=com.app.flighttracktest

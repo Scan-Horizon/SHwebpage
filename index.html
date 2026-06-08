@@ -4,26 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     
-    <meta name="description" content="Scan Horizon - Identification aérienne par réalité augmentée. L'outil ultime pour décoder le trafic aérien en temps réel. Accès Alpha 2026.">
-    <meta name="keywords" content="radar avion, identification avion, réalité augmentée, spotting, aviation, scan horizon, trafic aérien">
+    <meta name="description" content="ScanHorizon is an augmented reality flight tracking app and innovative aviation game. Identify planes in the sky with live ADS-B tracker data, unlock aircraft cards, and build your virtual hangar app collection.">
+    <meta name="keywords" content="augmented reality flight tracking, identify planes in the sky, aircraft card collection, virtual hangar app, live ADS-B tracker, ScanHorizon, innovative aviation game, PlaneFinder API, point and scan aviation">
     <meta name="author" content="SAS SCAN HORIZON">
     <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="theme-color" content="#050a15">
+    <link rel="canonical" href="https://scan-horizon.com/">
+    <link rel="alternate" hreflang="fr" href="https://scan-horizon.com/">
+    <link rel="alternate" hreflang="en" href="https://scan-horizon.com/">
+    <link rel="alternate" hreflang="x-default" href="https://scan-horizon.com/">
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://scan-horizon.com/">
-    <meta property="og:title" content="ScanHorizon | Explorez l'Invisible">
-    <meta property="og:description" content="Le premier scanner aéronautique en réalité augmentée. Rejoignez le protocole Alpha.">
-    <meta property="og:image" content="couleur 1.jpg">
+    <meta property="og:title" content="ScanHorizon | Augmented Reality Flight Tracking & Aircraft Card Collection">
+    <meta property="og:description" content="Point your phone at aircraft to identify planes in the sky using geolocation, compass direction, and live ADS-B data. Unlock aircraft cards and grow your virtual hangar.">
+    <meta property="og:image" content="https://scan-horizon.com/Fav2.jpg">
+    <meta property="og:site_name" content="ScanHorizon">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:locale:alternate" content="en_US">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Scan Horizon">
-    <meta name="twitter:description" content="Décodez le ciel. Technologie AR temps réel.">
-    <meta name="twitter:image" content="couleur 1.jpg">
+    <meta name="twitter:title" content="ScanHorizon | Augmented Reality Flight Tracking App">
+    <meta name="twitter:description" content="Identify planes in the sky with a live ADS-B tracker, unlock aircraft cards, and collect them in your virtual hangar app.">
+    <meta name="twitter:image" content="https://scan-horizon.com/Fav2.jpg">
 
     <link rel="icon" type="image/jpeg" href="Fav2.jpg">
     <link rel="apple-touch-icon" href="Fav2.jpg">    
     
-    <title>Scan Horizon</title>
+    <title>ScanHorizon | Augmented Reality Flight Tracking & Virtual Hangar App</title>
     
     <style>
         :root {
@@ -698,10 +707,159 @@
             .store-buttons {
                 justify-content: center;
             }
+
+            .reviews-head {
+                grid-template-columns: 1fr;
+            }
         }
 
         .collection-section {
             margin-top: 4.2rem;
+        }
+
+        .mechanics-section {
+            margin-top: 3.6rem;
+            padding: 1.5rem;
+            border-radius: 18px;
+            border: 1px solid rgba(0, 210, 255, 0.24);
+            background: rgba(7, 21, 39, 0.72);
+            backdrop-filter: blur(8px);
+        }
+
+        .reviews-section {
+            margin-top: 3.6rem;
+            padding: 1.6rem;
+            border-radius: 22px;
+            border: 1px solid rgba(255, 211, 92, 0.22);
+            background:
+                radial-gradient(circle at top right, rgba(255, 199, 59, 0.14), transparent 38%),
+                linear-gradient(160deg, rgba(12, 24, 42, 0.92) 0%, rgba(7, 18, 34, 0.9) 100%);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+            backdrop-filter: blur(10px);
+        }
+
+        .reviews-head {
+            display: grid;
+            grid-template-columns: minmax(240px, 320px) minmax(0, 1fr);
+            gap: 1.2rem;
+            align-items: start;
+            margin-bottom: 1.2rem;
+        }
+
+        .reviews-rating-card {
+            padding: 1.2rem;
+            border-radius: 18px;
+            border: 1px solid rgba(255, 211, 92, 0.24);
+            background: rgba(255, 183, 0, 0.08);
+            box-shadow: inset 0 0 18px rgba(255, 211, 92, 0.08);
+        }
+
+        .reviews-rating-label {
+            display: block;
+            margin-bottom: 0.55rem;
+            color: #ffe39a;
+            letter-spacing: 1.1px;
+            text-transform: uppercase;
+            font-family: monospace;
+            font-size: 0.78rem;
+        }
+
+        .reviews-stars {
+            display: flex;
+            gap: 0.24rem;
+            margin-bottom: 0.7rem;
+            color: #ffcf4a;
+            font-size: 1.7rem;
+            line-height: 1;
+            text-shadow: 0 0 18px rgba(255, 207, 74, 0.32);
+        }
+
+        .reviews-score {
+            display: block;
+            font-size: clamp(1.9rem, 4vw, 2.8rem);
+            font-weight: 800;
+            line-height: 1;
+            color: #ffffff;
+            margin-bottom: 0.45rem;
+        }
+
+        .reviews-meta {
+            color: #f7e8b4;
+            line-height: 1.55;
+        }
+
+        .reviews-intro h2 {
+            font-size: clamp(1.4rem, 2.8vw, 2rem);
+            margin-bottom: 0.55rem;
+        }
+
+        .reviews-intro p {
+            color: var(--text-dim);
+            line-height: 1.65;
+            max-width: 720px;
+        }
+
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(240px, 1fr));
+            gap: 0.95rem;
+        }
+
+        .review-quote {
+            margin: 0;
+            padding: 1rem 1.05rem;
+            border-radius: 16px;
+            border: 1px solid rgba(142, 207, 255, 0.16);
+            background: rgba(4, 15, 29, 0.68);
+        }
+
+        .review-quote p {
+            margin: 0;
+            color: #ecf6ff;
+            line-height: 1.65;
+        }
+
+        .review-quote footer {
+            margin-top: 0.8rem;
+            padding: 0;
+            border: 0;
+            background: transparent;
+            backdrop-filter: none;
+            text-align: left;
+            color: #8ecfff;
+            font-family: monospace;
+            font-size: 0.82rem;
+        }
+
+        .mechanics-title {
+            font-size: clamp(1.4rem, 2.8vw, 2rem);
+            margin-bottom: 0.7rem;
+        }
+
+        .mechanics-intro {
+            color: var(--text-dim);
+            line-height: 1.65;
+            margin-bottom: 1rem;
+            max-width: 780px;
+        }
+
+        .mechanics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(220px, 1fr));
+            gap: 0.85rem;
+        }
+
+        .mechanics-item {
+            border: 1px solid rgba(126, 212, 255, 0.2);
+            border-radius: 12px;
+            padding: 0.9rem;
+            background: rgba(3, 15, 29, 0.6);
+            color: #d7ebff;
+            line-height: 1.55;
+        }
+
+        .mechanics-item strong {
+            color: #ffffff;
         }
         .collection-head {
             max-width: 760px;
@@ -974,6 +1132,33 @@
                 padding: 10px 0;
             }
 
+            .mechanics-section {
+                margin-top: 2.4rem;
+                padding: 1.1rem;
+            }
+
+            .reviews-section {
+                margin-top: 2.4rem;
+                padding: 1.1rem;
+            }
+
+            .reviews-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .reviews-stars {
+                justify-content: center;
+            }
+
+            .reviews-rating-card,
+            .reviews-intro {
+                text-align: center;
+            }
+
+            .mechanics-grid {
+                grid-template-columns: 1fr;
+            }
+
             .aircraft-card {
                 width: min(66vw, 250px);
             }
@@ -1189,19 +1374,48 @@
         .hidden { display: none !important; }
     </style>
     
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "Scan Horizon",
-      "operatingSystem": "ANDROID, IOS",
-      "applicationCategory": "UtilityApplication",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
-      "description": "L'outil ultime d'identification aérienne en réalité augmentée.",
-      "softwareVersion": "1.2.0",
-      "author": { "@type": "Organization", "name": "SAS SCAN HORIZON", "url": "https://scan-horizon.com" }
-    }
-    </script>
+        <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "SoftwareApplication",
+            "name": "ScanHorizon",
+            "url": "https://scan-horizon.com/",
+            "operatingSystem": "Android",
+            "applicationCategory": "GameApplication, UtilitiesApplication",
+            "applicationSubCategory": "Flight Tracking, Augmented Reality, Card Collecting Game",
+            "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "USD"
+            },
+            "description": "ScanHorizon revolutionizes flight tracking with a gamified Augmented Reality experience. Point your smartphone at any aircraft in the sky: the app cross-references your location and orientation with live ADS-B data to identify the plane. Unlock unique aircraft cards and collect them in your personal virtual hangar.",
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "5.0",
+                "reviewCount": "5",
+                "bestRating": "5",
+                "worstRating": "1",
+                "description": "Initial 5-star feedback collected from the iOS App Store platform."
+            },
+            "featureList": [
+                "Real-time flight tracking via live ADS-B and PlaneFinder data stream",
+                "Directional pointing-based aircraft identification (Passive Augmented Reality)",
+                "Aviation card collecting gamification system",
+                "Personalized virtual hangar management"
+            ],
+            "keywords": "augmented reality flight tracking, identify planes in the sky, aircraft card collection, virtual hangar app, live ADS-B tracker, ScanHorizon, innovative aviation game",
+            "publisher": {
+                "@type": "Organization",
+                "name": "SAS SCAN HORIZON",
+                "url": "https://scan-horizon.com/"
+            },
+            "author": {
+                "@type": "Organization",
+                "name": "SAS SCAN HORIZON",
+                "url": "https://scan-horizon.com/"
+            }
+        }
+        </script>
 </head>
 <body>
     <header>
@@ -1220,8 +1434,8 @@
             <div class="lang-fr">
                 <section class="hero">
                     <div class="hero-copy">
-                        <h1>Scanne le ciel,<br>collecte les aircrafts.</h1>
-                        <p>Visualise l'activité aérienne en temps réel avec une interface claire, rapide et immersive, pensée pour le spotting nouvelle génération.</p>
+                        <h1>Scanne le ciel,<br>débloque chaque avion.</h1>
+                        <p>ScanHorizon est une app d'augmented reality flight tracking: pointe ton smartphone vers un avion réel pour l'identifier avec un live ADS-B tracker, puis ajoute sa carte à ta collection dans le virtual hangar app.</p>
                         <div class="live-stats" aria-label="Statistiques en direct">
                             <article class="live-stat-card">
                                 <div class="live-stat-head">
@@ -1280,13 +1494,63 @@
                         <article class="aircraft-card right"><img src="frequent.png" alt="Carte avion niveau fréquent"></article>
                     </div>
                 </section>
+
+                <section class="mechanics-section" aria-label="Mécaniques principales ScanHorizon">
+                    <h2 class="mechanics-title">Comment ScanHorizon fonctionne</h2>
+                    <p class="mechanics-intro">L'application combine géolocalisation, orientation du téléphone et flux ADS-B en temps réel pour identifier planes in the sky avec une boucle de jeu claire, mesurable et addictive.</p>
+                    <div class="mechanics-grid">
+                        <article class="mechanics-item"><strong>Passive Augmented Reality:</strong> l'identification est déclenchée par ton point-and-scan, sans marqueur visuel imposé à l'utilisateur.</article>
+                        <article class="mechanics-item"><strong>Live ADS-B tracker:</strong> la visée croise la position GPS, le compas et les données PlaneFinder API pour proposer l'aéronef le plus probable.</article>
+                        <article class="mechanics-item"><strong>Aircraft card collection:</strong> chaque avion identifié débloque une carte unique à conserver dans ta collection.</article>
+                        <article class="mechanics-item"><strong>Innovative aviation game:</strong> progression par rareté, historique de scans, et stratégie de collection dans ton hangar virtuel.</article>
+                    </div>
+                </section>
+
+                <section class="reviews-section" aria-label="Témoignages et avis App Store">
+                    <div class="reviews-head">
+                        <div class="reviews-rating-card">
+                            <span class="reviews-rating-label">Premiers avis iOS</span>
+                            <div class="reviews-stars" aria-label="5 étoiles sur 5">
+                                <span aria-hidden="true">★</span>
+                                <span aria-hidden="true">★</span>
+                                <span aria-hidden="true">★</span>
+                                <span aria-hidden="true">★</span>
+                                <span aria-hidden="true">★</span>
+                            </div>
+                            <strong class="reviews-score">5.0/5 on the App Store</strong>
+                            <p class="reviews-meta">Note moyenne basée sur 5 avis publiés sur la plateforme iOS App Store.</p>
+                        </div>
+                        <div class="reviews-intro">
+                            <h2>Témoignages / Avis</h2>
+                            <p>Les premiers retours App Store mettent en avant une expérience ludique, une vraie sensation de chasse aux avions et une présentation soignée des cartes collectées.</p>
+                        </div>
+                    </div>
+                    <div class="reviews-grid">
+                        <blockquote class="review-quote">
+                            <p>"Tout ce que je cherchais : une façon élégante et immersive de noter les modèles d'aéronefs aperçus, très proche de la vision que j'avais d'une collection épurée et design."</p>
+                            <footer>App Store review summary, 31 mai, ENES INC.</footer>
+                        </blockquote>
+                        <blockquote class="review-quote">
+                            <p>"Super application, ludique et capable de réveiller le collectionneur qui sommeille en moi."</p>
+                            <footer>App Store review summary, 30 mai, ibdo99</footer>
+                        </blockquote>
+                        <blockquote class="review-quote">
+                            <p>"Les premiers utilisateurs apprécient le mélange entre suivi aérien en direct et collection de cartes, avec une prise en main rapide."</p>
+                            <footer>Summary based on early iOS App Store feedback</footer>
+                        </blockquote>
+                        <blockquote class="review-quote">
+                            <p>"Le concept AR + ADS-B est perçu comme original, utile pour identifier les avions et suffisamment fun pour donner envie de continuer à scanner."</p>
+                            <footer>Summary based on early iOS App Store feedback</footer>
+                        </blockquote>
+                    </div>
+                </section>
             </div>
 
             <div class="lang-en hidden">
                 <section class="hero">
                     <div class="hero-copy">
-                        <h1>Scan the sky,<br>collect aircraft.</h1>
-                        <p>Track live air activity with a clean, fast and immersive interface built for the next generation of spotting.</p>
+                        <h1>Scan the sky,<br>unlock every aircraft.</h1>
+                        <p>ScanHorizon is an augmented reality flight tracking app where you identify planes in the sky using phone direction plus live ADS-B tracker data, then grow your aircraft card collection in a virtual hangar app.</p>
                         <div class="live-stats" aria-label="Live stats">
                             <article class="live-stat-card">
                                 <div class="live-stat-head">
@@ -1343,6 +1607,56 @@
                         <article class="aircraft-card left"><img src="common.png" alt="Common aircraft card"></article>
                         <article class="aircraft-card center"><img src="epic.png" alt="Rare aircraft card"></article>
                         <article class="aircraft-card right"><img src="frequent.png" alt="Frequent aircraft card"></article>
+                    </div>
+                </section>
+
+                <section class="mechanics-section" aria-label="ScanHorizon core mechanics">
+                    <h2 class="mechanics-title">How ScanHorizon Works</h2>
+                    <p class="mechanics-intro">This innovative aviation game combines geolocation, smartphone orientation, and real-time ADS-B intelligence to create a clear point-and-scan gameplay loop.</p>
+                    <div class="mechanics-grid">
+                        <article class="mechanics-item"><strong>Passive Augmented Reality:</strong> point your device at a real aircraft and let direction-based matching do the identification.</article>
+                        <article class="mechanics-item"><strong>Live ADS-B tracker stack:</strong> ScanHorizon cross-references location and compass heading with PlaneFinder data streams.</article>
+                        <article class="mechanics-item"><strong>Aircraft card collection:</strong> every successful sky identification unlocks a unique aircraft card.</article>
+                        <article class="mechanics-item"><strong>Virtual hangar app loop:</strong> store your cards, track progress, and expand your aviation collection session after session.</article>
+                    </div>
+                </section>
+
+                <section class="reviews-section" aria-label="Testimonials and App Store reviews">
+                    <div class="reviews-head">
+                        <div class="reviews-rating-card">
+                            <span class="reviews-rating-label">Early iOS reviews</span>
+                            <div class="reviews-stars" aria-label="5 out of 5 stars">
+                                <span aria-hidden="true">★</span>
+                                <span aria-hidden="true">★</span>
+                                <span aria-hidden="true">★</span>
+                                <span aria-hidden="true">★</span>
+                                <span aria-hidden="true">★</span>
+                            </div>
+                            <strong class="reviews-score">5.0/5 on the App Store</strong>
+                            <p class="reviews-meta">Average rating based on 5 reviews published on the iOS App Store platform.</p>
+                        </div>
+                        <div class="reviews-intro">
+                            <h2>Testimonials / Reviews</h2>
+                            <p>Early App Store feedback highlights a playful experience, a real sense of aircraft spotting, and a polished presentation for the collectible cards.</p>
+                        </div>
+                    </div>
+                    <div class="reviews-grid">
+                        <blockquote class="review-quote">
+                            <p>"Exactly what I was looking for: an elegant and immersive way to catalog the aircraft models I spot, very close to the refined collection experience I had in mind."</p>
+                            <footer>App Store review summary, May 31, ENES INC.</footer>
+                        </blockquote>
+                        <blockquote class="review-quote">
+                            <p>"Great app, genuinely playful, and it brings out the collector in me."</p>
+                            <footer>App Store review summary, May 30, ibdo99</footer>
+                        </blockquote>
+                        <blockquote class="review-quote">
+                            <p>"Early users like the mix of live flight tracking and card collecting, with an onboarding flow that feels immediate."</p>
+                            <footer>Summary based on early iOS App Store feedback</footer>
+                        </blockquote>
+                        <blockquote class="review-quote">
+                            <p>"The AR + ADS-B concept feels original and useful for identifying aircraft, while still being fun enough to keep scanning."</p>
+                            <footer>Summary based on early iOS App Store feedback</footer>
+                        </blockquote>
                     </div>
                 </section>
             </div>
