@@ -19,6 +19,8 @@ ScanHorizon is an augmented reality flight tracking app and innovative aviation 
 
 ## Official web entry point
 - https://scan-horizon.com/
+- https://scan-horizon.com/fr/
+- https://scan-horizon.com/en/
 
 ## Official store links
 - iOS: https://apps.apple.com/fr/app/scanhorizon/id6761936970

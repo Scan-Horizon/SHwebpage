@@ -1,0 +1,2633 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    
+    <meta name="description" content="ScanHorizon is an augmented reality flight tracking app and innovative aviation game. Identify planes in the sky with live ADS-B tracker data, unlock aircraft cards, and build your virtual hangar app collection.">
+    <meta name="keywords" content="augmented reality flight tracking, identify planes in the sky, aircraft card collection, virtual hangar app, live ADS-B tracker, ScanHorizon, innovative aviation game, PlaneFinder API, point and scan aviation">
+    <meta name="author" content="SAS SCAN HORIZON">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="theme-color" content="#050a15">
+    <link rel="canonical" href="https://scan-horizon.com/fr/">
+    <link rel="alternate" hreflang="fr" href="https://scan-horizon.com/fr/">
+    <link rel="alternate" hreflang="en" href="https://scan-horizon.com/en/">
+    <link rel="alternate" hreflang="x-default" href="https://scan-horizon.com/">
+    <meta name="apple-itunes-app" content="app-id=6761936970">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://scan-horizon.com/fr/">
+    <meta property="og:title" content="ScanHorizon | Augmented Reality Flight Tracking & Aircraft Card Collection">
+    <meta property="og:description" content="Point your phone at aircraft to identify planes in the sky using geolocation, compass direction, and live ADS-B data. Unlock aircraft cards and grow your virtual hangar.">
+    <meta property="og:image" content="https://scan-horizon.com/Fav2.jpg">
+    <meta property="og:image:alt" content="ScanHorizon app visual">
+    <meta property="og:site_name" content="ScanHorizon">
+    <meta property="og:locale" content="fr_FR">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="al:ios:app_store_id" content="6761936970">
+    <meta property="al:android:package" content="com.app.flighttracktest">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="ScanHorizon | Augmented Reality Flight Tracking App">
+    <meta name="twitter:description" content="Identify planes in the sky with a live ADS-B tracker, unlock aircraft cards, and collect them in your virtual hangar app.">
+    <meta name="twitter:image" content="https://scan-horizon.com/Fav2.jpg">
+
+    <link rel="icon" type="image/jpeg" href="/Fav2.jpg">
+    <link rel="apple-touch-icon" href="/Fav2.jpg">    
+    
+    <title>ScanHorizon | Augmented Reality Flight Tracking & Virtual Hangar App</title>
+    
+    <style>
+        :root {
+            /* Palette basée sur tes logos et l'ambiance Deep Space */
+            --sky-blue: #00d2ff;
+            --deep-blue: #0055ff;
+            --brand-gradient: linear-gradient(135deg, #00d2ff 0%, #0055ff 100%);
+            
+            --radar-green: #00ff9d;
+            --alert-red: #ff3366;
+            --deep-space: #050a15;
+            
+            /* UI Elements */
+            --glass: rgba(10, 18, 35, 0.85);
+            --glass-mobile: rgba(5, 10, 20, 0.98);
+            --border: rgba(0, 210, 255, 0.3);
+            --text: #ffffff;
+            --text-dim: #b0c4de;
+            
+            --header-height: 80px;
+
+            /* Tactical MiniMap inspired palette */
+            --tactical-bezel: #e0e5e9;
+            --tactical-grid: #546e7a;
+            --tactical-active: #00b0ff;
+            --tactical-view: #90a4ae;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+            background-color: var(--deep-space);
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            isolation: isolate;
+        }
+
+        html,
+        body,
+        .legal-container {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            display: none;
+        }
+
+        .legal-container::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+            display: none;
+        }
+
+        /* Overlay sombre pour la lisibilité du texte sur l'image de fond */
+        body::before {
+            content: "";
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(5, 10, 21, 0.85); /* 85% d'opacité noire/bleue */
+            z-index: -2;
+            backdrop-filter: blur(2px); /* Léger flou pour le style */
+        }
+
+        /* Image décorative semi-transparente, rognée sur la gauche */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: min(70vw, 760px);
+            height: 100vh;
+            background-image: url('/A380.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: left center;
+            opacity: 0.18;
+            transform: translate(-50%, -6%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .plane-bg-right {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: min(70vw, 760px);
+            height: 100vh;
+            background-image: url('/planes_AS50.png');
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: right center;
+            opacity: 0.16;
+            transform: translate(50%, 8%) scaleX(-1);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            body::after {
+                width: 85vw;
+                opacity: 0.14;
+                transform: translate(-58%, -4%);
+            }
+
+            .plane-bg-right {
+                width: 85vw;
+                opacity: 0.12;
+                transform: translate(58%, 6%) scaleX(-1);
+            }
+        }
+
+        /* --- Header --- */
+        header {
+            height: var(--header-height);
+            padding: 0 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(5, 10, 21, 0.9);
+            backdrop-filter: blur(15px);
+            position: sticky; top: 0; z-index: 100;
+        }
+
+        .logo-container {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .logo-img {
+            max-height: 180px; /* Ajustement hauteur logo */
+            width: auto;
+            transition: transform 0.3s;
+        }
+        .logo-img:hover { transform: scale(1.02); }
+
+        /* Gestion Logo Responsive */
+        .logo-desktop { display: block; }
+        .logo-mobile { display: none; }
+
+        @media (max-width: 600px) {
+            .logo-desktop { display: none; }
+            .logo-mobile { display: block; max-height: 40px; }
+        }
+
+        .lang-switch button {
+            background: transparent; border: 1px solid var(--border);
+            color: var(--sky-blue); padding: 6px 14px;
+            border-radius: 4px; cursor: pointer; font-size: 0.8rem;
+            margin-left: 8px; transition: 0.3s; font-family: monospace; font-weight: bold;
+        }
+        .lang-switch button:hover, .lang-switch button.active {
+            background: var(--brand-gradient);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+        }
+
+        /* --- Main Layout --- */
+        main { 
+            flex: 1; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 3.5rem 2rem; 
+            width: 100%;
+            position: relative;
+        }
+
+        /* --- Home Redesign --- */
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(280px, 1fr) minmax(320px, 460px);
+            align-items: center;
+            gap: 3rem;
+            min-height: calc(100vh - 280px);
+        }
+
+        .hero-copy h1 {
+            font-size: clamp(2.2rem, 5.6vw, 4.7rem);
+            line-height: 1.04;
+            letter-spacing: -1.3px;
+            margin-bottom: 1.2rem;
+            font-weight: 800;
+            background: linear-gradient(180deg, #ffffff 0%, #cde8ff 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-copy p {
+            max-width: 560px;
+            color: var(--text-dim);
+            font-size: 1.08rem;
+            line-height: 1.65;
+            margin-bottom: 1.7rem;
+        }
+
+        .live-stats {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(150px, 1fr));
+            gap: 0.85rem;
+            margin-bottom: 1.4rem;
+            max-width: 520px;
+        }
+
+        .live-stat-card {
+            border: 1px solid rgba(0, 210, 255, 0.4);
+            background: rgba(7, 24, 45, 0.78);
+            border-radius: 14px;
+            padding: 0.9rem 1rem;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 22px rgba(0, 70, 140, 0.22);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .live-stat-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.45rem;
+        }
+
+        .live-stat-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(122, 207, 255, 0.45);
+            background: rgba(0, 146, 255, 0.14);
+            box-shadow: inset 0 0 12px rgba(0, 176, 255, 0.25);
+            color: #d8f3ff;
+        }
+
+        .live-stat-icon svg {
+            width: 18px;
+            height: 18px;
+            display: block;
+            fill: currentColor;
+        }
+
+        .live-stat-value {
+            display: block;
+            font-size: clamp(1.8rem, 4vw, 2.55rem);
+            line-height: 1;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            color: #ffffff;
+            text-shadow: 0 0 16px rgba(0, 210, 255, 0.33);
+        }
+
+        .live-stat-card.is-loading .live-stat-value {
+            color: transparent;
+            text-shadow: none;
+        }
+
+        .live-stat-card.is-loading::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                115deg,
+                transparent 0%,
+                rgba(122, 207, 255, 0.05) 28%,
+                rgba(194, 236, 255, 0.36) 46%,
+                rgba(122, 207, 255, 0.08) 62%,
+                transparent 100%
+            );
+            transform: translateX(-130%);
+            animation: statWave 1.2s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes statWave {
+            to { transform: translateX(130%); }
+        }
+
+        .live-stat-label {
+            display: block;
+            margin-top: 0.35rem;
+            color: #a8d7ff;
+            font-size: 0.82rem;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            font-family: monospace;
+        }
+
+        .beta-link {
+            display: inline-block;
+            color: #7fd5ff;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(127, 213, 255, 0.45);
+            padding-bottom: 4px;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            transition: color 0.25s, border-color 0.25s;
+        }
+        .beta-link:hover {
+            color: #d8f3ff;
+            border-color: rgba(216, 243, 255, 0.85);
+        }
+
+        .store-buttons {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .store-rating {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            margin-top: 0.75rem;
+            padding: 0.34rem 0.62rem;
+            border-radius: 999px;
+            border: 1px solid rgba(186, 219, 255, 0.35);
+            background: rgba(7, 22, 40, 0.52);
+            color: #eaf5ff;
+            width: fit-content;
+        }
+
+        .store-rating-score {
+            font-size: 0.95rem;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: 0.02em;
+        }
+
+        .store-rating-stars {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.06rem;
+            color: #ffd96a;
+            font-size: 0.9rem;
+            line-height: 1;
+        }
+
+        .store-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.68rem;
+            min-width: 276px;
+            height: 82px;
+            padding: 0 0.92rem;
+            border-radius: 11px;
+            border: 1px solid #aeb7c3;
+            background: #050505;
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+            font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Arial', sans-serif;
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+            box-shadow: 0 2px 0 rgba(255, 255, 255, 0.08) inset;
+        }
+
+        .store-badge:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.38);
+        }
+
+        .store-badge-logo {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 46px;
+            height: 46px;
+            flex: 0 0 46px;
+            color: #ffffff;
+        }
+
+        .store-badge-logo svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+            display: block;
+        }
+
+        .store-badge-copy {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        .store-badge-small {
+            font-size: 0.78rem;
+            letter-spacing: 0.03em;
+            opacity: 0.95;
+            margin-bottom: 0.14rem;
+            font-weight: 500;
+        }
+
+        .store-badge-large {
+            font-size: 1.72rem;
+            letter-spacing: 0.01em;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .store-badge-google .store-badge-small {
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        .store-feedback {
+            margin-top: 1rem;
+            padding: 1rem 1.1rem;
+            border: 1px solid rgba(0, 210, 255, 0.28);
+            border-radius: 18px;
+            background: rgba(8, 26, 52, 0.78);
+            backdrop-filter: blur(8px);
+            max-width: 560px;
+        }
+
+        .store-feedback p {
+            margin: 0;
+            color: #d8ecff;
+            line-height: 1.6;
+        }
+
+        .store-feedback .store-btn {
+            margin-top: 0.9rem;
+        }
+
+        .ios-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 2100;
+            display: grid;
+            place-items: center;
+            padding: 1rem;
+            background: rgba(2, 8, 16, 0.72);
+            backdrop-filter: blur(5px);
+        }
+
+        .ios-modal-dialog {
+            width: min(540px, 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(134, 196, 255, 0.4);
+            background: linear-gradient(160deg, rgba(6, 23, 44, 0.97) 0%, rgba(7, 18, 34, 0.97) 100%);
+            box-shadow: 0 28px 55px rgba(0, 0, 0, 0.45);
+            padding: 1.2rem;
+        }
+
+        .ios-modal-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .ios-modal-title {
+            margin: 0;
+            font-size: clamp(1.1rem, 2.8vw, 1.35rem);
+            line-height: 1.2;
+        }
+
+        .ios-modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid rgba(134, 196, 255, 0.45);
+            background: transparent;
+            color: #e8f4ff;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+
+        .ios-modal-desc {
+            margin: 0 0 0.9rem;
+            color: #d0e4f8;
+            line-height: 1.5;
+        }
+
+        .ios-field-label {
+            display: block;
+            margin-bottom: 0.48rem;
+            color: #e8f4ff;
+            font-size: 0.92rem;
+            font-weight: 600;
+        }
+
+        .ios-email-input {
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid rgba(134, 196, 255, 0.45);
+            background: rgba(0, 0, 0, 0.28);
+            color: #ffffff;
+            font-size: 1rem;
+            padding: 0.74rem 0.8rem;
+            outline: none;
+        }
+
+        .ios-email-input:focus {
+            border-color: rgba(0, 210, 255, 0.9);
+            box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.2);
+        }
+
+        .ios-select-input {
+            width: 100%;
+            border-radius: 10px;
+            border: 1px solid rgba(134, 196, 255, 0.45);
+            background: rgba(0, 0, 0, 0.28);
+            color: #ffffff;
+            font-size: 1rem;
+            padding: 0.74rem 0.8rem;
+            outline: none;
+            margin-bottom: 0.85rem;
+        }
+
+        .ios-select-input:focus {
+            border-color: rgba(0, 210, 255, 0.9);
+            box-shadow: 0 0 0 3px rgba(0, 210, 255, 0.2);
+        }
+
+        .ios-modal-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.7rem;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .ios-modal-btn {
+            border-radius: 10px;
+            border: 1px solid rgba(134, 196, 255, 0.45);
+            background: transparent;
+            color: #e8f4ff;
+            padding: 0.62rem 0.86rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .ios-modal-btn.primary {
+            background: var(--brand-gradient);
+            border-color: transparent;
+            color: #ffffff;
+        }
+
+        .ios-modal-status {
+            margin-top: 0.82rem;
+            color: #aaf7cb;
+            line-height: 1.45;
+        }
+
+        .radar-scene {
+            display: grid;
+            place-items: center;
+        }
+        .hero-rotating-logo {
+            width: min(90vw, 420px);
+            aspect-ratio: 1;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 18px 36px rgba(0, 0, 0, 0.38));
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity 0.22s ease;
+        }
+
+        .hero-rotating-logo.is-card-pop {
+            animation: cardPopIn 0.34s cubic-bezier(0.2, 0.9, 0.2, 1);
+        }
+
+        .hero-rotating-logo.is-card-fadeout {
+            opacity: 0.78;
+        }
+
+        .hero-scan-status {
+            margin-top: 0.55rem;
+            color: #b9d8f6;
+            font-family: monospace;
+            font-size: 0.9rem;
+            letter-spacing: 0.08em;
+            text-transform: lowercase;
+            text-align: center;
+            min-height: 1.2em;
+        }
+
+        @keyframes cardPopIn {
+            0% {
+                transform: scale(0.82);
+                opacity: 0;
+            }
+            65% {
+                transform: scale(1.08);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2.4rem;
+                min-height: auto;
+                padding-top: 1rem;
+            }
+            .hero-copy p {
+                margin: 0 auto 1.5rem;
+            }
+            .live-stats {
+                margin-left: auto;
+                margin-right: auto;
+            }
+            .store-buttons {
+                justify-content: center;
+            }
+
+            .store-rating {
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        .collection-section {
+            margin-top: 4.2rem;
+        }
+
+        .mechanics-section {
+            margin-top: 3.6rem;
+            padding: 1.5rem;
+            border-radius: 18px;
+            border: 1px solid rgba(0, 210, 255, 0.24);
+            background: rgba(7, 21, 39, 0.72);
+            backdrop-filter: blur(8px);
+        }
+
+        .mechanics-title {
+            font-size: clamp(1.4rem, 2.8vw, 2rem);
+            margin-bottom: 0.7rem;
+        }
+
+        .mechanics-intro {
+            color: var(--text-dim);
+            line-height: 1.65;
+            margin-bottom: 1rem;
+            max-width: 780px;
+        }
+
+        .mechanics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(220px, 1fr));
+            gap: 0.85rem;
+        }
+
+        .mechanics-item {
+            border: 1px solid rgba(126, 212, 255, 0.2);
+            border-radius: 12px;
+            padding: 0.9rem;
+            background: rgba(3, 15, 29, 0.6);
+            color: #d7ebff;
+            line-height: 1.55;
+        }
+
+        .mechanics-item strong {
+            color: #ffffff;
+        }
+        .collection-head {
+            max-width: 760px;
+            margin-bottom: 1.4rem;
+        }
+        .collection-eyebrow {
+            display: inline-block;
+            color: #82f0c7;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            font-family: monospace;
+            font-size: 0.78rem;
+            margin-bottom: 0.7rem;
+        }
+        .collection-title {
+            font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+            line-height: 1.12;
+            margin-bottom: 0.65rem;
+            color: #ffffff;
+        }
+        .collection-subtitle {
+            color: var(--text-dim);
+            line-height: 1.65;
+            max-width: 680px;
+        }
+
+        .cards-carousel {
+            position: relative;
+            height: clamp(420px, 62vw, 720px);
+            margin-top: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .aircraft-card {
+            position: absolute;
+            width: clamp(240px, 28vw, 360px);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(5, 10, 21, 0.8);
+            box-shadow: 0 16px 30px rgba(0, 0, 0, 0.38);
+            transition: transform 0.22s ease, border-color 0.22s ease;
+        }
+        .aircraft-card:hover {
+            border-color: rgba(126, 212, 255, 0.65);
+        }
+        .aircraft-card img {
+            width: 100%;
+            display: block;
+            height: auto;
+        }
+
+        .aircraft-card.center {
+            z-index: 3;
+            transform: translateX(0) rotate(0deg) scale(1);
+        }
+        .aircraft-card.left {
+            z-index: 2;
+            transform: translateX(-62%) rotate(-45deg) scale(0.8);
+            opacity: 0.92;
+            transform-origin: 80% 50%;
+        }
+        .aircraft-card.right {
+            z-index: 2;
+            transform: translateX(62%) rotate(45deg) scale(0.8);
+            opacity: 0.92;
+            transform-origin: 20% 50%;
+        }
+
+        .carousel-note {
+            margin-top: 0.3rem;
+            color: rgba(205, 230, 255, 0.82);
+            font-size: 0.88rem;
+            font-family: monospace;
+            text-align: center;
+        }
+
+        @media (max-width: 700px) {
+            .collection-section {
+                margin-top: 3rem;
+            }
+            .cards-carousel {
+                height: clamp(360px, 95vw, 520px);
+            }
+            .aircraft-card {
+                width: min(74vw, 310px);
+            }
+            .aircraft-card.left {
+                transform: translateX(-54%) rotate(-45deg) scale(0.72);
+            }
+            .aircraft-card.right {
+                transform: translateX(54%) rotate(45deg) scale(0.72);
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                background-attachment: scroll;
+                background-position: center top;
+            }
+
+            body::before {
+                backdrop-filter: none;
+                background: rgba(5, 10, 21, 0.9);
+            }
+
+            .scan-line {
+                height: 2px;
+                animation-duration: 7s;
+                opacity: 0.7;
+            }
+
+            header {
+                height: 68px;
+                padding: 0 12px;
+            }
+
+            .logo-img {
+                max-height: 64px;
+            }
+
+            .logo-mobile {
+                max-height: 34px;
+            }
+
+            .lang-switch button {
+                padding: 6px 10px;
+                margin-left: 6px;
+                font-size: 0.74rem;
+            }
+
+            main {
+                padding: 1.6rem 0.95rem;
+            }
+
+            .hero {
+                gap: 1.5rem;
+                padding-top: 0.2rem;
+            }
+
+            .hero-copy h1 {
+                font-size: clamp(1.9rem, 9vw, 2.8rem);
+                line-height: 1.08;
+                letter-spacing: -0.7px;
+                margin-bottom: 1rem;
+            }
+
+            .hero-copy p {
+                font-size: 1rem;
+                line-height: 1.55;
+                margin-bottom: 1.25rem;
+            }
+
+            .store-buttons {
+                width: 100%;
+                justify-content: center;
+                gap: 0.65rem;
+            }
+
+            .store-badge {
+                min-width: min(100%, 276px);
+                width: min(100%, 276px);
+                height: 76px;
+                padding: 0 0.85rem;
+            }
+
+            .store-badge-logo {
+                width: 42px;
+                height: 42px;
+                flex-basis: 42px;
+            }
+
+            .store-badge-small {
+                font-size: 0.68rem;
+            }
+
+            .store-badge-large {
+                font-size: 1.5rem;
+            }
+
+            .live-stats {
+                grid-template-columns: 1fr;
+                width: min(100%, 360px);
+                max-width: 360px;
+                gap: 0.65rem;
+                margin: 0 auto 1.05rem;
+            }
+
+            .live-stat-card {
+                padding: 0.8rem 0.78rem;
+                border-radius: 13px;
+            }
+
+            .live-stat-head {
+                margin-bottom: 0.28rem;
+                justify-content: flex-start;
+                gap: 0.58rem;
+            }
+
+            .live-stat-icon {
+                width: 31px;
+                height: 31px;
+                border-radius: 8px;
+                flex: 0 0 31px;
+            }
+
+            .live-stat-icon svg {
+                width: 15px;
+                height: 15px;
+            }
+
+            .live-stat-value {
+                font-size: clamp(1.55rem, 7.1vw, 2rem);
+                line-height: 1;
+            }
+
+            .live-stat-label {
+                margin-top: 0.1rem;
+                font-size: 0.72rem;
+                letter-spacing: 0.52px;
+                text-align: left;
+            }
+
+            .hero-rotating-logo {
+                width: min(88vw, 340px);
+            }
+
+            .collection-head {
+                text-align: center;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .collection-title {
+                font-size: clamp(1.35rem, 7vw, 2rem);
+            }
+
+            .collection-subtitle {
+                font-size: 0.96rem;
+                line-height: 1.55;
+            }
+
+            .cards-carousel {
+                height: clamp(320px, 92vw, 470px);
+                overflow: visible;
+                padding: 10px 0;
+            }
+
+            .mechanics-section {
+                margin-top: 2.4rem;
+                padding: 1.1rem;
+            }
+
+            .mechanics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .aircraft-card {
+                width: min(66vw, 250px);
+            }
+
+            .aircraft-card.center {
+                transform: translateX(0) rotate(0deg) scale(0.9);
+            }
+
+            .aircraft-card.left {
+                transform: translateX(-50%) rotate(-20deg) scale(0.64);
+            }
+
+            .aircraft-card.right {
+                transform: translateX(50%) rotate(20deg) scale(0.64);
+            }
+
+            footer {
+                padding: 2.2rem 0.9rem;
+            }
+
+            .footer-links {
+                gap: 0.9rem 1.1rem;
+            }
+
+            .footer-links a {
+                font-size: 0.78rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .store-buttons {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .live-stats {
+                max-width: 100%;
+                width: 100%;
+                gap: 0.55rem;
+            }
+
+            .live-stat-card {
+                padding: 0.75rem 0.7rem;
+            }
+
+            .live-stat-value {
+                font-size: clamp(1.45rem, 8.5vw, 1.82rem);
+            }
+
+            .live-stat-label {
+                font-size: 0.7rem;
+            }
+
+            .logo-mobile {
+                max-height: 30px;
+            }
+
+            .store-badge {
+                width: 100%;
+                min-width: 100%;
+            }
+
+            .ios-modal-dialog {
+                padding: 1rem;
+            }
+
+            .cards-carousel {
+                height: 300px;
+            }
+
+            .aircraft-card {
+                width: 70vw;
+            }
+
+            .aircraft-card.center {
+                transform: translateX(0) rotate(0deg) scale(0.84);
+            }
+
+            .aircraft-card.left {
+                transform: translateX(-44%) rotate(-14deg) scale(0.56);
+            }
+
+            .aircraft-card.right {
+                transform: translateX(44%) rotate(14deg) scale(0.56);
+            }
+        }
+
+        /* --- Legal Views (Mobile Optimized) --- */
+        .legal-container {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            padding: 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+            display: none; 
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            border-radius: 8px;
+        }
+        .legal-container.active { display: block; animation: fadeIn 0.4s ease; }
+
+        .legal-header { 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            padding-bottom: 1.5rem; margin-bottom: 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; 
+        }
+        .legal-title { 
+            color: var(--sky-blue); font-weight: bold; font-size: 1.4rem; 
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        
+        /* Bouton fermeture Desktop */
+        .close-btn { 
+            color: var(--text-dim); cursor: pointer; border: 1px solid var(--border); 
+            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; transition: 0.3s; font-weight: bold;
+        }
+        .close-btn:hover { background: var(--alert-red); color: white; border-color: var(--alert-red); }
+
+        /* Contenu Légal */
+        .legal-content { font-size: 1rem; color: var(--text-dim); }
+        .legal-content h3 { 
+            color: white; margin-top: 3rem; margin-bottom: 1.2rem; 
+            font-size: 1.2rem; border-left: 3px solid var(--sky-blue); padding-left: 15px;
+        }
+        .legal-content h4 { color: white; margin-top: 2rem; margin-bottom: 0.8rem; font-weight: 600; }
+        .legal-content p, .legal-content li { line-height: 1.7; margin-bottom: 1rem; text-align: justify; }
+        .legal-content ul { margin-left: 1.5rem; }
+        
+        /* Tableaux RGPD Responsive */
+        .legal-content table { width: 100%; border-collapse: collapse; margin: 2rem 0; }
+        .legal-content th, .legal-content td { 
+            border: 1px solid rgba(255,255,255,0.1); padding: 12px; text-align: left; vertical-align: top;
+        }
+        .legal-content th { background: rgba(0, 210, 255, 0.1); color: var(--sky-blue); }
+
+        .warning-box { 
+            border: 1px solid var(--alert-red); background: rgba(255, 51, 102, 0.05);
+            padding: 1.5rem; color: #ffadad; margin: 2rem 0; border-radius: 6px;
+        }
+
+        /* --- MOBILE LEGAL VIEW (Overlay Full Screen) --- */
+        @media (max-width: 768px) {
+            main { padding: 2rem 1rem; }
+            
+            .legal-container {
+                position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+                margin: 0; max-width: 100%; border: none; border-radius: 0;
+                background: var(--deep-space); /* Fond opaque pour lire */
+                z-index: 2000; overflow-y: auto; padding: 20px;
+                padding-bottom: 100px; /* Espace pour le bouton close en bas */
+            }
+
+            .legal-header {
+                position: relative; margin-bottom: 1rem; padding-bottom: 1rem;
+            }
+            
+            .legal-title { font-size: 1.1rem; }
+
+            /* Transformation du bouton Close en Sticky Bottom Bar sur Mobile */
+            .close-btn {
+                position: fixed; bottom: 20px; right: 20px; 
+                width: 60px; height: 60px; 
+                background: var(--alert-red); color: white; border: none;
+                box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+                z-index: 2001; font-size: 1.2rem;
+            }
+            .close-btn::after { content: "✖"; }
+            .close-btn span { display: none; } /* On cache le texte, on garde l'e */
+
+            /* Tableaux responsive en mode "Cartes" */
+            .legal-content table, .legal-content thead, .legal-content tbody, .legal-content th, .legal-content td, .legal-content tr { 
+                display: block; 
+            }
+            .legal-content thead tr { position: absolute; top: -9999px; left: -9999px; }
+            .legal-content tr { border: 1px solid rgba(255,255,255,0.1); margin-bottom: 1rem; border-radius: 8px; background: rgba(255,255,255,0.03); }
+            .legal-content td { border: none; border-bottom: 1px solid rgba(255,255,255,0.05); position: relative; padding-left: 50%; }
+            .legal-content td:last-child { border-bottom: none; }
+        }
+
+        /* --- BUTTONS --- */
+        .cyber-btn-submit {
+            background: var(--alert-red); color: white; border: none; padding: 18px;
+            font-family: monospace; text-transform: uppercase; cursor: pointer; letter-spacing: 1px;
+            transition: 0.3s; display: block; width: 100%; font-weight: bold;
+            margin-top: 2rem; text-decoration: none; text-align: center; border-radius: 4px;
+        }
+        .cyber-btn-submit:hover { background: #ff0040; box-shadow: 0 0 20px rgba(255, 51, 102, 0.4); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- Footer --- */
+        footer {
+            margin-top: auto; padding: 3rem 1rem; text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+        }
+        .footer-links {
+            display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; margin-bottom: 1.5rem;
+        }
+        .footer-links a {
+            color: var(--text-dim); text-decoration: none; font-size: 0.85rem;
+            font-family: monospace; text-transform: uppercase; transition: 0.2s; cursor: pointer;
+            letter-spacing: 1px;
+        }
+        .footer-links a:hover { color: var(--sky-blue); text-shadow: 0 0 8px var(--sky-blue); }
+        .footer-links a.danger-link { color: #ff5e85; }
+        .footer-links a.danger-link:hover { color: var(--alert-red); text-shadow: 0 0 10px var(--alert-red); }
+        .copyright { font-family: monospace; font-size: 0.75rem; color: #666; }
+        
+        .footer-location-notice { font-size: 0.8rem; color: var(--text-dim); margin-top: 1rem; }
+
+        .hidden { display: none !important; }
+    </style>
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@graph": [
+            {
+                "@type": "Organization",
+                "@id": "https://scan-horizon.com/fr/#organization",
+                "name": "SAS SCAN HORIZON",
+                "url": "https://scan-horizon.com/fr/",
+                "email": "contact@scan-horizon.com"
+            },
+            {
+                "@type": "WebSite",
+                "@id": "https://scan-horizon.com/fr/#website",
+                "url": "https://scan-horizon.com/fr/",
+                "name": "ScanHorizon",
+                "publisher": {
+                    "@id": "https://scan-horizon.com/fr/#organization"
+                }
+            },
+            {
+                "@type": "SoftwareApplication",
+                "@id": "https://scan-horizon.com/fr/#application",
+                "name": "ScanHorizon",
+                "url": "https://scan-horizon.com/fr/",
+                "description": "ScanHorizon revolutionizes flight tracking with a gamified augmented reality experience. Point your smartphone at aircraft in the sky to identify the plane with live ADS-B data, then unlock aircraft cards and build your virtual hangar.",
+                "applicationCategory": "UtilitiesApplication",
+                "operatingSystem": "Android, iOS",
+                "isAccessibleForFree": true,
+                "featureList": [
+                    "Real-time flight tracking via live ADS-B and PlaneFinder data stream",
+                    "Directional pointing-based aircraft identification",
+                    "Aviation card collecting gameplay",
+                    "Personalized virtual hangar"
+                ],
+                "sameAs": [
+                    "https://apps.apple.com/fr/app/scanhorizon/id6761936970",
+                    "https://play.google.com/store/apps/details?id=com.app.flighttracktest"
+                ],
+                "publisher": {
+                    "@id": "https://scan-horizon.com/fr/#organization"
+                }
+            }
+        ]
+    }
+    </script>
+</head>
+<body>
+    <div class="plane-bg-right" aria-hidden="true"></div>
+    <header>
+        <div class="logo-container" onclick="navigate('home')" title="Retour Accueil">
+            <img src="/logo text hor. couleur 1.png" alt="ScanHorizon Logo" class="logo-img logo-desktop">
+            <img src="/logo couleur 1.png" alt="ScanHorizon Logo" class="logo-img logo-mobile">
+        </div>
+        <div class="lang-switch">
+            <button id="btn-fr" onclick="setLanguage('fr')" class="active">FR</button>
+            <button id="btn-en" onclick="window.location.href='/en/' + window.location.hash">EN</button>
+        </div>
+    </header>
+
+    <main>
+        <div id="view-home">
+            <div class="lang-fr">
+                <section class="hero">
+                    <div class="hero-copy">
+                        <h1>Scanne le ciel,<br>capture chaque avion.</h1>
+                        <p>Avec ScanHorizon, tu pointes ton smartphone vers un avion réel, tu le scannes, puis tu ajoutes sa carte à ta collection dans ton hangar virtuel.</p>
+                        <div class="live-stats" aria-label="Statistiques en direct">
+                            <article class="live-stat-card is-loading">
+                                <div class="live-stat-head">
+                                    <span class="live-stat-icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" role="img"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 1 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5L21 16z"/></svg>
+                                    </span>
+                                    <span class="live-stat-value" data-stat-key="scans" aria-label="Chargement"></span>
+                                </div>
+                                <span class="live-stat-label">Avions scannés</span>
+                            </article>
+
+                        </div>
+                        <span class="beta-link">Acces beta test</span>
+                        <div class="store-buttons">
+                            <a class="store-badge store-badge-ios" href="https://apps.apple.com/fr/app/scanhorizon/id6761936970" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
+                                <span class="store-badge-logo" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" role="img"><path d="M16.365 1.43c0 1.14-.414 2.198-1.104 2.983-.789.9-2.074 1.595-3.19 1.51-.141-1.109.446-2.295 1.127-3.042.751-.833 2.057-1.43 3.167-1.451zM20.678 17.156c-.565 1.258-.836 1.818-1.563 2.924-1.014 1.544-2.445 3.468-4.22 3.483-1.58.014-1.987-1.03-4.132-1.017-2.146.013-2.594 1.036-4.174 1.022-1.775-.016-3.13-1.75-4.143-3.293-2.834-4.321-3.134-9.389-1.381-12.08 1.246-1.91 3.21-3.028 5.056-3.028 1.88 0 3.062 1.03 4.616 1.03 1.507 0 2.425-1.033 4.601-1.033 1.645 0 3.389.895 4.634 2.438-4.068 2.23-3.406 8.028.706 9.554z"/></svg>
+                                </span>
+                                <span class="store-badge-copy">
+                                    <span class="store-badge-small">Download on the</span>
+                                    <span class="store-badge-large">App Store</span>
+                                </span>
+                            </a>
+                            <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.app.flighttracktest" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
+                                <span class="store-badge-logo" aria-hidden="true">
+                                    <svg viewBox="0 0 64 64" role="img"><path fill="#34A853" d="M11.7 8.8c-.87.93-1.37 2.28-1.37 3.99v38.42c0 1.7.5 3.06 1.37 3.99L37.24 32 11.7 8.8z"/><path fill="#4285F4" d="M11.7 8.8 43.16 26.8 37.24 32 11.7 8.8z"/><path fill="#FBBC04" d="M50.97 31.2c1.83 1.03 1.83 2.58 0 3.62l-7.81 4.46L37.24 32l5.92-5.2 7.81 4.4z"/><path fill="#EA4335" d="M11.7 55.2 37.24 32l5.92 7.18L11.7 55.2z"/></svg>
+                                </span>
+                                <span class="store-badge-copy">
+                                    <span class="store-badge-small">GET IT ON</span>
+                                    <span class="store-badge-large">Google Play</span>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="store-rating" aria-label="Note moyenne 5.0 sur 5">
+                            <span class="store-rating-score">5.0</span>
+                            <span class="store-rating-stars" aria-hidden="true">
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="radar-scene" aria-hidden="true">
+                        <img class="hero-rotating-logo" src="/loading.gif" alt="Logo ScanHorizon">
+                        <p class="hero-scan-status" aria-live="polite">scanning...</p>
+                    </div>
+                </section>
+
+                <section class="collection-section" aria-label="Collection de cartes avions">
+                    <div class="collection-head">
+                        <span class="collection-eyebrow">Collection</span>
+                        <h2 class="collection-title">Agrandis ta collection avec des avions communs, rares et iconiques.</h2>
+                        <p class="collection-subtitle">Chaque scan peut débloquer une nouvelle carte et enrichir ton hangar.</p>
+                    </div>
+                    <div class="cards-carousel">
+                        <article class="aircraft-card left"><img src="/common.png" alt="Carte avion niveau commun"></article>
+                        <article class="aircraft-card center"><img src="/epic.png" alt="Carte avion niveau rare"></article>
+                        <article class="aircraft-card right"><img src="/frequent.png" alt="Carte avion niveau fréquent"></article>
+                    </div>
+                </section>
+
+            </div>
+
+            <div class="lang-en hidden">
+                <section class="hero">
+                    <div class="hero-copy">
+                        <h1>Scan the sky,<br>unlock every aircraft.</h1>
+                        <p>With ScanHorizon, point your phone at a real aircraft, identify it with live ADS-B data, then add its card to your collection in your virtual hangar.</p>
+                        <div class="live-stats" aria-label="Live stats">
+                            <article class="live-stat-card is-loading">
+                                <div class="live-stat-head">
+                                    <span class="live-stat-icon" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" role="img"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 1 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5L21 16z"/></svg>
+                                    </span>
+                                    <span class="live-stat-value" data-stat-key="scans" aria-label="Loading"></span>
+                                </div>
+                                <span class="live-stat-label">Aircraft scanned</span>
+                            </article>
+
+                        </div>
+                        <div class="store-buttons">
+                            <a class="store-badge store-badge-ios" href="https://apps.apple.com/fr/app/scanhorizon/id6761936970" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
+                                <span class="store-badge-logo" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" role="img"><path d="M16.365 1.43c0 1.14-.414 2.198-1.104 2.983-.789.9-2.074 1.595-3.19 1.51-.141-1.109.446-2.295 1.127-3.042.751-.833 2.057-1.43 3.167-1.451zM20.678 17.156c-.565 1.258-.836 1.818-1.563 2.924-1.014 1.544-2.445 3.468-4.22 3.483-1.58.014-1.987-1.03-4.132-1.017-2.146.013-2.594 1.036-4.174 1.022-1.775-.016-3.13-1.75-4.143-3.293-2.834-4.321-3.134-9.389-1.381-12.08 1.246-1.91 3.21-3.028 5.056-3.028 1.88 0 3.062 1.03 4.616 1.03 1.507 0 2.425-1.033 4.601-1.033 1.645 0 3.389.895 4.634 2.438-4.068 2.23-3.406 8.028.706 9.554z"/></svg>
+                                </span>
+                                <span class="store-badge-copy">
+                                    <span class="store-badge-small">Download on the</span>
+                                    <span class="store-badge-large">App Store</span>
+                                </span>
+                            </a>
+                            <a class="store-badge store-badge-google" href="https://play.google.com/store/apps/details?id=com.app.flighttracktest" target="_blank" rel="noopener noreferrer" aria-label="Get it on Google Play">
+                                <span class="store-badge-logo" aria-hidden="true">
+                                    <svg viewBox="0 0 64 64" role="img"><path fill="#34A853" d="M11.7 8.8c-.87.93-1.37 2.28-1.37 3.99v38.42c0 1.7.5 3.06 1.37 3.99L37.24 32 11.7 8.8z"/><path fill="#4285F4" d="M11.7 8.8 43.16 26.8 37.24 32 11.7 8.8z"/><path fill="#FBBC04" d="M50.97 31.2c1.83 1.03 1.83 2.58 0 3.62l-7.81 4.46L37.24 32l5.92-5.2 7.81 4.4z"/><path fill="#EA4335" d="M11.7 55.2 37.24 32l5.92 7.18L11.7 55.2z"/></svg>
+                                </span>
+                                <span class="store-badge-copy">
+                                    <span class="store-badge-small">GET IT ON</span>
+                                    <span class="store-badge-large">Google Play</span>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="store-rating" aria-label="Average rating 5.0 out of 5">
+                            <span class="store-rating-score">5.0</span>
+                            <span class="store-rating-stars" aria-hidden="true">
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="radar-scene" aria-hidden="true">
+                        <img class="hero-rotating-logo" src="/loading.gif" alt="ScanHorizon logo">
+                        <p class="hero-scan-status" aria-live="polite">scanning...</p>
+                    </div>
+                </section>
+
+                <section class="collection-section" aria-label="Aircraft card collection">
+                    <div class="collection-head">
+                        <span class="collection-eyebrow">Collection</span>
+                        <h2 class="collection-title">Build your collection with common, rare, and iconic aircraft cards.</h2>
+                        <p class="collection-subtitle">Every scan can unlock a new card and grow your hangar.</p>
+                    </div>
+                    <div class="cards-carousel">
+                        <article class="aircraft-card left"><img src="/common.png" alt="Common aircraft card"></article>
+                        <article class="aircraft-card center"><img src="/epic.png" alt="Rare aircraft card"></article>
+                        <article class="aircraft-card right"><img src="/frequent.png" alt="Frequent aircraft card"></article>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+        <div id="ios-access-modal" class="ios-modal hidden" aria-hidden="true">
+            <div class="ios-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="ios-modal-title">
+                <div class="ios-modal-head">
+                    <h3 id="ios-modal-title" class="ios-modal-title">Demander un acces iOS beta</h3>
+                    <button type="button" class="ios-modal-close" data-close-ios-modal aria-label="Fermer">X</button>
+                </div>
+                <p id="ios-modal-desc" class="ios-modal-desc">Réponds au court sondage puis laisse ton e-mail pour préparer ton accès iOS.</p>
+                <form id="ios-access-form" novalidate>
+                    <label for="ios-source" id="ios-source-label" class="ios-field-label">Comment as-tu entendu parler de l'app ?</label>
+                    <select id="ios-source" class="ios-select-input" required>
+                        <option value="" selected>Choisis une option</option>
+                        <option value="social">Réseaux Sociaux</option>
+                        <option value="friend">Ami</option>
+                        <option value="ai">IA</option>
+                        <option value="other">Autre</option>
+                    </select>
+                    <label for="ios-source-other" id="ios-source-other-label" class="ios-field-label hidden">Précise la source</label>
+                    <input id="ios-source-other" class="ios-email-input hidden" type="text" autocomplete="off" placeholder="Précise ici">
+                    <label for="ios-email" id="ios-email-label" class="ios-field-label">Ton e-mail</label>
+                    <input id="ios-email" class="ios-email-input" type="email" inputmode="email" autocomplete="email" required placeholder="ton@email.com">
+                    <div class="ios-modal-actions">
+                        <button type="button" class="ios-modal-btn" data-close-ios-modal id="ios-cancel-btn">Annuler</button>
+                        <button type="submit" class="ios-modal-btn primary" id="ios-submit-btn">Envoyer la demande</button>
+                    </div>
+                    <p id="ios-modal-status" class="ios-modal-status hidden" aria-live="polite"></p>
+                </form>
+            </div>
+        </div>
+
+        <div id="view-privacy" class="legal-container">
+            <div class="legal-header">
+                <span class="legal-title lang-fr">POLITIQUE DE CONFIDENTIALITÉ</span>
+                <span class="legal-title lang-en hidden">PRIVACY POLICY</span>
+                <button class="close-btn" onclick="navigate('home')" aria-label="Fermer"></button>
+            </div>
+            <div class="legal-content">
+                <div class="lang-fr">
+                    <p><strong>POLITIQUE DE CONFIDENTIALITÉ ET DE PROTECTION DES DONNÉES</strong></p>
+                    <p>Version : 1.4<br>Date d'entrée en vigueur : 31 mai 2026</p>
+
+                    <h3>PRÉAMBULE</h3>
+                    <p>La présente Politique de Confidentialité vise à informer les Utilisateurs de l'Application mobile ScanHorizon, éditée par SAS SCAN HORIZON, des modalités de collecte, de traitement et de protection de leurs données personnelles. L'Éditeur s'engage à respecter le Règlement (UE) 2016/679 (RGPD) ainsi que la Loi Informatique et Libertés du 6 janvier 1978 modifiée.</p>
+
+                    <h3>ARTICLE 1. DÉFINITIONS</h3>
+                    <ul>
+                        <li><strong>Donnée Personnelle :</strong> Toute information identifiant directement ou indirectement une personne physique (ex : localisation, identifiant publicitaire, IP).</li>
+                        <li><strong>Traitement :</strong> Toute opération sur ces données (collecte, stockage, suppression).</li>
+                        <li><strong>Responsable de Traitement :</strong> La société SAS SCAN HORIZON.</li>
+                    </ul>
+
+                    <h3>ARTICLE 2. DONNÉES COLLECTÉES</h3>
+                    <p>Nous collectons uniquement les données strictement nécessaires au bon fonctionnement du service ("Privacy by Design").</p>
+
+                    <h4>2.1. Données de compte</h4>
+                    <ul>
+                        <li><strong>Identifiant utilisateur (UID Firebase) :</strong> Généré lors de la création du compte, utilisé pour l'authentification et la gestion du profil.</li>
+                        <li><strong>Email, pseudo, avatarId :</strong> Saisis lors de l'inscription ou de la configuration du profil.</li>
+                        <li><strong>Statut du compte et tranche d'âge (ageRange) :</strong> Utilisés pour le contrôle d'accès, la conformité COPPA et le paramétrage des publicités.</li>
+                        <li><strong>Consentements horodatés :</strong> Vos choix de consentement (analytics, crash reporting) et leur horodatage sont stockés à des fins de preuve de conformité.</li>
+                    </ul>
+
+                    <h4>2.2. Données de Géolocalisation et Capteurs</h4>
+                    <ul>
+                        <li><strong>Géolocalisation (GPS) :</strong> Latitude, longitude, altitude. Ces données sont collectées en temps réel lorsque l'Application est active, <strong>uniquement en premier plan</strong> ("foreground"), afin d'identifier les aéronefs via les API aéronautiques. Aucun accès en arrière-plan n'est effectué.</li>
+                        <li><strong>Capteurs d'orientation :</strong> Boussole, accéléromètre, gyroscope (pitch/roll). Ces données sont traitées <strong>localement</strong> sur votre appareil pour le calcul de visée en réalité augmentée et ne sont pas transmises à nos serveurs.</li>
+                    </ul>
+
+                    <h4>2.3. Données Techniques et Sécurité Backend</h4>
+                    <ul>
+                        <li><strong>Adresse IP :</strong> Collectée côté serveur pour la sécurisation du service, la prévention des abus et la conformité légale (LCEN).</li>
+                        <li><strong>En-têtes HTTP techniques :</strong> User-agent, x-forwarded-for, origine de la requête — utilisés à des fins de sécurité et de lutte contre les abus.</li>
+                        <li><strong>Données de position (anti-fraude) :</strong> Les coordonnées GPS peuvent être temporairement traitées côté serveur pour détecter des comportements anormaux (ex : déplacements géographiquement incohérents). Ces données ne sont pas conservées au-delà des durées mentionnées à l'Article 7.</li>
+                        <li><strong>Token FCM :</strong> Le token de notification push (Firebase Cloud Messaging) est collecté pour l'envoi de notifications ; il est révoqué à la déconnexion et renouvelé automatiquement par l'OS.</li>
+                    </ul>
+
+                    <h4>2.4. Données liées à la Réalité Augmentée</h4>
+                    <ul>
+                        <li><strong>Flux Caméra :</strong> L'Application accède à la caméra arrière pour superposer les informations de vol.</li>
+                        <li><strong>Traitement :</strong> Le traitement d'image est effectué <strong>localement</strong> sur votre appareil. Aucune image n'est transmise à nos serveurs, sauf action manuelle de votre part (ex : envoi d'un rapport de bug avec capture d'écran).</li>
+                    </ul>
+
+                    <h4>2.5. Données d'usage et Historique</h4>
+                    <ul>
+                        <li><strong>Historique des scans :</strong> Les scans réalisés (label aéronef, détails, horodatage, statut) sont stockés dans votre compte pour permettre la synchronisation multi-appareils et la consultation de votre historique.</li>
+                        <li><strong>Données de signalement :</strong> En cas de signalement d'un aéronef ou d'envoi de feedback via l'Application, les informations soumises (type de rapport, commentaire libre, données aéronef, horodatage) sont conservées à des fins de qualité et d'amélioration de la base de données aéronautiques.</li>
+                        <li><strong>Compteurs d'usage :</strong> Nombre de scans gratuits, scans bonus, total cumulé — rattachés à votre compte pour la gestion des limites de service.</li>
+                    </ul>
+
+                    <h4>2.6. Données commerciales (Achats In-App)</h4>
+                    <ul>
+                        <li>Historique des achats et statut de l'abonnement (Free/Pro).</li>
+                        <li><strong>Note importante :</strong> L'Éditeur n'a jamais accès à vos coordonnées bancaires. Les transactions sont sécurisées et gérées exclusivement par Apple (App Store) et Google (Play Store).</li>
+                    </ul>
+
+                    <h4>2.7. Traceurs publicitaires et mesure (Sous réserve de consentement)</h4>
+                    <ul>
+                        <li>Identifiants publicitaires mobiles : IDFA (iOS) et GAID (Android).</li>
+                        <li>Données techniques publicitaires et de performance (impressions, clics, taux de remplissage, données anti-fraude) traitées via nos partenaires publicitaires et de médiation.</li>
+                        <li>Partenaires concernés : Google AdMob (médiation), AppLovin (réseau publicitaire), Meta Audience Network et, le cas échéant, leurs partenaires de demande publicitaire.</li>
+                    </ul>
+
+                    <h4>2.8. PROTECTION DE L'ENFANCE (Mineurs de moins de 13 ans)</h4>
+                    <p>Conformément à nos CGU, l'Application est interdite aux moins de 13 ans. Un contrôle d'accès technique est appliqué lors de l'inscription. L'Éditeur ne collecte pas sciemment de données auprès de mineurs de moins de 13 ans. Pour les utilisateurs adolescents de 13 à 17 ans, des restrictions techniques strictes sont appliquées sur la collecte de données publicitaires (notamment tag TFUA et publicités non personnalisées) afin de respecter le RGPD et la réglementation COPPA. Si un parent ou tuteur découvre que son enfant a fourni des données sans autorisation, il peut nous contacter à contact@scan-horizon.com pour exiger la suppression immédiate de ces informations.</p>
+
+                    <h4>2.9. Données publiques utilisées à des fins marketing (sous réserve de consentement)</h4>
+                    <p>Avec votre consentement explicite, l'Éditeur peut utiliser certaines données rendues publiques sur votre profil (par exemple : pseudo, avatar et données de jeu générales telles que statistiques globales ou accomplissements non sensibles) pour promouvoir l'Application sur ses supports de communication (site web, réseaux sociaux, visuels promotionnels). Aucune donnée sensible ni donnée de contact privée n'est utilisée à cette fin. Ces contenus font l'objet d'une revue périodique afin de vérifier leur pertinence et de limiter leur maintien en ligne au strict nécessaire au regard de la finalité marketing.</p>
+                    <p>Vous pouvez retirer votre consentement à tout moment en nous contactant à contact@scan-horizon.com. Le retrait n'a pas d'effet rétroactif sur les traitements déjà réalisés avant sa prise en compte. Sauf contrainte technique ou légale justifiée, nous procédons au retrait des contenus concernés de nos supports sous 30 jours calendaires ; pour les plateformes tierces (ex. réseaux sociaux), nous effectuons les démarches de suppression dans le même délai et dans la mesure des moyens techniques disponibles.</p>
+
+                    <h3>ARTICLE 3. FINALITÉS ET BASES LÉGALES</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Finalité du traitement</th>
+                                <th>Base Légale (RGPD)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Création et gestion du compte (authentification, profil, restauration)</td>
+                                <td>Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Fonctionnement du Radar &amp; Identification aéronautique</td>
+                                <td>Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Historique des scans et synchronisation multi-appareils</td>
+                                <td>Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Contrôle d'accès mineurs / conformité COPPA</td>
+                                <td>Obligation légale (Art. 6.1.c)</td>
+                            </tr>
+                            <tr>
+                                <td>Envoi de notifications push</td>
+                                <td>Consentement (Art. 6.1.a) + Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Stockage et preuve des consentements horodatés</td>
+                                <td>Consentement (Art. 6.1.a)</td>
+                            </tr>
+                            <tr>
+                                <td>Gestion des Abonnements Premium</td>
+                                <td>Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Signalement / support qualité base de données aéronautiques</td>
+                                <td>Intérêt légitime (Art. 6.1.f)</td>
+                            </tr>
+                            <tr>
+                                <td>Détection de crashs &amp; supervision technique (Firebase Crashlytics, Sentry)</td>
+                                <td>Consentement (Art. 6.1.a) — collecte conditionnée à votre accord</td>
+                            </tr>
+                            <tr>
+                                <td>Sécurité backend, prévention des abus, rate limiting</td>
+                                <td>Intérêt légitime sécurité (Art. 6.1.f)</td>
+                            </tr>
+                            <tr>
+                                <td>Analytics produit (Firebase Analytics)</td>
+                                <td>Consentement (Art. 6.1.a)</td>
+                            </tr>
+                            <tr>
+                                <td>Publicité et mesure de performance publicitaire (Google AdMob - médiation, AppLovin, Meta Audience Network)</td>
+                                <td>Consentement (Art. 6.1.a)</td>
+                            </tr>
+                            <tr>
+                                <td>Valorisation marketing de données publiques de profil (pseudo, avatar, données de jeu générales)</td>
+                                <td>Consentement (Art. 6.1.a)</td>
+                            </tr>
+                            <tr>
+                                <td>Obligations légales (conservation des logs techniques LCEN)</td>
+                                <td>Obligation légale (Art. 6.1.c)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>ARTICLE 4. DESTINATAIRES DES DONNÉES</h3>
+                    <p>À la date de dernière mise à jour de la présente politique, vos données ne font pas l'objet d'une <strong>vente</strong> au sens usuel. Elles sont transmises à nos sous-traitants techniques pour l'exécution du service, et peuvent l'être à d'autres destinataires lorsque cela est nécessaire à la fourniture du service, fondé sur une base légale valable et, le cas échéant, sur votre consentement :</p>
+                    <ul>
+                        <li><strong>Google Cloud / Firebase (Irlande) :</strong> Authentification (Firebase Auth), base de données (Firestore), analytics (Firebase Analytics), crash reporting (Crashlytics), notifications push (FCM), configuration à distance (Remote Config), vérification applicative (App Check).</li>
+                        <li><strong>Google Sign-In (Google LLC, USA) :</strong> Authentification via compte Google.</li>
+                        <li><strong>Railway (Pays-Bas) :</strong> Hébergement du backend applicatif avec serveur localisé à Amsterdam. Railway héberge également le cache Redis utilisé pour la sécurité anti-abus.</li>
+                        <li><strong>PlaneFinder (Royaume-Uni) :</strong> API aéronautique temps réel (envoi de coordonnées GPS anonymisées).</li>
+                        <li><strong>RevenueCat (USA) :</strong> Gestion des abonnements mobiles.</li>
+                        <li><strong>Resend (USA) :</strong> Envoi d'emails transactionnels liés au compte (ex. confirmation de suppression).</li>
+                        <li><strong>Google AdMob (USA) :</strong> Régie publicitaire et médiation (uniquement si vous avez accepté le traçage). Lorsque vous y consentez, une tranche d'âge peut être transmise à AdMob pour le paramétrage publicitaire, la conformité mineurs et la mesure de performance.</li>
+                        <li><strong>AppLovin (USA) :</strong> Réseau publicitaire (diffusion, mesure de performance et signaux anti-fraude, sous réserve de consentement).</li>
+                        <li><strong>Meta Audience Network (USA) :</strong> Diffusion publicitaire et mesure de performance (sous réserve de consentement).</li>
+                        <li><strong>Sentry (UE/USA selon configuration) :</strong> Supervision technique, journalisation des erreurs et rapports de crash (uniquement si vous avez donné votre consentement).</li>
+                        <li><strong>Google Forms (USA) :</strong> Hébergement et traitement des demandes de suppression de compte transmises via formulaire de demande de suppression de données.</li>
+                    </ul>
+
+                    <h3>ARTICLE 5. TRANSFERTS HORS UE</h3>
+                    <p>Certaines données peuvent être traitées en dehors de l'Union européenne, notamment via Google (Firebase Auth, Firestore, Analytics, Crashlytics, FCM, Remote Config, AdMob, Google Sign-In), RevenueCat, Sentry et, selon les flux de données aéronautiques, PlaneFinder (Royaume-Uni). Ces transferts sont encadrés par des mécanismes appropriés (Clauses Contractuelles Types de la Commission Européenne, et/ou adhésion au Data Privacy Framework lorsque applicable) afin d'assurer un niveau de protection adéquat.</p>
+
+                    <h3>ARTICLE 6. COOKIES ET SDK MOBILES</h3>
+                    <p>L'Application n'utilise pas de "cookies" web classiques, mais des SDK (Software Development Kits) et des identifiants mobiles. L'utilisation des traceurs publicitaires et analytiques est soumise à votre consentement préalable, recueilli lors du premier lancement via notre plateforme de gestion des consentements (CMP) <strong>intégrée à l'Application mobile</strong>. Cette CMP n'est pas disponible sur le site web. Vous pouvez modifier ce choix à tout moment dans les paramètres de l'Application ("Gérer mes choix").</p>
+                    <p>Si vous acceptez les traceurs via la CMP, nous pouvons également stocker une <strong>tranche d'âge</strong> (ex. 15-17, 18-24, 25-34, etc.) à des fins de personnalisation, d'analyse statistique et d'adaptation des contenus, et la transmettre à Google AdMob pour le paramétrage publicitaire, la conformité mineurs et la mesure de performance. Nous ne stockons pas votre date de naissance complète dans ce cadre. En l'absence de consentement, cette donnée n'est pas collectée ni transmise via les traceurs publicitaires ou de mesure d'audience.</p>
+
+                    <h3>ARTICLE 7. DURÉE DE CONSERVATION</h3>
+                    <ul>
+                        <li><strong>Données de compte et d'usage :</strong> Conservées pendant la durée d'activité du compte, puis supprimées ou anonymisées selon la politique d'effacement applicable.</li>
+                        <li><strong>Données de consentement :</strong> Conservées à des fins de preuve de conformité pendant la durée nécessaire au respect de nos obligations légales.</li>
+                        <li><strong>Données de sécurité et anti-abus :</strong> Conservées pour une durée limitée et proportionnée à la protection du service, puis supprimées ou anonymisées.</li>
+                        <li><strong>Données analytiques, publicitaires et de mesure d'erreurs :</strong> Firebase Analytics conservées 14 mois par défaut (selon configuration Google). Autres traceurs conservés selon vos choix de consentement et paramétrages des plateformes concernées.</li>
+                        <li><strong>Données soumises à obligations légales spécifiques :</strong> Conservées pendant la durée prévue par la réglementation applicable.</li>
+                    </ul>
+
+                    <h3>ARTICLE 8. SÉCURITÉ ET NOTIFICATION DE FAILLE</h3>
+                    <p>Nous mettons en œuvre des mesures techniques et organisationnelles adaptées (chiffrement en transit, contrôles d'accès, mécanismes anti-abus, journalisation de sécurité, supervision). Certaines mesures automatisées de protection (ex. limitation temporaire de certaines actions) peuvent être appliquées en cas d'anomalie ou d'abus détecté ; elles sont proportionnées et peuvent faire l'objet d'une demande de réexamen via contact@scan-horizon.com. Conformément à l'article 33 du RGPD, en cas de violation de données présentant un risque pour vos droits, l'Éditeur s'engage à notifier la CNIL dans les 72 heures et, si nécessaire, à informer les utilisateurs concernés.</p>
+
+                    <h3>ARTICLE 9. VOS DROITS ET SUPPRESSION DE COMPTE</h3>
+                    <p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de portabilité, de limitation du traitement et d'opposition. Vous recevrez une réponse à votre demande dans un délai maximum de 30 jours à compter de la réception. Pour certaines demandes, une vérification raisonnable d'identité peut être requise.</p>
+                    <p>Lorsque le traitement repose sur votre consentement (ex. traceurs publicitaires / analytics / crash reporting), vous pouvez retirer ce consentement à tout moment, sans effet rétroactif sur les traitements déjà effectués avant ce retrait.</p>
+                    <p>Vous pouvez également vous opposer à tout moment à l'utilisation de vos données publiques de profil à des fins marketing, ou retirer le consentement précédemment donné, en écrivant à contact@scan-horizon.com.</p>
+                    <p><strong>Comment supprimer vos données ?</strong></p>
+                    <ul>
+                        <li><strong>Dans l'Application :</strong> Via le menu "Paramètres > Confidentialité > Supprimer mon compte".</li>
+                        <li><strong>Sur le Web (sans l'app) :</strong> Via notre formulaire de suppression dédié accessible sur cette page.</li>
+                        <li><strong>Par Email :</strong> En écrivant à contact@scan-horizon.com.</li>
+                    </ul>
+                    <p>Vous avez également le droit d'introduire une réclamation auprès de la CNIL : <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a></p>
+
+                    <h3>ARTICLE 10. DROIT CALIFORNIEN (CCPA)</h3>
+                    <p>Pour nos utilisateurs résidant en Californie : à la date de dernière mise à jour, nous ne vendons pas vos données personnelles au sens applicable du CCPA. Si cette situation évolue, nous appliquerons les mécanismes requis (information, options d'opposition et, le cas échéant, consentement) conformément au droit applicable. Vous bénéficiez des mêmes droits d'accès et de suppression que ceux décrits à l'Article 9.</p>
+
+                    <h3>ARTICLE 11. CONTACT</h3>
+                    <p>Pour toute question relative à cette politique, contactez notre Délégué à la Protection des Données (DPO) à :<br>
+                    SAS SCAN HORIZON<br>
+                    10 impasse du Pegan, 01210 Ferney Voltaire, France<br>
+                    Email : contact@scan-horizon.com<br><br>
+                    Vous pouvez également introduire une réclamation auprès de la CNIL : <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a></p>
+                </div>
+
+                <div class="lang-en hidden">
+                    <p><strong>PRIVACY AND DATA PROTECTION POLICY</strong></p>
+                    <p>Version: 1.4<br>Effective Date: May 31, 2026</p>
+
+                    <h3>PREAMBLE</h3>
+                    <p>This Privacy Policy aims to inform Users of the ScanHorizon mobile application, published by SAS SCAN HORIZON, about how their personal data is collected, processed, and protected. The Publisher is committed to strictly complying with Regulation (EU) 2016/679 (GDPR) and the French Data Protection Act (Loi Informatique et Libertés).</p>
+
+                    <h3>ARTICLE 1. DEFINITIONS</h3>
+                    <ul>
+                        <li><strong>Personal Data:</strong> Any information identifying a natural person directly or indirectly (e.g., location, ad ID, IP address).</li>
+                        <li><strong>Processing:</strong> Any operation on this data (collection, storage, deletion).</li>
+                        <li><strong>Data Controller:</strong> The company SAS SCAN HORIZON.</li>
+                    </ul>
+
+                    <h3>ARTICLE 2. COLLECTED DATA</h3>
+                    <p>We only collect data strictly necessary for the proper functioning of the service ("Privacy by Design").</p>
+
+                    <h4>2.1. Account Data</h4>
+                    <ul>
+                        <li><strong>User identifier (Firebase UID):</strong> Generated upon account creation, used for authentication and profile management.</li>
+                        <li><strong>Email, username, avatarId:</strong> Entered during registration or profile setup.</li>
+                        <li><strong>Account status and age bracket (ageRange):</strong> Used for access control, COPPA compliance, and advertising configuration.</li>
+                        <li><strong>Timestamped consents:</strong> Your consent choices (analytics, crash reporting) and their timestamps are stored as proof of compliance.</li>
+                    </ul>
+
+                    <h4>2.2. Geolocation and Sensor Data</h4>
+                    <ul>
+                        <li><strong>Geolocation (GPS):</strong> Latitude, longitude, altitude. Collected in real-time when the App is active, <strong>in foreground only</strong>, to identify aircraft via aeronautical APIs. No background location access is performed.</li>
+                        <li><strong>Orientation sensors:</strong> Compass, accelerometer, gyroscope (pitch/roll). This data is processed <strong>locally</strong> on your device for augmented reality targeting and is not transmitted to our servers.</li>
+                    </ul>
+
+                    <h4>2.3. Technical and Backend Security Data</h4>
+                    <ul>
+                        <li><strong>IP address:</strong> Collected server-side for service security, abuse prevention, and legal compliance.</li>
+                        <li><strong>HTTP technical headers:</strong> User-agent, x-forwarded-for, request origin — used for security and anti-abuse purposes.</li>
+                        <li><strong>Position data (anti-fraud):</strong> GPS coordinates may be temporarily processed server-side to detect abnormal behavior (e.g., geographically inconsistent movements). This data is not retained beyond the durations stated in Article 7.</li>
+                        <li><strong>FCM token:</strong> The push notification token (Firebase Cloud Messaging) is collected for sending notifications; it is revoked upon logout and automatically renewed by the OS.</li>
+                    </ul>
+
+                    <h4>2.4. Augmented Reality Data</h4>
+                    <ul>
+                        <li><strong>Camera Feed:</strong> The App accesses the rear camera to overlay flight information.</li>
+                        <li><strong>Processing:</strong> Image processing is performed <strong>locally</strong> on your device. No images are transmitted to our servers, except via manual action by you (e.g., bug report with screenshot).</li>
+                    </ul>
+
+                    <h4>2.5. Usage Data and History</h4>
+                    <ul>
+                        <li><strong>Scan history:</strong> Your completed scans (aircraft label, details, timestamp, status) are stored in your account to enable multi-device synchronization and history consultation.</li>
+                        <li><strong>Report data:</strong> When you submit an aircraft report or feedback, the submitted information (report type, free-text comment, aircraft data, timestamp) is retained for quality and aeronautical database improvement purposes.</li>
+                        <li><strong>Usage counters:</strong> Free scans, bonus scans, cumulative total — linked to your account for service limit management.</li>
+                    </ul>
+
+                    <h4>2.6. Commercial Data (In-App Purchases)</h4>
+                    <ul>
+                        <li>Purchase history and subscription status (Free/Pro).</li>
+                        <li><strong>Important Note:</strong> The Publisher never has access to your banking details. Transactions are secured and managed exclusively by Apple (App Store) and Google (Play Store).</li>
+                    </ul>
+
+                    <h4>2.7. Advertising and measurement trackers (Subject to Consent)</h4>
+                    <ul>
+                        <li>Mobile advertising IDs: IDFA (iOS) and GAID (Android).</li>
+                        <li>Advertising and performance technical data (impressions, clicks, fill rate, anti-fraud signals) processed through our ad and mediation partners.</li>
+                        <li>Partners involved: Google AdMob (mediation), AppLovin (ad network), Meta Audience Network and, where applicable, their ad demand partners.</li>
+                    </ul>
+
+                    <h4>2.8. CHILD PROTECTION (Minors under 13)</h4>
+                    <p>In accordance with our Terms, the Application is strictly prohibited for users under 13 years old. A technical access control is applied at registration. The Publisher does not knowingly collect data from children under 13. For users aged 13 to 17, strict technical restrictions are applied to advertising data collection (including TFUA tagging and non-personalized ads) to comply with GDPR and COPPA requirements. If a parent or guardian discovers their child has provided data without authorization, they may contact us at contact@scan-horizon.com to request immediate deletion.</p>
+
+                    <h4>2.9. Public data used for marketing purposes (subject to consent)</h4>
+                    <p>With your explicit consent, the Publisher may use certain data made public on your profile (for example: username, avatar, and general gameplay data such as global statistics or non-sensitive achievements) to promote the Application on its communication channels (website, social media, promotional visuals). No sensitive data or private contact data is used for this purpose. These materials are subject to periodic review to ensure they remain relevant and are kept online only for as long as necessary for the marketing purpose.</p>
+                    <p>You may withdraw your consent at any time by contacting contact@scan-horizon.com. Withdrawal has no retroactive effect on processing already carried out before it is taken into account. Unless technically or legally justified otherwise, we remove the relevant materials from our own channels within 30 calendar days; for third-party platforms (e.g. social media), we initiate removal actions within the same timeframe and to the extent technically available.</p>
+
+                    <h3>ARTICLE 3. PURPOSES AND LEGAL BASES</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Purpose of Processing</th>
+                                <th>Legal Basis (GDPR)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Account creation and management (authentication, profile, restore)</td>
+                                <td>Contract Execution (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Radar Operation &amp; Aircraft Identification</td>
+                                <td>Contract Execution (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Scan history and multi-device synchronization</td>
+                                <td>Contract Execution (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Minor access control / COPPA compliance</td>
+                                <td>Legal obligation (Art. 6.1.c)</td>
+                            </tr>
+                            <tr>
+                                <td>Sending push notifications</td>
+                                <td>Consent (Art. 6.1.a) + Contract Execution (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Storage and proof of timestamped consents</td>
+                                <td>Consent (Art. 6.1.a)</td>
+                            </tr>
+                            <tr>
+                                <td>Premium Subscription Management</td>
+                                <td>Contract Execution (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Reports / aeronautical database quality support</td>
+                                <td>Legitimate Interest (Art. 6.1.f)</td>
+                            </tr>
+                            <tr>
+                                <td>Crash detection &amp; technical monitoring (Firebase Crashlytics, Sentry)</td>
+                                <td>Consent (Art. 6.1.a) — collection conditional on your agreement</td>
+                            </tr>
+                            <tr>
+                                <td>Backend security, abuse prevention, rate limiting</td>
+                                <td>Legitimate Interest – security (Art. 6.1.f)</td>
+                            </tr>
+                            <tr>
+                                <td>Product analytics (Firebase Analytics)</td>
+                                <td>Consent (Art. 6.1.a)</td>
+                            </tr>
+                            <tr>
+                                <td>Advertising and ad performance measurement (Google AdMob - mediation, AppLovin, Meta Audience Network)</td>
+                                <td>Consent (Art. 6.1.a)</td>
+                            </tr>
+                            <tr>
+                                <td>Marketing use of public profile data (username, avatar, general gameplay data)</td>
+                                <td>Consent (Art. 6.1.a)</td>
+                            </tr>
+                            <tr>
+                                <td>Legal obligations (technical log retention)</td>
+                                <td>Legal obligation (Art. 6.1.c)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>ARTICLE 4. DATA RECIPIENTS</h3>
+                    <p>As of the latest update of this policy, your data is not subject to <strong>sale</strong> in the usual sense. It is shared with our technical subprocessors for service delivery, and may also be shared with other recipients when necessary to provide the service, based on a valid legal basis and, where required, your consent:</p>
+                    <ul>
+                        <li><strong>Google Cloud / Firebase (Ireland):</strong> Authentication (Firebase Auth), database (Firestore), analytics (Firebase Analytics), crash reporting (Crashlytics), push notifications (FCM), remote configuration (Remote Config), app integrity (App Check).</li>
+                        <li><strong>Google Sign-In (Google LLC, USA):</strong> Authentication via Google account.</li>
+                        <li><strong>Railway (Netherlands):</strong> Backend application hosting with server located in Amsterdam. Railway also hosts the Redis cache used for anti-abuse security.</li>
+                        <li><strong>PlaneFinder (UK):</strong> Real-time aeronautical API (sending anonymized GPS coordinates).</li>
+                        <li><strong>RevenueCat (USA):</strong> Mobile subscription management.</li>
+                        <li><strong>Resend (USA):</strong> Transactional emails related to account lifecycle (e.g. deletion confirmation).</li>
+                        <li><strong>Google AdMob (USA):</strong> Advertising network and mediation layer (only if you accepted tracking). When you consent, an age bracket may be transmitted to AdMob for ad configuration, minor-safety compliance, and performance measurement.</li>
+                        <li><strong>AppLovin (USA):</strong> Advertising network (ad delivery, performance measurement and anti-fraud signals, subject to consent).</li>
+                        <li><strong>Meta Audience Network (USA):</strong> Advertising delivery and performance measurement (subject to consent).</li>
+                        <li><strong>Sentry (EU/USA depending on configuration):</strong> Technical monitoring, error logging, and crash reporting (only if you provided your consent).</li>
+                        <li><strong>Google Forms (USA):</strong> Hosting and processing of account deletion requests submitted via our data deletion request form.</li>
+                    </ul>
+
+                    <h3>ARTICLE 5. TRANSFERS OUTSIDE THE EU</h3>
+                    <p>Some data may be processed outside the European Union, notably through Google (Firebase Auth, Firestore, Analytics, Crashlytics, FCM, Remote Config, AdMob, Google Sign-In), RevenueCat, Sentry and, depending on aeronautical data flows, PlaneFinder (United Kingdom). These transfers are governed by appropriate safeguards (European Commission Standard Contractual Clauses and/or Data Privacy Framework participation where applicable) to ensure an adequate level of protection.</p>
+
+                    <h3>ARTICLE 6. COOKIES AND MOBILE SDKs</h3>
+                    <p>The App does not use classic web "cookies" but SDKs (Software Development Kits) and mobile identifiers. The use of advertising and analytical trackers is subject to your prior consent, collected at first launch via our Consent Management Platform (CMP) <strong>integrated into the mobile application</strong>. This CMP is not available on the website. You can modify this choice at any time in App settings ("Manage my choices").</p>
+                    <p>If you accept trackers via the CMP, we may also store an <strong>age bracket</strong> (e.g. 15-17, 18-24, 25-34, etc.) for personalization, audience measurement, and content adaptation, and transmit it to Google AdMob for ad configuration, minor-safety compliance, and performance measurement. We do not store your full date of birth for this purpose. Without consent, this data is neither collected nor transmitted through advertising or analytics trackers.</p>
+
+                    <h3>ARTICLE 7. RETENTION PERIOD</h3>
+                    <ul>
+                        <li><strong>Account and usage data:</strong> Retained for the duration of account activity, then deleted or anonymized according to the applicable deletion policy.</li>
+                        <li><strong>Consent records:</strong> Retained as compliance evidence for the period required by applicable legal obligations.</li>
+                        <li><strong>Security and anti-abuse data:</strong> Retained for a limited period proportionate to service protection, then deleted or anonymized.</li>
+                        <li><strong>Analytics, advertising and error-monitoring data:</strong> Firebase Analytics retained for 14 months by default (per Google configuration). Other trackers retained according to your consent choices and platform settings.</li>
+                        <li><strong>Data subject to specific legal obligations:</strong> Retained for the duration required by applicable regulation.</li>
+                    </ul>
+
+                    <h3>ARTICLE 8. SECURITY AND BREACH NOTIFICATION</h3>
+                    <p>We implement appropriate technical and organizational security measures (encryption in transit, access controls, anti-abuse mechanisms, security logging, monitoring). Some automated protective measures (e.g. temporary limitation of certain actions) may be applied in case of detected anomaly or abuse; these measures are proportionate and may be reviewed upon request at contact@scan-horizon.com. In accordance with GDPR Article 33, in case of a data breach presenting a risk to your rights, the Publisher commits to notifying the CNIL within 72 hours and, if necessary, informing affected users.</p>
+
+                    <h3>ARTICLE 9. YOUR RIGHTS AND ACCOUNT DELETION</h3>
+                    <p>Under the GDPR, you have the right to access, rectify, erase, port, restrict processing of, and object to the processing of your personal data. You will receive a response to your request within a maximum of 30 days from receipt. For certain requests, reasonable identity verification may be required.</p>
+                    <p>When processing is based on your consent (e.g. advertising / analytics / crash reporting trackers), you may withdraw consent at any time, without affecting processing already carried out before withdrawal.</p>
+                    <p>You may also object at any time to the use of your public profile data for marketing purposes, or withdraw previously given consent, by contacting contact@scan-horizon.com.</p>
+                    <p><strong>How to delete your data?</strong></p>
+                    <ul>
+                        <li><strong>In the App:</strong> Via "Settings > Privacy > Delete my account".</li>
+                        <li><strong>On the Web (no app):</strong> Via our dedicated deletion form accessible on this page.</li>
+                        <li><strong>By Email:</strong> Write to contact@scan-horizon.com.</li>
+                    </ul>
+                    <p>You also have the right to lodge a complaint with the CNIL: <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a> or with your local supervisory authority where applicable.</p>
+
+                    <h3>ARTICLE 10. CALIFORNIA LAW (CCPA)</h3>
+                    <p>For users residing in California: as of the latest update, we do not sell personal data as defined by applicable CCPA rules. If this changes, we will implement required mechanisms (notice, opt-out choices, and where applicable consent) in accordance with applicable law. You benefit from the same rights of access and deletion described in Article 9.</p>
+
+                    <h3>ARTICLE 11. CONTACT</h3>
+                    <p>For any questions regarding this policy, contact our Data Protection Officer (DPO) at:<br>
+                    SAS SCAN HORIZON<br>
+                    10 impasse du Pegan, 01210 Ferney Voltaire, France<br>
+                    Email: contact@scan-horizon.com</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-terms" class="legal-container">
+            <div class="legal-header">
+                <span class="legal-title lang-fr">CONDITIONS GÉNÉRALES (CGU / CGV)</span>
+                <span class="legal-title lang-en hidden">TERMS & CONDITIONS</span>
+                <button class="close-btn" onclick="navigate('home')" aria-label="Fermer"></button>
+            </div>
+            <div class="legal-content">
+                <div class="lang-fr">
+                    <p><strong>CONDITIONS GÉNÉRALES D'UTILISATION ET DE VENTE</strong></p>
+                    <p>Dernière mise à jour : 31 mai 2026</p>
+
+                    <h3>PRÉAMBULE ET ACCEPTATION</h3>
+                    <p>Les présentes Conditions Générales (ci-après le "Contrat") régissent l'utilisation de l'application ScanHorizon (ci-après l'"Application") éditée par la SAS SCAN HORIZON (ci-après l'"Éditeur").</p>
+                    <p>L'INSTALLATION DE L'APPLICATION VAUT ACCEPTATION SANS RÉSERVE. En téléchargeant, installant ou utilisant l'Application, l'Utilisateur confirme avoir lu, compris et accepté l'intégralité de ce Contrat. Si vous refusez tout ou partie de ces conditions, vous devez désinstaller l'Application immédiatement.</p>
+
+                    <h3>TITRE I : CONDITIONS D'UTILISATION (CGU)</h3>
+                    
+                    <h3>ARTICLE 1. ACCÈS, CONDITIONS D'GE ET ÉQUIPEMENT</h3>
+                    <h4>1.1. Majorité Numérique (Interdiction stricte -13 ans)</h4>
+                    <p>Conformément à la réglementation applicable, l'utilisation de l'Application est <strong>strictement interdite aux enfants de moins de 13 ans</strong>. En dessous de cet âge, la collecte de données personnelles n'est pas autorisée sans un mécanisme complexe de vérification parentale que l'Application ne met pas en oeuvre. Tout compte créé par un utilisateur de moins de 13 ans sera supprimé sans préavis.</p>
+                    <h4>1.2. Mineurs (13 à 17 ans)</h4>
+                    <p>Les mineurs âgés de 13 à 17 ans sont autorisés à utiliser l'Application uniquement sous la surveillance et avec l'accord préalable de leurs parents ou tuteurs légaux. Le titulaire de l'autorité parentale est garant du respect des présentes CGU par le mineur.</p>
+                    <p><strong>Achats :</strong> L'Éditeur ne procédera à aucun remboursement pour des achats réalisés par un mineur, ces achats étant réputés avoir été effectués avec l'accord tacite du titulaire du compte bancaire.</p>
+                    <h4>1.3. Équipement</h4>
+                    <p>L'Utilisateur est seul responsable de la compatibilité technique de son matériel et de ses frais de connexion.</p>
+
+                    <div class="warning-box">
+                    <h3>ARTICLE 2. AVERTISSEMENT CRITIQUE : SÉCURITÉ PHYSIQUE</h3>
+                    <p><strong>2.1. Responsabilité de l'Utilisateur :</strong> L'Utilisateur reconnaît utiliser l'Application dans le monde réel. Il s'engage à rester vigilant à son environnement immédiat (voitures, obstacles, piétons) et à ne jamais utiliser l'Application en conduisant un véhicule.</p>
+                    <p><strong>2.2. Exclusion Totale de Responsabilité :</strong> L'Éditeur décline toute responsabilité en cas de dommages corporels, matériels ou de poursuites judiciaires résultant d'un accident, d'une intrusion ou d'une inattention de l'Utilisateur.</p>
+                    <p><strong>2.3. Plafond de responsabilité :</strong> Si la responsabilité de l'Éditeur devait être engagée par un tribunal, le montant des indemnités ne pourra en aucun cas excéder la somme totale payée par l'Utilisateur pour les services de l'Application au cours des 12 derniers mois.</p>
+                    <p><strong>2.4. Zones réglementées (Aéroports / Tarmac) :</strong> L'Application n'incite en aucun cas à s'introduire sur un tarmac, dans des zones aéroportuaires sécurisées, ou dans toute zone contrôlée/interdite d'accès. L'Utilisateur demeure seul responsable du respect des lois, règlements, périmètres de sûreté et consignes des autorités. L'Éditeur se dégage de toute responsabilité en cas d'infraction, d'interpellation, d'amende, de dommages ou de préjudices liés à une intrusion ou à un accès non autorisé.</p>
+                    </div>
+
+                    <h3>ARTICLE 3. AVERTISSEMENT AÉRONAUTIQUE (DISCLAIMER)</h3>
+                    <p>CECI N'EST PAS UN INSTRUMENT DE NAVIGATION. Les informations affichées sur les aéronefs, compagnies aériennes (airlines), altitudes, vitesses, routes ou statuts de vol sont fournies à titre purement informatif et de divertissement. Elles peuvent être incomplètes, retardées, indisponibles ou inexactes. Ces données ne doivent pas être considérées comme exactes, opposables ou adaptées à un usage opérationnel. Il est strictement interdit d'utiliser ScanHorizon pour le pilotage d'aéronefs ou pour toute activité liée à la sécurité aérienne. L'Éditeur décline toute responsabilité au titre des décisions prises sur la base de ces informations.</p>
+
+                    <h3>ARTICLE 4. PROPRIÉTÉ INTELLECTUELLE</h3>
+                    <p>L'ensemble de l'Application (code source, bases de données, design, sons) est la propriété exclusive de la SAS SCAN HORIZON. Interdiction de Scraping : Il est formellement interdit d'extraire la totalité ou une partie substantielle du contenu de la base de données (Art L.341-1 du CPI).</p>
+                    <p>Les photos d'aéronefs utilisées dans l'Application et/ou sur le site sont créditées avec mention du photographe et, lorsque cela s'applique, du site source. Malgré le soin apporté à l'attribution, une erreur peut survenir. En cas de réclamation, de demande de correction, de retrait ou de précision de crédit, merci de nous contacter à <strong>support@scan-horizon.com</strong>. Nous nous engageons à répondre dans les meilleurs délais et à respecter le travail de chaque photographe.</p>
+                    <p><strong>Cession des retours utilisateurs :</strong> Tout retour, suggestion, idée d'amélioration, recommandation, correction ou proposition transmis par un Utilisateur, testeur ou tout autre contributeur, par quelque canal que ce soit, est cédé à l'Éditeur à titre gratuit, exclusif, irrévocable et définitif dès sa transmission, pour le monde entier et pour toute la durée légale de protection applicable. Cette cession inclut notamment les droits de reproduction, représentation, adaptation, traduction, modification, exploitation, commercialisation et sous-licence, sur tout support et par tout procédé, sans contrepartie ni obligation de mention.</p>
+
+                    <h3>ARTICLE 5. DISPONIBILITÉ</h3>
+                    <p>L'Application est fournie "en l'état". L'Éditeur ne garantit pas une disponibilité 100%.</p>
+                    <p>L'Application peut dépendre de services, SDK, API, réseaux ou plateformes tiers (notamment stores, fournisseurs cloud, services de paiement, messagerie, analytics, publicité, cartographie ou données externes). L'Éditeur ne garantit ni la disponibilité continue, ni l'exactitude, ni la performance de ces services tiers et ne saurait être tenu responsable des indisponibilités, erreurs, changements, restrictions, suspensions ou dommages résultant de leur fonctionnement.</p>
+
+                    <h3>TITRE II : CONDITIONS GÉNÉRALES DE VENTE (CGV)</h3>
+
+                    <h3>ARTICLE 6. PRODUITS ET SERVICES PAYANTS</h3>
+                    <p>L'Application propose des achats intégrés via les stores : Abonnements "PRO" (renouvelables tacitement) et Consommables (Skins, Crédits).</p>
+                    <p>Les caractéristiques, la durée, les avantages inclus, les éventuelles périodes d'essai et les conditions commerciales applicables à chaque offre sont celles affichées au moment de l'achat sur la fiche produit du Store.</p>
+                    <p><strong>Modification des avantages et de la nature des services :</strong> L'Éditeur se réserve le droit exclusif et inconditionnel de modifier, ajouter, retirer ou transformer les avantages liés à l'abonnement Premium, leur nature, leur quantité, leur portée fonctionnelle ou leurs conditions d'accès, notamment pour des raisons techniques, de sécurité, d'optimisation du service, ou d'évolution commerciale. Ces modifications peuvent intervenir sans préavis et s'appliquent immédiatement, y compris aux abonnements en cours. L'absence de remboursement ou crédits dûs à ces modifications est expressément convenue par l'Utilisateur à titre de compensation pour les conditions commerciales proposées au moment de l'achat.</p>
+
+                    <h3>ARTICLE 7. PRIX ET MODALITÉS DE PAIEMENT</h3>
+                    <p>La transaction est gérée exclusivement par la plateforme du Store (Apple ou Google). L'Éditeur ne collecte aucune donnée bancaire.</p>
+                    <p>Les prix peuvent évoluer à tout moment. Sauf indication contraire imposée par le Store ou la loi, une évolution de prix s'applique à compter du cycle de facturation suivant.</p>
+                    <p>Les conditions de facturation, de prélèvement, de taxe, de devise, de remboursement et d'annulation du Store applicable prévalent en cas de contradiction avec les présentes CGV.</p>
+
+                    <h3>ARTICLE 8. DROIT DE RÉTRACTATION (RENONCIATION)</h3>
+                    <p>Conformément à l'article L.221-28 du Code de la Consommation, le droit de rétractation ne peut être exercé pour les contrats de fourniture d'un contenu numérique sans support matériel dont l'exécution a commencé.</p>
+                    <p><strong>EN VALIDANT SON ACHAT, L'UTILISATEUR ACCEPTE L'EXÉCUTION IMMÉDIATE DU SERVICE ET RENONCE EXPRESSÉMENT ì SON DROIT DE RÉTRACTATION DE 14 JOURS.</strong> Aucun remboursement ne sera effectué par l'Éditeur.</p>
+
+                    <h3>ARTICLE 9. RÉSILIATION DE L'ABONNEMENT</h3>
+                    <p>L'Utilisateur doit résilier son abonnement via les réglages de son téléphone (Compte Apple ou Google Play). La suppression de l'Application ou du compte ScanHorizon n'arrête pas l'abonnement facturé par le Store.</p>
+                    <p>La résiliation prend effet à la fin de la période d'abonnement en cours, sauf disposition différente prévue par le Store. Sauf règle impérative ou politique Store contraire, aucun remboursement prorata temporis n'est dû pour une période déjà commencée.</p>
+                    <p>En cas d'échec de paiement, de refus de prélèvement ou de suspension par le Store, les avantages liés à l'abonnement peuvent être suspendus ou interrompus jusqu'à régularisation.</p>
+                    <p>La restauration des achats est possible via les mécanismes prévus par Apple/Google, sous réserve du même compte Store et des règles techniques/commerciales du Store concerné.</p>
+
+                    <h3>ARTICLE 10. SUPPRESSION DE COMPTE</h3>
+                    <p>En cas de suppression de compte, l'Utilisateur perd définitivement l'accès à ses achats "Consommables" et à son historique, sans recours ni remboursement.</p>
+
+                    <h3>ARTICLE 10 BIS. PROGRAMME DE PARRAINAGE</h3>
+                    <p>L'Éditeur peut proposer un programme de parrainage permettant à un Utilisateur ("Parrain") d'inviter un tiers ("Filleul") à créer un compte et à utiliser l'Application.</p>
+                    <p>Les récompenses, seuils d'attribution, délais de validation, plafonds éventuels, exclusions, conditions d'éligibilité et modalités de retrait des avantages sont définis dans l'Application, sur les pages d'information associées ou dans toute communication officielle de l'Éditeur. Ces éléments ne sont pas garantis de manière permanente et peuvent être modifiés, suspendus ou supprimés à tout moment.</p>
+                    <p>Les avantages de parrainage n'ont pas de valeur monétaire, ne sont ni cessibles ni échangeables contre de l'argent, sauf mention contraire expresse. En cas d'abus, de fraude, de création de comptes multiples, d'auto-parrainage, de contournement technique ou de non-respect des présentes CGU/CGV, l'Éditeur peut annuler les récompenses, suspendre l'accès au programme ou fermer les comptes concernés, sans préjudice de tout autre recours.</p>
+
+                    <h3>TITRE III : DISPOSITIONS FINALES</h3>
+
+                    <h3>ARTICLE 12. MODIFICATION</h3>
+                    <p>L'Éditeur peut modifier unilatéralement les présentes CGU/CGV et documents contractuels associés (dont Politique de confidentialité et Mentions légales), notamment pour des raisons légales, réglementaires, techniques, de sécurité ou d'évolution du service.</p>
+                    <p>Les modifications sont portées à la connaissance de l'Utilisateur au lancement de l'Application, sans préavis.</p>
+                    <p>Si l'Utilisateur accepte les conditions modifiées, elles s'appliquent immédiatement. En cas de refus, l'Utilisateur ne peut plus utiliser l'Application ni les informations qui y sont proposées et doit cesser tout usage du service.</p>
+
+                    <h3>ARTICLE 13. MÉDIATION DE LA CONSOMMATION</h3>
+                    <p>Conformément aux articles L.612-1 et suivants du Code de la consommation, en cas de litige non résolu par notre service client, l'Utilisateur peut recourir gratuitement au médiateur de la consommation :</p>
+                    <p><strong>SMP</strong> (Société Médiation Professionnelle - Médiateur de la Consommation) <br>
+                    Adresse : Alteritae 5 rue Salvaing 12000 Rodez.</p>
+
+                    <h3>ARTICLE 14. DROIT APPLICABLE</h3>
+                    <p>Les présentes conditions sont soumises au Droit Français.</p>
+                </div>
+
+                <div class="lang-en hidden">
+                    <p><strong>TERMS OF USE AND SALE</strong></p>
+                    <p>Last update: May 31, 2026</p>
+
+                    <h3>PREAMBLE AND ACCEPTANCE</h3>
+                    <p>These General Terms (hereinafter the "Contract") govern the use of the ScanHorizon application (hereinafter the "Application") published by SAS SCAN HORIZON (hereinafter the "Publisher").</p>
+                    <p>INSTALLATION OF THE APPLICATION IMPLIES UNRESERVED ACCEPTANCE. By downloading, installing, or using the Application, the User confirms having read, understood, and accepted this Contract in full. If you refuse any part of these terms, you must uninstall the Application immediately.</p>
+
+                    <h3>TITLE I: TERMS OF USE (TOU)</h3>
+                    
+                    <h3>ARTICLE 1. ACCESS, AGE CONDITIONS AND EQUIPMENT</h3>
+                    <h4>1.1. Digital Majority (Strict Prohibition -13 years)</h4>
+                    <p>In accordance with applicable regulations, use of the Application is <strong>strictly prohibited for children under 13 years old</strong>. Below this age, data collection is not authorized without a complex parental verification mechanism that the App does not implement. Any account created by a user under 13 will be deleted without notice.</p>
+                    <h4>1.2. Minors (13 to 17 years)</h4>
+                    <p>Minors aged 13 to 17 are authorized to use the Application only under the supervision and with the prior agreement of their parents or legal guardians. The holder of parental authority is liable for the minor's compliance with these TOU.</p>
+                    <p><strong>Purchases:</strong> The Publisher will not issue any refunds for purchases made by a minor; such purchases are deemed to have been made with the tacit agreement of the bank account holder.</p>
+                    <h4>1.3. Équipement</h4>
+                    <p>L'Utilisateur est seul responsable de la compatibilité technique de son matériel et de ses frais de connexion.</p>
+
+                    <div class="warning-box">
+                    <h3>ARTICLE 2. CRITICAL WARNING: PHYSICAL SAFETY</h3>
+                    <p><strong>2.1. User Responsibility:</strong> The User acknowledges using the Application in the real world. They agree to remain vigilant of their immediate surroundings (cars, obstacles, pedestrians) and never to use the Application while driving.</p>
+                    <p><strong>2.2. Total Exclusion of Liability:</strong> The Publisher declines all liability in case of bodily injury, property damage, or legal proceedings resulting from an accident, trespassing, or inattention by the User.</p>
+                    <p><strong>2.3. Liability Cap:</strong> If the Publisher is held liable by a court, compensation shall not exceed the total sum paid by the User for the Application's services over the last 12 months.</p>
+                    <p><strong>2.4. Restricted areas (Airports / Tarmac):</strong> The Application does not encourage, request, or permit users to enter airport tarmacs, secured airport areas, or any controlled/restricted zone. Users are solely responsible for complying with applicable laws, security perimeters, airport rules, and authority instructions. The Publisher disclaims any liability for trespassing, fines, arrests, damages, or losses resulting from unauthorized access.</p>
+                    </div>
+
+                    <h3>ARTICLE 3. AERONAUTICAL DISCLAIMER</h3>
+                    <p>THIS IS NOT A NAVIGATION INSTRUMENT. Information about aircraft, airlines, altitude, speed, routes, and flight status is provided for informational and entertainment purposes only. Data may be delayed, incomplete, unavailable, or inaccurate and must not be treated as exact, certified, or operationally reliable. It is strictly forbidden to use ScanHorizon for aircraft piloting or any aviation safety-related activity. The Publisher disclaims liability for decisions or actions taken on the basis of such information.</p>
+
+                    <h3>ARTICLE 4. INTELLECTUAL PROPERTY</h3>
+                    <p>The entire ScanHorizon application (Flutter source code, algorithms, design, "Cyberpunk" graphics) is protected by French and international copyright law. Any unauthorized reproduction is strictly prohibited and constitutes infringement.</p>
+                    <p>Aircraft photos used in the Application and/or on the website include attribution to the photographer and, where applicable, to the source website. Despite our best efforts, attribution errors may occur. For any claim, correction request, takedown request, or credit update, please contact <strong>support@scan-horizon.com</strong>. We will respond as quickly as possible and we respect the work of every photographer.</p>
+                    <p><strong>Assignment of user feedback:</strong> Any feedback, suggestion, improvement idea, recommendation, correction, or proposal submitted by a User, tester, or any contributor through any channel is assigned to the Publisher free of charge, on an exclusive, irrevocable, and final basis upon submission, worldwide and for the full legal term of protection. This assignment includes, in particular, rights of reproduction, representation, adaptation, translation, modification, exploitation, commercialization, and sublicensing, on any medium and by any process, without compensation and without attribution obligation.</p>
+
+                    <h3>ARTICLE 5. AVAILABILITY</h3>
+                    <p>The Application is provided "as is". The Publisher does not guarantee 100% availability.</p>
+                    <p>The Application may rely on third-party services, SDKs, APIs, networks, or platforms (including stores, cloud providers, payment services, messaging, analytics, advertising, mapping, or external data providers). The Publisher does not guarantee the continuous availability, accuracy, or performance of such third-party services and shall not be liable for outages, errors, changes, restrictions, suspensions, or damages resulting from their operation.</p>
+
+                    <h3>TITLE II: TERMS OF SALE (TOS)</h3>
+
+                    <h3>ARTICLE 6. PAID PRODUCTS AND SERVICES</h3>
+                    <p>The App offers In-App Purchases via stores: "PRO" Subscriptions (automatically renewable) and Consumables (Skins, Crédits).</p>
+                    <p>The features, duration, included benefits, any trial periods, and commercial terms applicable to each offer are those displayed at the time of purchase on the relevant Store product page.</p>
+                    <p><strong>Modification of benefits and service scope:</strong> The Publisher exclusively reserves the right to modify, add, remove, or transform the benefits associated with the Premium subscription, their nature, quantity, functional scope, or access conditions, including for technical, security, service optimization, or commercial evolution reasons. These modifications may take effect without notice and apply immediately, including to ongoing subscriptions. The absence of refunds or credits due to such modifications is expressly agreed by the User as compensation for the commercial terms offered at the time of purchase.</p>
+
+                    <h3>ARTICLE 7. PRICE AND PAYMENT</h3>
+                    <p>Transactions are handled exclusively by the Store platform (Apple or Google). The Publisher does not collect any banking data.</p>
+                    <p>Prices may change at any time. Unless otherwise required by the Store or applicable law, a price change applies from the next billing cycle.</p>
+                    <p>The applicable Store terms for billing, charges, taxes, currency, refunds, and cancellation prevail in case of conflict with these Terms of Sale.</p>
+
+                    <h3>ARTICLE 8. RIGHT OF WITHDRAWAL (WAIVER)</h3>
+                    <p>In accordance with consumer law regarding digital content supplied without a tangible medium:</p>
+                    <p><strong>BY VALIDATING THE PURCHASE, THE USER ACCEPTS IMMEDIATE EXECUTION OF THE SERVICE AND EXPRESSLY WAIVES THEIR 14-DAY RIGHT OF WITHDRAWAL.</strong> No refund will be issued by the Publisher.</p>
+
+                    <h3>ARTICLE 9. SUBSCRIPTION TERMINATION</h3>
+                    <p>The User must cancel their subscription via their phone settings (Apple Account or Google Play). Deleting the App or ScanHorizon account does not stop the subscription charged by the Store.</p>
+                    <p>Cancellation takes effect at the end of the current subscription period, unless the Store provides otherwise. Unless mandatory law or Store policy states otherwise, no pro-rata refund is due for a period already started.</p>
+                    <p>In case of payment failure, charge refusal, or Store suspension, subscription benefits may be suspended or interrupted until regularization.</p>
+                    <p>Purchase restoration is available through Apple/Google mechanisms, subject to the same Store account and to the technical/commercial rules of the relevant Store.</p>
+
+                    <h3>ARTICLE 10. ACCOUNT DELETION</h3>
+                    <p>In case of account deletion, the User permanently loses access to their "Consumable" purchases and history, with no recourse or refund possible.</p>
+
+                    <h3>ARTICLE 10 BIS. REFERRAL PROGRAM</h3>
+                    <p>The Publisher may offer a referral program allowing a User ("Referrer") to invite a third party ("Referee") to create an account and use the Application.</p>
+                    <p>Rewards, attribution thresholds, validation delays, potential caps, exclusions, eligibility criteria and benefit withdrawal rules are defined in the Application, on associated information pages, or in any official Publisher communication. These elements are not guaranteed permanently and may be modified, suspended, or discontinued at any time.</p>
+                    <p>Referral benefits have no cash value and are not transferable or redeemable for money unless expressly stated otherwise. In case of abuse, fraud, multiple-account creation, self-referral, technical circumvention, or breach of these Terms, the Publisher may cancel rewards, suspend program access, or close related accounts, without prejudice to any other available remedy.</p>
+
+                    <h3>TITLE III: FINAL PROVISIONS</h3>
+
+                    <h3>ARTICLE 12. MODIFICATION</h3>
+                    <p>The Publisher may unilaterally amend these Terms of Use/Sale and related contractual documents (including the Privacy Policy and Legal Notice), in particular for legal, regulatory, technical, security, or service-evolution reasons.</p>
+                    <p>Changes are brought to the User's attention when launching the Application, without prior notice.</p>
+                    <p>If the User accepts the amended terms, they apply immediately. If the User refuses, they may no longer use the Application or the information made available through it and must cease all use of the service.</p>
+
+                    <h3>ARTICLE 13. MEDIATION</h3>
+                    <p>In case of unresolved dispute, the User may have free recourse to the consumer mediator: <strong>SMP</strong>.</p>
+
+                    <h3>ARTICLE 14. APPLICABLE LAW</h3>
+                    <p>These terms are subject to French Law.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-legal" class="legal-container">
+            <div class="legal-header">
+                <span class="legal-title lang-fr">MENTIONS LÉGALES</span>
+                <span class="legal-title lang-en hidden">LEGAL NOTICE</span>
+                <button class="close-btn" onclick="navigate('home')" aria-label="Fermer"></button>
+            </div>
+            <div class="legal-content">
+                <div class="lang-fr">
+                    <p><strong>MENTIONS LÉGALES</strong></p>
+                    <p>En vigueur au 21/05/2026</p>
+                    <p>Conformément aux dispositions des Articles 6-III et 19 de la Loi n°2004-575 du 21 juin 2004 pour la Confiance dans l'Économie Numérique (LCEN), il est porté à la connaissance des utilisateurs de l'application ScanHorizon les présentes mentions légales.</p>
+
+                    <h3>1. ÉDITEUR DE L'APPLICATION</h3>
+                    <p>L'application ScanHorizon est éditée par la société <strong>SAS SCAN HORIZON</strong>, Société par Actions Simplifiée au capital de 1000 euros.</p>
+                    <ul>
+                        <li><strong>Siège social :</strong> 10 impasse du Pegan, 01210 Ferney-Voltaire, France.</li>
+                        <li><strong>Immatriculation :</strong> 101 177 517 R.C.S. Bourg-en-Bresse.</li>
+                        <li><strong>EUID :</strong> FR0101.101177517.</li>
+                        <li><strong>Numéro de TVA Intracommunautaire :</strong> <strong>FR 66 101 177 517</strong>.</li>
+                        <li><strong>Directeur de la publication :</strong> Paulin BANCKAERT</li>
+                        <li><strong>Contact :</strong> contact@scan-horizon.com</li>
+                    </ul>
+
+                    <h3>2. HÉBERGEMENT DES DONNÉES</h3>
+                    <p>L'application ne dispose pas de serveurs physiques en propre mais utilise une infrastructure Cloud (Serverless).</p>
+                    <ul>
+                        <li><strong>Hébergeur principal (Données & Authentification) :</strong><br>
+                        Google Ireland Limited (Google Cloud Platform / Firebase)<br>
+                        Gordon House, Barrow Street, Dublin 4, IRLANDE<br>
+                        Téléphone : +353 1 436 1001</li>
+                        <li><strong>Hébergement applicatif complémentaire :</strong><br>
+                        Railway (serveur localisé à Amsterdam, Pays-Bas)</li>
+                        <li><strong>Hébergeur Gestion Abonnements :</strong><br>
+                        RevenueCat, Inc.<br>
+                        1032 E Brandon Blvd #3003, Brandon, FL 33511, ÉTATS-UNIS</li>
+                        <li><strong>Prestataire emailing transactionnel :</strong><br>
+                        Resend, Inc. (USA)</li>
+                    </ul>
+
+                    <h3>3. PROPRIÉTÉ INTELLECTUELLE (AVERTISSEMENT)</h3>
+                    <p>L'ensemble de l'application ScanHorizon (code source Flutter, algorithmes de reconnaissance, bases de données, design, graphismes "Cyberpunk", textes et logo) relève de la législation française et internationale sur le droit d'auteur et la propriété intellectuelle.</p>
+                    <p>Toute reproduction, représentation, modification, publication, adaptation de tout ou partie des éléments de l'application, quel que soit le moyen ou le procédé utilisé, est strictement interdite, sauf autorisation écrite préalable de la SAS SCAN HORIZON. Toute exploitation non autorisée sera considérée comme constitutive d'une contrefaçon et poursuivie conformément aux dispositions des articles L.335-2 et suivants du Code de Propriété Intellectuelle.</p>
+                    <p>Les visuels d'aéronefs publiés sont crédités au nom du photographe et, le cas échéant, du site source. Pour toute réclamation relative à un crédit, à une attribution, à une erreur ou à une demande de retrait, contactez <strong>support@scan-horizon.com</strong>. Nous traiterons votre demande dans les meilleurs délais, dans le respect du travail de chaque photographe.</p>
+
+                    <h3>4. LIMITATION DE RESPONSABILITÉ</h3>
+                    <p>Les informations fournies sur l'application (identification des aéronefs, compagnies aériennes, altitude, vitesse, trajectoires, statuts) le sont à titre indicatif et de divertissement uniquement. Elles peuvent comporter des erreurs, retards, omissions ou indisponibilités et ne doivent pas être considérées comme exactes ni utilisées à des fins de navigation aérienne, de sécurité ou de contrôle du trafic aérien. La SAS SCAN HORIZON ne saurait être tenue pour responsable des conséquences directes ou indirectes liées à l'usage de ces informations.</p>
+                    <p>L'application n'incite pas à pénétrer sur un tarmac, en zone aéroportuaire sécurisée ou dans toute zone contrôlée/interdite. Toute intrusion relève de la seule responsabilité de l'utilisateur, et la SAS SCAN HORIZON décline toute responsabilité à ce titre.</p>
+                </div>
+
+                <div class="lang-en hidden">
+                    <p><strong>LEGAL NOTICE</strong></p>
+                    <p>Effective Date: May 21, 2026</p>
+
+                    <h3>1. APP PUBLISHER</h3>
+                    <p>The ScanHorizon application is published by <strong>SAS SCAN HORIZON</strong>, a Simplified Joint Stock Company with a capital of 1000 euros.</p>
+                    <ul>
+                        <li><strong>Headquarters:</strong> 10 impasse du Pegan, 01210 Ferney-Voltaire, France.</li>
+                        <li><strong>Registration:</strong> 101 177 517 R.C.S. Bourg-en-Bresse.</li>
+                        <li><strong>EUID:</strong> FR0101.101177517.</li>
+                        <li><strong>VAT Number:</strong> <strong>FR 66 101 177 517</strong>.</li>
+                        <li><strong>Publication Director:</strong> Paulin BANCKAERT</li>
+                        <li><strong>Contact:</strong> contact@scan-horizon.com</li>
+                    </ul>
+
+                    <h3>2. DATA HOSTING</h3>
+                    <ul>
+                        <li><strong>Main Host (Data & Auth):</strong><br>
+                        Google Ireland Limited (Google Cloud Platform / Firebase)<br>
+                        Gordon House, Barrow Street, Dublin 4, IRELAND</li>
+                        <li><strong>Additional Application Hosting:</strong><br>
+                        Railway (server located in Amsterdam, Netherlands)</li>
+                        <li><strong>Subscription Management Host:</strong><br>
+                        RevenueCat, Inc.<br>
+                        1032 E Brandon Blvd #3003, Brandon, FL 33511, USA</li>
+                        <li><strong>Transactional Email Provider:</strong><br>
+                        Resend, Inc. (USA)</li>
+                    </ul>
+
+                    <h3>3. INTELLECTUAL PROPERTY</h3>
+                    <p>The entire ScanHorizon application (Flutter source code, algorithms, design, "Cyberpunk" graphics) is protected by French and international copyright law. Any unauthorized reproduction is strictly prohibited and constitutes infringement.</p>
+                    <p>Aircraft visuals are published with attribution to the photographer and, when applicable, to the source website. If you identify any issue regarding credit, attribution, licensing, or a removal request, please contact <strong>support@scan-horizon.com</strong>. We handle such requests promptly and with full respect for each photographer's work.</p>
+
+                    <h3>4. LIMITATION OF LIABILITY</h3>
+                    <p>Information provided in the app (aircraft identification, airlines, altitude, speed, routes, status) is for informational and entertainment purposes only. It may contain errors, delays, omissions, or unavailability and must not be considered exact or used for aviation navigation, safety, or air traffic control purposes. SAS SCAN HORIZON disclaims liability for any direct or indirect consequences arising from use of such information.</p>
+                    <p>The Application does not encourage access to airport tarmacs, secured airport areas, or any controlled/restricted zone. Any trespass remains the sole responsibility of the user, and SAS SCAN HORIZON disclaims all related liability.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-delete" class="legal-container">
+            <div class="legal-header">
+                <span class="legal-title lang-fr" style="color:var(--alert-red)">SUPPRESSION DE COMPTE</span>
+                <span class="legal-title lang-en hidden" style="color:var(--alert-red)">DELETE ACCOUNT</span>
+                <button class="close-btn" onclick="navigate('home')" aria-label="Fermer"></button>
+            </div>
+            <div class="legal-content">
+                <div class="lang-fr">
+                    <p>Pour garantir la sécurité de votre demande, nous utilisons un formulaire sécurisé externe. Une fois la demande envoyée, vos données seront supprimées sous 30 jours.</p>
+                </div>
+                <div class="lang-en hidden">
+                    <p>To ensure the security of your request, we use a secure external form. Once submitted, your data will be deleted within 30 days.</p>
+                </div>
+
+                <a href="https://forms.gle/rJrmhro8WhCAsTFM9" target="_blank" class="cyber-btn-submit">
+                    <span class="lang-fr">OUVRIR LE FORMULAIRE DE SUPPRESSION</span>
+                    <span class="lang-en hidden">OPEN DELETION FORM</span>
+                </a>
+                
+                <div style="margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-dim); text-align: center;">
+                    <span class="lang-fr">Ou contactez-nous directement : contact@scan-horizon.com</span>
+                    <span class="lang-en hidden">Or contact us directly: contact@scan-horizon.com</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer>
+        <nav class="footer-links">
+            <a onclick="navigate('privacy')">
+                <span class="lang-fr">Confidentialité</span><span class="lang-en hidden">Privacy</span>
+            </a>
+            <a onclick="navigate('terms')">
+                <span class="lang-fr">CGU / CGV</span><span class="lang-en hidden">Terms</span>
+            </a>
+            <a onclick="navigate('legal')">
+                <span class="lang-fr">Mentions Légales</span><span class="lang-en hidden">Legal Notice</span>
+            </a>
+            <a onclick="navigate('delete')" class="danger-link">
+                <span class="lang-fr">Supprimer mes données</span><span class="lang-en hidden">Delete My Data</span>
+            </a>
+            <a href="mailto:contact@scan-horizon.com?subject=Contact%20Scan%20Horizon">
+                <span class="lang-fr">Contact</span><span class="lang-en hidden">Contact Us</span>
+            </a>
+        </nav>
+        <p class="copyright">SCANHORIZON TERMINAL v1.3.0 — © 2026</p>
+    </footer>
+
+    <script>
+        // État global
+        let state = {
+            lang: 'fr', 
+            view: 'home' 
+        };
+
+        // 1. GESTION DES URLS (ROUTING)
+        function handleRouting() {
+            // On récupère ce qu'il y a après le # (ex: "privacy")
+            const hash = window.location.hash.substring(1);
+            
+            // Liste des vues autorisées
+            const validViews = ['home', 'privacy', 'terms', 'legal', 'delete'];
+
+            if (validViews.includes(hash)) {
+                state.view = hash;
+            } else {
+                state.view = 'home';
+            }
+            
+            updateRender();
+        }
+
+        // 2. NAVIGATION
+        function navigate(viewId) {
+            if (viewId === 'home') {
+                history.pushState("", document.title, window.location.pathname + window.location.search);
+                state.view = 'home';
+                updateRender();
+                window.scrollTo(0,0);
+            } else {
+                window.location.hash = viewId;
+                window.scrollTo(0,0);
+            }
+        }
+
+        // 3. LANGUE
+        function setLanguage(lang) {
+            state.lang = lang;
+            document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            document.documentElement.setAttribute('lang', lang);
+            updateRender();
+        }
+
+        // 4. RENDU VISUEL
+        function updateRender() {
+            // Langue
+            const frElements = document.querySelectorAll('.lang-fr');
+            const enElements = document.querySelectorAll('.lang-en');
+
+            frElements.forEach(el => el.classList.toggle('hidden', state.lang !== 'fr'));
+            enElements.forEach(el => el.classList.toggle('hidden', state.lang !== 'en'));
+
+            // Vues
+            document.getElementById('view-home').style.display = 'none';
+            document.querySelectorAll('.legal-container').forEach(el => el.classList.remove('active'));
+
+            if (state.view === 'home') {
+                document.getElementById('view-home').style.display = 'block';
+                document.querySelector('main').style.maxWidth = '1200px'; // Reset width for home
+            } else {
+                const activeDoc = document.getElementById(`view-${state.view}`);
+                if(activeDoc) activeDoc.classList.add('active');
+            }
+        }
+
+        function animateCounter(element, targetValue, duration = 1000) {
+            const finalValue = Math.max(0, Number.isFinite(targetValue) ? Math.floor(targetValue) : 0);
+            const currentValue = Number((element.textContent || '').replace(/[^\d]/g, ''));
+
+            const parentCard = element.closest('.live-stat-card');
+            if (parentCard && parentCard.classList.contains('is-loading')) {
+                parentCard.classList.remove('is-loading');
+            }
+
+            if (!Number.isFinite(currentValue)) {
+                element.textContent = finalValue.toLocaleString('fr-FR');
+                return;
+            }
+
+            const startTime = performance.now();
+
+            function frame(now) {
+                const progress = Math.min((now - startTime) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = Math.round(currentValue + (finalValue - currentValue) * eased);
+                element.textContent = current.toLocaleString('fr-FR');
+
+                if (progress < 1) {
+                    requestAnimationFrame(frame);
+                } else {
+                    element.textContent = finalValue.toLocaleString('fr-FR');
+                }
+            }
+
+            requestAnimationFrame(frame);
+        }
+
+        function updateStatsCounters(values) {
+            const elements = document.querySelectorAll('[data-stat-key]');
+
+            elements.forEach((element) => {
+                const key = element.getAttribute('data-stat-key');
+                const value = Number(values[key]);
+                animateCounter(element, value, 950);
+            });
+        }
+
+        function setStatsUnavailable(fallbackValue = 4589) {
+            updateStatsCounters({
+                scans: fallbackValue
+            });
+        }
+
+        async function fetchLiveStats() {
+            const defaultScansValue = 4589;
+            const scansUrl = 'https://diffusion-api-production.up.railway.app/api/stats/scans-count';
+            const cacheBust = `cb=${Date.now()}`;
+            const attemptUrls = (url) => [
+                `${url}?${cacheBust}`,
+                `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(`${url}?${cacheBust}`)}`,
+                `https://api.allorigins.win/get?url=${encodeURIComponent(`${url}?${cacheBust}`)}`,
+                `https://r.jina.ai/http://${url.replace(/^https?:\/\//, '')}?${cacheBust}`
+            ];
+
+            async function fetchWithTimeout(url, timeoutMs = 5000) {
+                const controller = new AbortController();
+                const timer = setTimeout(() => controller.abort(), timeoutMs);
+
+                try {
+                    return await fetch(url, { signal: controller.signal, cache: 'no-store', mode: 'cors' });
+                } finally {
+                    clearTimeout(timer);
+                }
+            }
+
+            function extractFirstJsonObject(text) {
+                const jsonMatch = text.match(/\{[\s\S]*?\}/);
+                if (!jsonMatch) {
+                    throw new Error('Aucun objet JSON trouve');
+                }
+                return JSON.parse(jsonMatch[0]);
+            }
+
+            async function parseToObject(response) {
+                const contentType = (response.headers.get('content-type') || '').toLowerCase();
+
+                if (contentType.includes('application/json')) {
+                    return await response.json();
+                }
+
+                const rawText = await response.text();
+                return extractFirstJsonObject(rawText);
+            }
+
+            function normalizePayload(payload) {
+                if (payload && typeof payload === 'object' && typeof payload.contents === 'string') {
+                    return extractFirstJsonObject(payload.contents);
+                }
+                return payload;
+            }
+
+            async function fetchJsonWithCorsFallback(url) {
+                const attempts = attemptUrls(url).map(async (attemptUrl) => {
+                    const response = await fetchWithTimeout(attemptUrl, 2200);
+                    if (!response.ok) {
+                        const error = new Error(`HTTP ${response.status}`);
+                        error.status = response.status;
+                        throw error;
+                    }
+                    const parsed = await parseToObject(response);
+                    return normalizePayload(parsed);
+                });
+
+                try {
+                    return await Promise.any(attempts);
+                } catch (error) {
+                    if (error instanceof AggregateError && Array.isArray(error.errors)) {
+                        const unauthorized = error.errors.find((err) => err && err.status === 401);
+                        if (unauthorized) {
+                            const authError = new Error('HTTP 401');
+                            authError.status = 401;
+                            throw authError;
+                        }
+                    }
+                    throw new Error('Impossible de charger les stats');
+                }
+            }
+
+            try {
+                const scansResponse = await fetchJsonWithCorsFallback(scansUrl);
+                const scansValue = Number(scansResponse.total_scans_in_db);
+                const finalScansValue = Number.isFinite(scansValue) ? scansValue : defaultScansValue;
+
+                localStorage.setItem('scan_horizon_scans_cache', String(finalScansValue));
+
+                updateStatsCounters({
+                    scans: finalScansValue
+                });
+            } catch (error) {
+                const cached = Number(localStorage.getItem('scan_horizon_scans_cache'));
+                const fallbackValue = Number.isFinite(cached) && cached >= 0 ? cached : defaultScansValue;
+                setStatsUnavailable(fallbackValue);
+                console.error('Impossible de charger les statistiques live :', error);
+            }
+        }
+
+        function setupIosAccessFlow() {
+            const modal = document.getElementById('ios-access-modal');
+            const modalTitle = document.getElementById('ios-modal-title');
+            const modalDesc = document.getElementById('ios-modal-desc');
+            const sourceLabel = document.getElementById('ios-source-label');
+            const sourceSelect = document.getElementById('ios-source');
+            const sourceOtherLabel = document.getElementById('ios-source-other-label');
+            const sourceOtherInput = document.getElementById('ios-source-other');
+            const emailLabel = document.getElementById('ios-email-label');
+            const emailInput = document.getElementById('ios-email');
+            const submitBtn = document.getElementById('ios-submit-btn');
+            const cancelBtn = document.getElementById('ios-cancel-btn');
+            const status = document.getElementById('ios-modal-status');
+            const form = document.getElementById('ios-access-form');
+            const openButtons = document.querySelectorAll('.js-ios-request');
+
+            if (!modal || !emailInput || !form || !status || !sourceSelect || !sourceOtherInput) {
+                return;
+            }
+
+            const textByLang = {
+                fr: {
+                    title: 'Demander un accès iOS bêta',
+                    desc: 'Réponds au sondage puis laisse ton e-mail pour préparer ton accès ScanHorizon iOS.',
+                    sourceLabel: 'Comment as-tu entendu parler de l\'app ?',
+                    sourcePlaceholder: 'Choisis une option',
+                    sourceSocial: 'Réseaux sociaux',
+                    sourceFriend: 'Ami',
+                    sourceAi: 'IA',
+                    sourceOther: 'Autre (préciser)',
+                    sourceOtherLabel: 'Précise la source',
+                    sourceOtherPlaceholder: 'Précise ici',
+                    emailLabel: 'Ton e-mail',
+                    emailPlaceholder: 'ton@email.com',
+                    cancel: 'Annuler',
+                    submit: 'Envoyer la demande',
+                    success: 'Merci. Ton client e-mail va s\'ouvrir avec une demande pré-remplie pour contact@scan-horizon.com.',
+                    invalid: 'Entre une adresse e-mail valide.',
+                    invalidSource: 'Indique comment tu as entendu parler de l\'app.',
+                    invalidSourceOther: 'Précise la source dans "Autre (préciser)".'
+                },
+                en: {
+                    title: 'Request iOS beta access',
+                    desc: 'Answer the short survey, then share your email so we can prepare your ScanHorizon iOS access.',
+                    sourceLabel: 'How did you hear about the app?',
+                    sourcePlaceholder: 'Choose an option',
+                    sourceSocial: 'Social Media',
+                    sourceFriend: 'Friend',
+                    sourceAi: 'AI',
+                    sourceOther: 'Other (specify)',
+                    sourceOtherLabel: 'Please specify',
+                    sourceOtherPlaceholder: 'Specify here',
+                    emailLabel: 'Your email',
+                    emailPlaceholder: 'you@email.com',
+                    cancel: 'Cancel',
+                    submit: 'Send my request',
+                    success: 'Thanks. Your email app will open with a pre-filled request to contact@scan-horizon.com.',
+                    invalid: 'Please enter a valid email address.',
+                    invalidSource: 'Please select how you heard about the app.',
+                    invalidSourceOther: 'Please specify your source in "Other (specify)".'
+                }
+            };
+
+            function updateSourceOtherVisibility() {
+                const showOther = sourceSelect.value === 'other';
+                sourceOtherLabel.classList.toggle('hidden', !showOther);
+                sourceOtherInput.classList.toggle('hidden', !showOther);
+                if (!showOther) {
+                    sourceOtherInput.value = '';
+                }
+            }
+
+            function getSelectedSourceForEmail(copy) {
+                if (sourceSelect.value === 'social') {
+                    return copy.sourceSocial;
+                }
+                if (sourceSelect.value === 'friend') {
+                    return copy.sourceFriend;
+                }
+                if (sourceSelect.value === 'ai') {
+                    return copy.sourceAi;
+                }
+                if (sourceSelect.value === 'other') {
+                    return `${copy.sourceOther}: ${sourceOtherInput.value.trim()}`;
+                }
+                return '';
+            }
+
+            function applyModalLanguage() {
+                const copy = textByLang[state.lang] || textByLang.fr;
+                modalTitle.textContent = copy.title;
+                modalDesc.textContent = copy.desc;
+                sourceLabel.textContent = copy.sourceLabel;
+                sourceOtherLabel.textContent = copy.sourceOtherLabel;
+                sourceOtherInput.placeholder = copy.sourceOtherPlaceholder;
+
+                const sourceOptions = sourceSelect.options;
+                if (sourceOptions.length >= 5) {
+                    sourceOptions[0].textContent = copy.sourcePlaceholder;
+                    sourceOptions[1].textContent = copy.sourceSocial;
+                    sourceOptions[2].textContent = copy.sourceFriend;
+                    sourceOptions[3].textContent = copy.sourceAi;
+                    sourceOptions[4].textContent = copy.sourceOther;
+                }
+
+                emailLabel.textContent = copy.emailLabel;
+                emailInput.placeholder = copy.emailPlaceholder;
+                cancelBtn.textContent = copy.cancel;
+                submitBtn.textContent = copy.submit;
+            }
+
+            function openModal() {
+                applyModalLanguage();
+                status.classList.add('hidden');
+                status.textContent = '';
+                sourceSelect.value = '';
+                sourceOtherInput.value = '';
+                updateSourceOtherVisibility();
+                modal.classList.remove('hidden');
+                modal.setAttribute('aria-hidden', 'false');
+                setTimeout(() => {
+                    sourceSelect.focus();
+                }, 0);
+            }
+
+            function closeModal() {
+                modal.classList.add('hidden');
+                modal.setAttribute('aria-hidden', 'true');
+            }
+
+            function isValidEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+
+            openButtons.forEach((btn) => {
+                btn.addEventListener('click', openModal);
+            });
+
+            modal.querySelectorAll('[data-close-ios-modal]').forEach((btn) => {
+                btn.addEventListener('click', closeModal);
+            });
+
+            sourceSelect.addEventListener('change', updateSourceOtherVisibility);
+
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+                    closeModal();
+                }
+            });
+
+            form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                const email = emailInput.value.trim();
+                const copy = textByLang[state.lang] || textByLang.fr;
+                const sourceOther = sourceOtherInput.value.trim();
+
+                if (!sourceSelect.value) {
+                    status.textContent = copy.invalidSource;
+                    status.classList.remove('hidden');
+                    return;
+                }
+
+                if (sourceSelect.value === 'other' && !sourceOther) {
+                    status.textContent = copy.invalidSourceOther;
+                    status.classList.remove('hidden');
+                    return;
+                }
+
+                if (!isValidEmail(email)) {
+                    status.textContent = copy.invalid;
+                    status.classList.remove('hidden');
+                    return;
+                }
+
+                const sourceForEmail = getSelectedSourceForEmail(copy);
+
+                const subject = state.lang === 'en'
+                    ? 'iOS beta access request - Scan Horizon'
+                    : 'Demande accès bêta iOS - Scan Horizon';
+                const body = state.lang === 'en'
+                    ? `Hello Scan Horizon,%0D%0A%0D%0AI would like to test the iOS beta.%0D%0AHow I heard about the app: ${encodeURIComponent(sourceForEmail)}%0D%0AEmail: ${encodeURIComponent(email)}%0D%0ADate: ${encodeURIComponent(new Date().toISOString())}%0D%0A%0D%0AThanks.`
+                    : `Bonjour Scan Horizon,%0D%0A%0D%0AJe souhaite tester la beta iOS.%0D%0AComment j'ai entendu parler de l'app: ${encodeURIComponent(sourceForEmail)}%0D%0AEmail: ${encodeURIComponent(email)}%0D%0ADate: ${encodeURIComponent(new Date().toISOString())}%0D%0A%0D%0AMerci.`;
+
+                const mailtoUrl = `mailto:contact@scan-horizon.com?subject=${encodeURIComponent(subject)}&body=${body}`;
+                window.location.href = mailtoUrl;
+
+                status.textContent = copy.success;
+                status.classList.remove('hidden');
+            });
+        }
+
+        function setupHeroGifCardLoop() {
+            if (window.__scanHorizonHeroLoopInitialized) {
+                return;
+            }
+            window.__scanHorizonHeroLoopInitialized = true;
+
+            const heroImages = document.querySelectorAll('.hero-rotating-logo');
+            if (!heroImages.length) {
+                return;
+            }
+
+            const gifPath = '/loading.gif';
+            const cardSequence = ['/common.png', '/frequent.png', '/rare.png', '/epic.png', '/legendary.png'];
+            const gifLoopDurationMs = 3800;
+            const cardDisplayDurationMs = 3000;
+            const cardFadeOutMs = 220;
+
+            function setStatusText(image, text) {
+                const statusElement = image.parentElement ? image.parentElement.querySelector('.hero-scan-status') : null;
+                if (statusElement) {
+                    statusElement.textContent = text;
+                }
+            }
+
+            function restartGif(image) {
+                image.classList.remove('is-card-pop');
+                image.classList.remove('is-card-fadeout');
+                image.src = `${gifPath}?v=${Date.now()}`;
+                setStatusText(image, 'scanning...');
+            }
+
+            function showCardWithPop(image, cardPath) {
+                image.src = cardPath;
+                image.classList.remove('is-card-pop');
+                image.classList.remove('is-card-fadeout');
+                void image.offsetWidth;
+                image.classList.add('is-card-pop');
+                setStatusText(image, 'plane found !');
+            }
+
+            heroImages.forEach((image) => {
+                let cardIndex = 0;
+
+                function runCycle() {
+                    restartGif(image);
+
+                    setTimeout(() => {
+                        showCardWithPop(image, cardSequence[cardIndex]);
+                        cardIndex = (cardIndex + 1) % cardSequence.length;
+
+                        setTimeout(() => {
+                            image.classList.add('is-card-fadeout');
+                            setTimeout(runCycle, cardFadeOutMs);
+                        }, cardDisplayDurationMs);
+                    }, gifLoopDurationMs);
+                }
+
+                runCycle();
+            });
+        }
+
+        // 5. INITIALISATION
+        window.addEventListener('hashchange', handleRouting);
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // URL dediee FR: langue forcee
+            setLanguage('fr');
+
+            // Deep Linking
+            handleRouting();
+
+            // Stats live
+            fetchLiveStats();
+
+            // Demande d'acces iOS
+            setupIosAccessFlow();
+
+            // Hero: GIF une boucle puis carte avec effet pop
+            setupHeroGifCardLoop();
+        });
+    </script>
+</body>
+</html>
+
