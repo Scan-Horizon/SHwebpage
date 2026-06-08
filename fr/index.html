@@ -9,6 +9,8 @@
     <meta name="author" content="SAS SCAN HORIZON">
     <meta name="robots" content="index, follow">
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <meta name="application-name" content="ScanHorizon">
+    <meta name="apple-mobile-web-app-title" content="ScanHorizon">
     <meta name="theme-color" content="#050a15">
     <link rel="canonical" href="https://scan-horizon.com/fr/">
     <link rel="alternate" hreflang="fr" href="https://scan-horizon.com/fr/">
@@ -1270,7 +1272,6 @@
                             </article>
 
                         </div>
-                        <span class="beta-link">Acces beta test</span>
                         <div class="store-buttons">
                             <a class="store-badge store-badge-ios" href="https://apps.apple.com/fr/app/scanhorizon/id6761936970" target="_blank" rel="noopener noreferrer" aria-label="Download on the App Store">
                                 <span class="store-badge-logo" aria-hidden="true">
@@ -2533,11 +2534,11 @@
                 const sourceForEmail = getSelectedSourceForEmail(copy);
 
                 const subject = state.lang === 'en'
-                    ? 'iOS beta access request - Scan Horizon'
-                    : 'Demande accès bêta iOS - Scan Horizon';
+                    ? 'iOS beta access request - ScanHorizon'
+                    : 'Demande accès bêta iOS - ScanHorizon';
                 const body = state.lang === 'en'
-                    ? `Hello Scan Horizon,%0D%0A%0D%0AI would like to test the iOS beta.%0D%0AHow I heard about the app: ${encodeURIComponent(sourceForEmail)}%0D%0AEmail: ${encodeURIComponent(email)}%0D%0ADate: ${encodeURIComponent(new Date().toISOString())}%0D%0A%0D%0AThanks.`
-                    : `Bonjour Scan Horizon,%0D%0A%0D%0AJe souhaite tester la beta iOS.%0D%0AComment j'ai entendu parler de l'app: ${encodeURIComponent(sourceForEmail)}%0D%0AEmail: ${encodeURIComponent(email)}%0D%0ADate: ${encodeURIComponent(new Date().toISOString())}%0D%0A%0D%0AMerci.`;
+                    ? `Hello ScanHorizon,%0D%0A%0D%0AI would like to test the iOS beta.%0D%0AHow I heard about the app: ${encodeURIComponent(sourceForEmail)}%0D%0AEmail: ${encodeURIComponent(email)}%0D%0ADate: ${encodeURIComponent(new Date().toISOString())}%0D%0A%0D%0AThanks.`
+                    : `Bonjour ScanHorizon,%0D%0A%0D%0AJe souhaite tester la beta iOS.%0D%0AComment j'ai entendu parler de l'app: ${encodeURIComponent(sourceForEmail)}%0D%0AEmail: ${encodeURIComponent(email)}%0D%0ADate: ${encodeURIComponent(new Date().toISOString())}%0D%0A%0D%0AMerci.`;
 
                 const mailtoUrl = `mailto:contact@scan-horizon.com?subject=${encodeURIComponent(subject)}&body=${body}`;
                 window.location.href = mailtoUrl;
