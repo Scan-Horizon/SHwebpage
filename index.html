@@ -3,6 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <script>
+        (function () {
+            var path = window.location.pathname.replace(/\/+$/, "");
+            if (path === "") {
+                var userLang = (navigator.language || "").toLowerCase();
+                var target = userLang.indexOf("fr") === 0 ? "/fr/" : "/en/";
+                window.location.replace(target + window.location.search + window.location.hash);
+            }
+        })();
+    </script>
+    <noscript>
+        <meta http-equiv="refresh" content="0; url=/fr/">
+    </noscript>
     
     <meta name="description" content="ScanHorizon is an augmented reality flight tracking app and innovative aviation game. Identify planes in the sky with live ADS-B tracker data, unlock aircraft cards, and build your virtual hangar app collection.">
     <meta name="keywords" content="augmented reality flight tracking, identify planes in the sky, aircraft card collection, virtual hangar app, live ADS-B tracker, ScanHorizon, innovative aviation game, PlaneFinder API, point and scan aviation">
@@ -11,8 +24,8 @@
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="theme-color" content="#050a15">
     <link rel="canonical" href="https://scan-horizon.com/">
-    <link rel="alternate" hreflang="fr" href="https://scan-horizon.com/">
-    <link rel="alternate" hreflang="en" href="https://scan-horizon.com/">
+    <link rel="alternate" hreflang="fr" href="https://scan-horizon.com/fr/">
+    <link rel="alternate" hreflang="en" href="https://scan-horizon.com/en/">
     <link rel="alternate" hreflang="x-default" href="https://scan-horizon.com/">
 
     <meta property="og:type" content="website">
