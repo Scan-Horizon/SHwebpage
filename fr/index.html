@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     
-    <meta name="description" content="ScanHorizon is an augmented reality flight tracking app and innovative aviation game. Identify planes in the sky with live ADS-B tracker data, unlock aircraft cards, and build your virtual hangar app collection.">
+    <meta name="description" content="ScanHorizon : l'app de suivi des vols en realite augmentee qui vous aide a identifier les avions dans le ciel avec des donnees ADS-B en direct, collectionner des cartes avion et enrichir votre hangar virtuel.">
     <meta name="keywords" content="augmented reality flight tracking, identify planes in the sky, aircraft card collection, virtual hangar app, live ADS-B tracker, ScanHorizon, innovative aviation game, PlaneFinder API, point and scan aviation">
     <meta name="author" content="SAS SCAN HORIZON">
     <meta name="robots" content="index, follow">
@@ -20,8 +20,8 @@
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://scan-horizon.com/fr/">
-    <meta property="og:title" content="ScanHorizon | Augmented Reality Flight Tracking & Aircraft Card Collection">
-    <meta property="og:description" content="Point your phone at aircraft to identify planes in the sky using geolocation, compass direction, and live ADS-B data. Unlock aircraft cards and grow your virtual hangar.">
+    <meta property="og:title" content="ScanHorizon : Scanne le ciel, capture chaque avion">
+    <meta property="og:description" content="Scannez le ciel avec ScanHorizon pour identifier les avions en direct grace aux donnees ADS-B, debloquer des cartes avion et enrichir votre hangar virtuel.">
     <meta property="og:image" content="https://scan-horizon.com/Fav2.jpg">
     <meta property="og:image:alt" content="ScanHorizon app visual">
     <meta property="og:site_name" content="ScanHorizon">
@@ -31,14 +31,14 @@
     <meta property="al:android:package" content="com.app.flighttracktest">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="ScanHorizon | Augmented Reality Flight Tracking App">
-    <meta name="twitter:description" content="Identify planes in the sky with a live ADS-B tracker, unlock aircraft cards, and collect them in your virtual hangar app.">
+    <meta name="twitter:title" content="ScanHorizon : Scanne le ciel, capture chaque avion">
+    <meta name="twitter:description" content="Avec ScanHorizon, identifiez les avions en direct, debloquez des cartes et developpez votre hangar virtuel.">
     <meta name="twitter:image" content="https://scan-horizon.com/Fav2.jpg">
 
     <link rel="icon" type="image/jpeg" href="/Fav2.jpg">
     <link rel="apple-touch-icon" href="/Fav2.jpg">    
     
-    <title>ScanHorizon | Augmented Reality Flight Tracking & Virtual Hangar App</title>
+    <title>ScanHorizon : Scanne le ciel, capture chaque avion</title>
     
     <style>
         :root {
@@ -361,33 +361,32 @@
             flex-wrap: wrap;
         }
 
-        .store-rating {
+        .store-stars {
             display: inline-flex;
             align-items: center;
-            gap: 0.45rem;
-            margin-top: 0.75rem;
-            padding: 0.34rem 0.62rem;
-            border-radius: 999px;
-            border: 1px solid rgba(186, 219, 255, 0.35);
-            background: rgba(7, 22, 40, 0.52);
-            color: #eaf5ff;
-            width: fit-content;
-        }
-
-        .store-rating-score {
-            font-size: 0.95rem;
-            font-weight: 700;
+            gap: 0.08rem;
+            margin-top: 0.85rem;
+            font-size: 1.32rem;
             line-height: 1;
-            letter-spacing: 0.02em;
         }
 
-        .store-rating-stars {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.06rem;
+        .store-stars .star-full {
             color: #ffd96a;
-            font-size: 0.9rem;
-            line-height: 1;
+        }
+
+        .store-stars .star-partial {
+            position: relative;
+            display: inline-block;
+            color: rgba(255, 217, 106, 0.35);
+        }
+
+        .store-stars .star-partial::before {
+            content: "★";
+            position: absolute;
+            inset: 0;
+            width: 80%;
+            overflow: hidden;
+            color: #ffd96a;
         }
 
         .store-badge {
@@ -670,7 +669,7 @@
                 justify-content: center;
             }
 
-            .store-rating {
+            .store-stars {
                 margin-left: auto;
                 margin-right: auto;
             }
@@ -1258,7 +1257,7 @@
             <div class="lang-fr">
                 <section class="hero">
                     <div class="hero-copy">
-                        <h1>Scanne le ciel,<br>capture chaque avion.</h1>
+                        <h1>ScanHorizon :<br>Scanne le ciel, capture chaque avion.</h1>
                         <p>Avec ScanHorizon, tu pointes ton smartphone vers un avion réel, tu le scannes, puis tu ajoutes sa carte à ta collection dans ton hangar virtuel.</p>
                         <div class="live-stats" aria-label="Statistiques en direct">
                             <article class="live-stat-card is-loading">
@@ -1292,16 +1291,13 @@
                                 </span>
                             </a>
                         </div>
-                        <div class="store-rating" aria-label="Note moyenne 5.0 sur 5">
-                            <span class="store-rating-score">5.0</span>
-                            <span class="store-rating-stars" aria-hidden="true">
-                                <span>&#9733;</span>
-                                <span>&#9733;</span>
-                                <span>&#9733;</span>
-                                <span>&#9733;</span>
-                                <span>&#9733;</span>
-                            </span>
-                        </div>
+                        <span class="store-stars" aria-label="Note moyenne 4,8 sur 5">
+                            <span class="star-full" aria-hidden="true">★</span>
+                            <span class="star-full" aria-hidden="true">★</span>
+                            <span class="star-full" aria-hidden="true">★</span>
+                            <span class="star-full" aria-hidden="true">★</span>
+                            <span class="star-partial" aria-hidden="true">★</span>
+                        </span>
                     </div>
                     <div class="radar-scene" aria-hidden="true">
                         <img class="hero-rotating-logo" src="/loading.gif" alt="Logo ScanHorizon">
@@ -1361,16 +1357,13 @@
                                 </span>
                             </a>
                         </div>
-                        <div class="store-rating" aria-label="Average rating 5.0 out of 5">
-                            <span class="store-rating-score">5.0</span>
-                            <span class="store-rating-stars" aria-hidden="true">
-                                <span>&#9733;</span>
-                                <span>&#9733;</span>
-                                <span>&#9733;</span>
-                                <span>&#9733;</span>
-                                <span>&#9733;</span>
-                            </span>
-                        </div>
+                        <span class="store-stars" aria-label="Average rating 4.8 out of 5">
+                            <span class="star-full" aria-hidden="true">★</span>
+                            <span class="star-full" aria-hidden="true">★</span>
+                            <span class="star-full" aria-hidden="true">★</span>
+                            <span class="star-full" aria-hidden="true">★</span>
+                            <span class="star-partial" aria-hidden="true">★</span>
+                        </span>
                     </div>
                     <div class="radar-scene" aria-hidden="true">
                         <img class="hero-rotating-logo" src="/loading.gif" alt="ScanHorizon logo">
