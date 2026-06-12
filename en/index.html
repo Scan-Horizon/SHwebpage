@@ -603,7 +603,70 @@
         .radar-scene {
             display: grid;
             place-items: center;
+            position: relative;
         }
+
+        .hero-splash {
+            position: relative;
+            display: grid;
+            place-items: center;
+        }
+
+        .hero-start-frame {
+            width: min(90vw, 420px);
+            aspect-ratio: 1;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 18px 36px rgba(0, 0, 0, 0.38));
+        }
+
+        .hero-play-btn {
+            position: absolute;
+            width: 86px;
+            height: 86px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.78);
+            background: rgba(5, 17, 34, 0.72);
+            color: #ffffff;
+            font-family: monospace;
+            font-size: 0.92rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            cursor: pointer;
+            backdrop-filter: blur(6px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+
+        .hero-play-btn:hover {
+            transform: scale(1.06);
+            background: rgba(0, 166, 255, 0.42);
+            box-shadow: 0 14px 32px rgba(0, 100, 170, 0.5);
+        }
+
+        .hero-play-btn:focus-visible {
+            outline: 2px solid #9fe3ff;
+            outline-offset: 3px;
+        }
+
+        .hero-play-btn::before {
+            content: '';
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-top: 9px solid transparent;
+            border-bottom: 9px solid transparent;
+            border-left: 14px solid #ffffff;
+            margin-right: 7px;
+            vertical-align: middle;
+        }
+
+        .hero-start-frame.is-hidden,
+        .hero-play-btn.is-hidden {
+            display: none;
+        }
+
         .hero-rotating-logo {
             width: min(90vw, 420px);
             aspect-ratio: 1;
@@ -613,6 +676,10 @@
             pointer-events: none;
             opacity: 1;
             transition: opacity 0.22s ease;
+        }
+
+        .hero-rotating-logo.is-hidden {
+            display: none;
         }
 
         .hero-rotating-logo.is-card-pop {
@@ -632,6 +699,10 @@
             text-transform: lowercase;
             text-align: center;
             min-height: 1.2em;
+        }
+
+        .hero-scan-status.is-hidden {
+            display: none;
         }
 
         @keyframes cardPopIn {
@@ -1302,9 +1373,13 @@
                             </span>
                         </div>
                     </div>
-                    <div class="radar-scene" aria-hidden="true">
-                        <img class="hero-rotating-logo" src="/loading.gif" alt="Logo ScanHorizon">
-                        <p class="hero-scan-status" aria-live="polite">scanning...</p>
+                    <div class="radar-scene">
+                        <div class="hero-splash">
+                            <img class="hero-start-frame" src="/Frame%2041.png" alt="ScanHorizon preview">
+                            <button type="button" class="hero-play-btn" aria-label="Start animation">Play</button>
+                            <img class="hero-rotating-logo is-hidden" src="/loading.gif" alt="Logo ScanHorizon">
+                        </div>
+                        <p class="hero-scan-status is-hidden" aria-live="polite">scanning...</p>
                     </div>
                 </section>
 
@@ -1371,9 +1446,13 @@
                             </span>
                         </div>
                     </div>
-                    <div class="radar-scene" aria-hidden="true">
-                        <img class="hero-rotating-logo" src="/loading.gif" alt="ScanHorizon logo">
-                        <p class="hero-scan-status" aria-live="polite">scanning...</p>
+                    <div class="radar-scene">
+                        <div class="hero-splash">
+                            <img class="hero-start-frame" src="/Frame%2041.png" alt="ScanHorizon preview">
+                            <button type="button" class="hero-play-btn" aria-label="Start animation">Play</button>
+                            <img class="hero-rotating-logo is-hidden" src="/loading.gif" alt="ScanHorizon logo">
+                        </div>
+                        <p class="hero-scan-status is-hidden" aria-live="polite">scanning...</p>
                     </div>
                 </section>
 
@@ -2553,8 +2632,8 @@
             }
             window.__scanHorizonHeroLoopInitialized = true;
 
-            const heroImages = document.querySelectorAll('.hero-rotating-logo');
-            if (!heroImages.length) {
+            const heroScenes = document.querySelectorAll('.radar-scene');
+            if (!heroScenes.length) {
                 return;
             }
 
@@ -2564,37 +2643,40 @@
             const cardDisplayDurationMs = 3000;
             const cardFadeOutMs = 220;
 
-            function setStatusText(image, text) {
-                const statusElement = image.parentElement ? image.parentElement.querySelector('.hero-scan-status') : null;
-                if (statusElement) {
-                    statusElement.textContent = text;
-                }
-            }
-
-            function restartGif(image) {
+            function restartGif(image, statusElement) {
                 image.classList.remove('is-card-pop');
                 image.classList.remove('is-card-fadeout');
                 image.src = `${gifPath}?v=${Date.now()}`;
-                setStatusText(image, 'scanning...');
+                statusElement.textContent = 'scanning...';
             }
 
-            function showCardWithPop(image, cardPath) {
+            function showCardWithPop(image, statusElement, cardPath) {
                 image.src = cardPath;
                 image.classList.remove('is-card-pop');
                 image.classList.remove('is-card-fadeout');
                 void image.offsetWidth;
                 image.classList.add('is-card-pop');
-                setStatusText(image, 'plane found !');
+                statusElement.textContent = 'plane found !';
             }
 
-            heroImages.forEach((image) => {
+            heroScenes.forEach((scene) => {
+                const image = scene.querySelector('.hero-rotating-logo');
+                const statusElement = scene.querySelector('.hero-scan-status');
+                const frame = scene.querySelector('.hero-start-frame');
+                const playButton = scene.querySelector('.hero-play-btn');
+
+                if (!image || !statusElement || !frame || !playButton) {
+                    return;
+                }
+
                 let cardIndex = 0;
+                let hasStarted = false;
 
                 function runCycle() {
-                    restartGif(image);
+                    restartGif(image, statusElement);
 
                     setTimeout(() => {
-                        showCardWithPop(image, cardSequence[cardIndex]);
+                        showCardWithPop(image, statusElement, cardSequence[cardIndex]);
                         cardIndex = (cardIndex + 1) % cardSequence.length;
 
                         setTimeout(() => {
@@ -2604,7 +2686,18 @@
                     }, gifLoopDurationMs);
                 }
 
-                runCycle();
+                playButton.addEventListener('click', () => {
+                    if (hasStarted) {
+                        return;
+                    }
+
+                    hasStarted = true;
+                    frame.classList.add('is-hidden');
+                    playButton.classList.add('is-hidden');
+                    image.classList.remove('is-hidden');
+                    statusElement.classList.remove('is-hidden');
+                    runCycle();
+                });
             });
         }
 
