@@ -601,7 +601,7 @@
             line-height: 1.45;
         }
 
-        /* === Premium Frame Carousel (remplace le GIF hero) === */
+        /* === Premium Frame Carousel === */
         .radar-scene {
             position: relative;
             display: flex;
@@ -614,14 +614,19 @@
             touch-action: pan-y;
         }
 
+        .frame-viewport {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding: 8px 0;
+        }
+
         .frame-carousel {
             position: relative;
-            width: min(90vw, 420px);
+            width: min(80vw, 380px);
             aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
+            margin: 0 auto;
+            overflow: visible;
             border-radius: 24px;
             background: rgba(5, 10, 21, 0.4);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 40px rgba(0, 150, 255, 0.06);
@@ -634,22 +639,32 @@
             height: 100%;
             object-fit: contain;
             display: block;
+            border-radius: 20px;
             opacity: 0;
-            transform: scale(0.92);
+            transform: translateX(0) scale(0.92);
             transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-                        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+                        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                        filter 0.5s ease;
             pointer-events: none;
             will-change: opacity, transform;
         }
         .frame-carousel img.active {
             opacity: 1;
-            transform: scale(1);
+            transform: translateX(0) scale(1);
             z-index: 2;
+            pointer-events: auto;
         }
-        .frame-carousel img.prev {
-            opacity: 0;
-            transform: scale(0.92);
+        .frame-carousel img.slide-prev {
+            opacity: 0.6;
+            transform: translateX(-88%) scale(0.82);
             z-index: 1;
+            filter: brightness(0.72);
+        }
+        .frame-carousel img.slide-next {
+            opacity: 0.6;
+            transform: translateX(88%) scale(0.82);
+            z-index: 1;
+            filter: brightness(0.72);
         }
 
         /* Frame navigation arrows */
@@ -1133,7 +1148,7 @@
             }
 
             .frame-carousel {
-                width: min(88vw, 340px);
+                width: min(82vw, 320px);
             }
 
             .collection-head {
@@ -1488,20 +1503,22 @@
                         </span>
                     </div>
                     <div class="radar-scene" aria-hidden="true">
-                        <div class="frame-carousel" id="frameCarouselFr">
-                            <img src="/Frame%201.png" alt="Frame 1" class="active">
-                            <img src="/Frame%202.png" alt="Frame 2">
-                            <img src="/Frame%203.png" alt="Frame 3">
-                            <img src="/Frame%204.png" alt="Frame 4">
-                            <img src="/Frame%205.png" alt="Frame 5">
-                            <img src="/Frame%206.png" alt="Frame 6">
-                            <button type="button" class="frame-arrow prev" aria-label="Image précédente">
-                                <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-                            </button>
-                            <button type="button" class="frame-arrow next" aria-label="Image suivante">
-                                <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
-                            </button>
-                            <span class="frame-counter" aria-live="polite">1 / 6</span>
+                        <div class="frame-viewport">
+                            <div class="frame-carousel" id="frameCarouselFr">
+                                <img src="/Frame%201.png" alt="Frame 1" class="active">
+                                <img src="/Frame%202.png" alt="Frame 2">
+                                <img src="/Frame%203.png" alt="Frame 3">
+                                <img src="/Frame%204.png" alt="Frame 4">
+                                <img src="/Frame%205.png" alt="Frame 5">
+                                <img src="/Frame%206.png" alt="Frame 6">
+                                <button type="button" class="frame-arrow prev" aria-label="Image précédente">
+                                    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                                </button>
+                                <button type="button" class="frame-arrow next" aria-label="Image suivante">
+                                    <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+                                </button>
+                                <span class="frame-counter" aria-live="polite">1 / 6</span>
+                            </div>
                         </div>
                         <div class="frame-dots" id="frameDotsFr"></div>
                     </div>
@@ -1583,20 +1600,22 @@
                         </span>
                     </div>
                     <div class="radar-scene" aria-hidden="true">
-                        <div class="frame-carousel" id="frameCarouselEn">
-                            <img src="/Frame%201.png" alt="Frame 1" class="active">
-                            <img src="/Frame%202.png" alt="Frame 2">
-                            <img src="/Frame%203.png" alt="Frame 3">
-                            <img src="/Frame%204.png" alt="Frame 4">
-                            <img src="/Frame%205.png" alt="Frame 5">
-                            <img src="/Frame%206.png" alt="Frame 6">
-                            <button type="button" class="frame-arrow prev" aria-label="Previous image">
-                                <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-                            </button>
-                            <button type="button" class="frame-arrow next" aria-label="Next image">
-                                <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
-                            </button>
-                            <span class="frame-counter" aria-live="polite">1 / 6</span>
+                        <div class="frame-viewport">
+                            <div class="frame-carousel" id="frameCarouselEn">
+                                <img src="/Frame%201.png" alt="Frame 1" class="active">
+                                <img src="/Frame%202.png" alt="Frame 2">
+                                <img src="/Frame%203.png" alt="Frame 3">
+                                <img src="/Frame%204.png" alt="Frame 4">
+                                <img src="/Frame%205.png" alt="Frame 5">
+                                <img src="/Frame%206.png" alt="Frame 6">
+                                <button type="button" class="frame-arrow prev" aria-label="Previous image">
+                                    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                                </button>
+                                <button type="button" class="frame-arrow next" aria-label="Next image">
+                                    <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+                                </button>
+                                <span class="frame-counter" aria-live="polite">1 / 6</span>
+                            </div>
                         </div>
                         <div class="frame-dots" id="frameDotsEn"></div>
                     </div>
@@ -2931,12 +2950,17 @@
                     if (index < 0) index = total - 1;
                     if (index >= total) index = 0;
 
+                    const prevIdx = (index - 1 + total) % total;
+                    const nextIdx = (index + 1) % total;
+
                     images.forEach((img, i) => {
-                        img.classList.remove('active', 'prev');
+                        img.classList.remove('active', 'slide-prev', 'slide-next');
                         if (i === index) {
                             img.classList.add('active');
-                        } else if (i === current) {
-                            img.classList.add('prev');
+                        } else if (i === prevIdx) {
+                            img.classList.add('slide-prev');
+                        } else if (i === nextIdx) {
+                            img.classList.add('slide-next');
                         }
                     });
 
@@ -2986,6 +3010,8 @@
                         diff > 0 ? prev() : next();
                     }
                 }, { passive: true });
+
+                goTo(0);
             });
         }
 
