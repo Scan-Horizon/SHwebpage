@@ -608,7 +608,7 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            max-width: 680px;
+            max-width: 520px;
             margin: 0 auto;
             touch-action: pan-y;
         }
@@ -622,7 +622,7 @@
 
         .frame-carousel {
             position: relative;
-            width: min(88vw, 500px);
+            width: min(80vw, 380px);
             aspect-ratio: 1;
             margin: 0 auto;
             overflow: visible;
@@ -654,20 +654,16 @@
             pointer-events: auto;
         }
         .frame-carousel img.slide-prev {
-            opacity: 0;
+            opacity: 0.6;
             transform: translateX(-88%) scale(0.82);
             z-index: 1;
             filter: brightness(0.72);
         }
         .frame-carousel img.slide-next {
-            opacity: 0;
+            opacity: 0.6;
             transform: translateX(88%) scale(0.82);
             z-index: 1;
             filter: brightness(0.72);
-        }
-        .frame-carousel.is-navigating img.slide-prev,
-        .frame-carousel.is-navigating img.slide-next {
-            opacity: 0.6;
         }
 
         /* Frame navigation arrows */
@@ -1151,7 +1147,7 @@
             }
 
             .frame-carousel {
-                width: min(94vw, 380px);
+                width: min(82vw, 320px);
             }
 
             .collection-head {
@@ -2840,9 +2836,7 @@
                 }
                 const dots = dotsContainer.querySelectorAll('.frame-dot');
 
-                let navTimer = null;
-
-                function goTo(index, animate = true) {
+                function goTo(index) {
                     if (index < 0) index = total - 1;
                     if (index >= total) index = 0;
 
@@ -2866,14 +2860,6 @@
 
                     if (counter) {
                         counter.textContent = (index + 1) + ' / ' + total;
-                    }
-
-                    if (animate) {
-                        carousel.classList.add('is-navigating');
-                        clearTimeout(navTimer);
-                        navTimer = setTimeout(() => {
-                            carousel.classList.remove('is-navigating');
-                        }, 700);
                     }
 
                     current = index;
@@ -2913,7 +2899,7 @@
                     }
                 }, { passive: true });
 
-                goTo(0, false);
+                goTo(0);
             });
         }
 
