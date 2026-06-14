@@ -20,6 +20,8 @@
     <meta name="description" content="ScanHorizon is an augmented reality flight tracking app and innovative aviation game. Identify planes in the sky with live ADS-B tracker data, unlock aircraft cards, and build your virtual hangar app collection.">
     <meta name="keywords" content="augmented reality flight tracking, identify planes in the sky, aircraft card collection, virtual hangar app, live ADS-B tracker, ScanHorizon, innovative aviation game, PlaneFinder API, point and scan aviation">
     <meta name="author" content="SAS SCAN HORIZON">
+    <meta name="application-name" content="ScanHorizon">
+    <meta name="apple-mobile-web-app-title" content="ScanHorizon">
     <meta name="robots" content="index, follow">
     <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="theme-color" content="#050a15">
@@ -30,7 +32,7 @@
 
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://scan-horizon.com/">
-    <meta property="og:title" content="ScanHorizon | Augmented Reality Flight Tracking & Aircraft Card Collection">
+    <meta property="og:title" content="ScanHorizon !">
     <meta property="og:description" content="Point your phone at aircraft to identify planes in the sky using geolocation, compass direction, and live ADS-B data. Unlock aircraft cards and grow your virtual hangar.">
     <meta property="og:image" content="https://scan-horizon.com/Fav2.jpg">
     <meta property="og:site_name" content="ScanHorizon">
@@ -38,14 +40,14 @@
     <meta property="og:locale:alternate" content="en_US">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="ScanHorizon | Augmented Reality Flight Tracking App">
+    <meta name="twitter:title" content="ScanHorizon !">
     <meta name="twitter:description" content="Identify planes in the sky with a live ADS-B tracker, unlock aircraft cards, and collect them in your virtual hangar app.">
     <meta name="twitter:image" content="https://scan-horizon.com/Fav2.jpg">
 
     <link rel="icon" type="image/jpeg" href="Fav2.jpg">
     <link rel="apple-touch-icon" href="Fav2.jpg">    
     
-    <title>ScanHorizon | Augmented Reality Flight Tracking & Virtual Hangar App</title>
+    <title>ScanHorizon !</title>
     
     <style>
         :root {
@@ -537,36 +539,165 @@
             line-height: 1.45;
         }
 
+        /* === Premium Frame Carousel (remplace le GIF hero) === */
         .radar-scene {
-            display: grid;
-            place-items: center;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 520px;
+            margin: 0 auto;
+            touch-action: pan-y;
         }
-        .hero-rotating-logo {
+
+        .frame-carousel {
+            position: relative;
             width: min(90vw, 420px);
             aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 24px;
+            background: rgba(5, 10, 21, 0.4);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 40px rgba(0, 150, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .frame-carousel img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
             display: block;
-            filter: drop-shadow(0 18px 36px rgba(0, 0, 0, 0.38));
+            opacity: 0;
+            transform: scale(0.92);
+            transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+                        transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+            pointer-events: none;
+            will-change: opacity, transform;
+        }
+        .frame-carousel img.active {
+            opacity: 1;
+            transform: scale(1);
+            z-index: 2;
+        }
+        .frame-carousel img.prev {
+            opacity: 0;
+            transform: scale(0.92);
+            z-index: 1;
+        }
+
+        /* Frame navigation arrows */
+        .frame-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            background: rgba(0, 10, 25, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #ffffff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        .frame-arrow:hover {
+            background: rgba(0, 180, 255, 0.2);
+            border-color: rgba(0, 200, 255, 0.45);
+            box-shadow: 0 4px 20px rgba(0, 180, 255, 0.2);
+            transform: translateY(-50%) scale(1.06);
+        }
+        .frame-arrow:active {
+            transform: translateY(-50%) scale(0.94);
+        }
+        .frame-arrow.prev {
+            left: 8px;
+        }
+        .frame-arrow.next {
+            right: 8px;
+        }
+        .frame-arrow svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* Frame dots indicator */
+        .frame-dots {
+            display: flex;
+            gap: 6px;
+            margin-top: 12px;
+            padding: 6px 14px;
+            background: rgba(0, 10, 25, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .frame-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            cursor: pointer;
+            transition: all 0.35s ease;
+            padding: 0;
+        }
+        .frame-dot.active {
+            background: #00c8ff;
+            box-shadow: 0 0 8px rgba(0, 200, 255, 0.45);
+            width: 20px;
+            border-radius: 3px;
+        }
+        .frame-dot:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Frame counter badge */
+        .frame-counter {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            z-index: 5;
+            background: rgba(0, 10, 25, 0.6);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3px 10px;
+            font-size: 0.7rem;
+            color: rgba(180, 220, 255, 0.8);
+            font-family: monospace;
+            letter-spacing: 0.5px;
             pointer-events: none;
         }
 
-        .hero-rotating-logo.is-card-pop {
-            animation: cardPopIn 0.34s cubic-bezier(0.2, 0.9, 0.2, 1);
-        }
-
-        @keyframes cardPopIn {
-            0% {
-                transform: scale(0.82);
-                opacity: 0;
-            }
-            65% {
-                transform: scale(1.08);
-                opacity: 1;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
+        /* Label under carousel */
+        .frame-label {
+            margin-top: 8px;
+            color: rgba(180, 210, 240, 0.6);
+            font-size: 0.78rem;
+            font-family: monospace;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         @media (max-width: 900px) {
@@ -972,7 +1103,7 @@
                 text-align: left;
             }
 
-            .hero-rotating-logo {
+            .frame-carousel {
                 width: min(88vw, 340px);
             }
 
@@ -1336,7 +1467,23 @@
                         </div>
                     </div>
                     <div class="radar-scene" aria-hidden="true">
-                        <img class="hero-rotating-logo" src="loading.gif" alt="Logo ScanHorizon">
+                        <div class="frame-carousel" id="frameCarouselFr">
+                            <img src="Frame%201.png" alt="Frame 1" class="active">
+                            <img src="Frame%202.png" alt="Frame 2">
+                            <img src="Frame%203.png" alt="Frame 3">
+                            <img src="Frame%204.png" alt="Frame 4">
+                            <img src="Frame%205.png" alt="Frame 5">
+                            <img src="Frame%206.png" alt="Frame 6">
+                            <button type="button" class="frame-arrow prev" aria-label="Image précédente">
+                                <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                            </button>
+                            <button type="button" class="frame-arrow next" aria-label="Image suivante">
+                                <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+                            </button>
+                            <span class="frame-counter" aria-live="polite">1 / 6</span>
+                        </div>
+                        <div class="frame-dots" id="frameDotsFr"></div>
+                        <p class="frame-label">Raretés des cartes avion</p>
                     </div>
                 </section>
 
@@ -1436,7 +1583,23 @@
                         </div>
                     </div>
                     <div class="radar-scene" aria-hidden="true">
-                        <img class="hero-rotating-logo" src="loading.gif" alt="ScanHorizon logo">
+                        <div class="frame-carousel" id="frameCarouselEn">
+                            <img src="Frame%201.png" alt="Frame 1" class="active">
+                            <img src="Frame%202.png" alt="Frame 2">
+                            <img src="Frame%203.png" alt="Frame 3">
+                            <img src="Frame%204.png" alt="Frame 4">
+                            <img src="Frame%205.png" alt="Frame 5">
+                            <img src="Frame%206.png" alt="Frame 6">
+                            <button type="button" class="frame-arrow prev" aria-label="Previous image">
+                                <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                            </button>
+                            <button type="button" class="frame-arrow next" aria-label="Next image">
+                                <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+                            </button>
+                            <span class="frame-counter" aria-live="polite">1 / 6</span>
+                        </div>
+                        <div class="frame-dots" id="frameDotsEn"></div>
+                        <p class="frame-label">Aircraft card rarities</p>
                     </div>
                 </section>
 
@@ -2651,49 +2814,91 @@
             });
         }
 
-        function setupHeroGifCardLoop() {
-            if (window.__scanHorizonHeroLoopInitialized) {
-                return;
-            }
-            window.__scanHorizonHeroLoopInitialized = true;
+        /* === Premium Frame Carousel Controller === */
+        function setupFrameCarousels() {
+            const carousels = document.querySelectorAll('.frame-carousel');
+            carousels.forEach((carousel) => {
+                const images = carousel.querySelectorAll('img');
+                const prevBtn = carousel.querySelector('.frame-arrow.prev');
+                const nextBtn = carousel.querySelector('.frame-arrow.next');
+                const counter = carousel.querySelector('.frame-counter');
+                const total = images.length;
+                let current = 0;
 
-            const heroImages = document.querySelectorAll('.hero-rotating-logo');
-            if (!heroImages.length) {
-                return;
-            }
+                // Create dots container reference
+                const dotsContainer = carousel.closest('.radar-scene').querySelector('.frame-dots');
+                if (!dotsContainer) return;
 
-            const gifPath = 'loading.gif';
-            const cardSequence = ['common.png', 'frequent.png', 'rare.png', 'epic.png', 'legendary.png'];
-            const gifLoopDurationMs = 3200;
-            const cardDisplayDurationMs = 3000;
+                // Build dots
+                dotsContainer.innerHTML = '';
+                for (let i = 0; i < total; i++) {
+                    const dot = document.createElement('button');
+                    dot.className = 'frame-dot' + (i === 0 ? ' active' : '');
+                    dot.setAttribute('aria-label', 'Image ' + (i + 1));
+                    dot.dataset.index = i;
+                    dotsContainer.appendChild(dot);
+                }
+                const dots = dotsContainer.querySelectorAll('.frame-dot');
 
-            function restartGif(image) {
-                image.classList.remove('is-card-pop');
-                image.src = `${gifPath}?v=${Date.now()}`;
-            }
+                function goTo(index) {
+                    if (index < 0) index = total - 1;
+                    if (index >= total) index = 0;
 
-            function showCardWithPop(image, cardPath) {
-                image.src = cardPath;
-                image.classList.remove('is-card-pop');
-                void image.offsetWidth;
-                image.classList.add('is-card-pop');
-            }
+                    images.forEach((img, i) => {
+                        img.classList.remove('active', 'prev');
+                        if (i === index) {
+                            img.classList.add('active');
+                        } else if (i === current) {
+                            img.classList.add('prev');
+                        }
+                    });
 
-            heroImages.forEach((image) => {
-                let cardIndex = 0;
+                    dots.forEach((dot, i) => {
+                        dot.classList.toggle('active', i === index);
+                    });
 
-                function runCycle() {
-                    restartGif(image);
+                    if (counter) {
+                        counter.textContent = (index + 1) + ' / ' + total;
+                    }
 
-                    setTimeout(() => {
-                        showCardWithPop(image, cardSequence[cardIndex]);
-                        cardIndex = (cardIndex + 1) % cardSequence.length;
-
-                        setTimeout(runCycle, cardDisplayDurationMs);
-                    }, gifLoopDurationMs);
+                    current = index;
                 }
 
-                runCycle();
+                function next() { goTo(current + 1); }
+                function prev() { goTo(current - 1); }
+
+                if (prevBtn) prevBtn.addEventListener('click', (e) => { e.preventDefault(); prev(); });
+                if (nextBtn) nextBtn.addEventListener('click', (e) => { e.preventDefault(); next(); });
+
+                dots.forEach((dot) => {
+                    dot.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        goTo(parseInt(dot.dataset.index));
+                    });
+                });
+
+                // Keyboard support
+                carousel.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
+                    if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
+                });
+                carousel.setAttribute('tabindex', '0');
+
+                // Touch/swipe support
+                let startX = 0;
+                let isDragging = false;
+                carousel.addEventListener('touchstart', (e) => {
+                    startX = e.changedTouches[0].screenX;
+                    isDragging = true;
+                }, { passive: true });
+                carousel.addEventListener('touchend', (e) => {
+                    if (!isDragging) return;
+                    isDragging = false;
+                    const diff = e.changedTouches[0].screenX - startX;
+                    if (Math.abs(diff) > 40) {
+                        diff > 0 ? prev() : next();
+                    }
+                }, { passive: true });
             });
         }
 
@@ -2714,8 +2919,8 @@
             // Demande d'acces iOS
             setupIosAccessFlow();
 
-            // Hero: GIF une boucle puis carte avec effet pop
-            setupHeroGifCardLoop();
+            // Carousel premium avec les images Frame 1-6
+            setupFrameCarousels();
         });
     </script>
 </body>
