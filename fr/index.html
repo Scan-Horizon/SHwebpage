@@ -857,26 +857,30 @@
 
         .cards-carousel {
             position: relative;
-            height: clamp(420px, 62vw, 720px);
-            margin-top: 0.8rem;
+            height: clamp(520px, 70vw, 820px);
+            margin-top: 1.2rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
+            overflow: visible;
+            padding-bottom: 58px;
         }
 
         .aircraft-card {
             position: absolute;
-            width: clamp(240px, 28vw, 360px);
-            border-radius: 24px;
+            width: clamp(280px, 34vw, 430px);
+            border-radius: 28px;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(5, 10, 21, 0.8);
-            box-shadow: 0 16px 30px rgba(0, 0, 0, 0.38);
-            transition: transform 0.22s ease, border-color 0.22s ease;
-        }
-        .aircraft-card:hover {
-            border-color: rgba(126, 212, 255, 0.65);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(5, 10, 21, 0.88);
+            box-shadow: 0 18px 42px rgba(0, 0, 0, 0.48);
+            transition: transform 0.44s cubic-bezier(0.25, 0.8, 0.25, 1),
+                        opacity 0.44s ease,
+                        border-color 0.44s ease,
+                        box-shadow 0.44s ease;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
         }
         .aircraft-card img {
             width: 100%;
@@ -887,43 +891,116 @@
         .aircraft-card.center {
             z-index: 3;
             transform: translateX(0) rotate(0deg) scale(1);
+            border-color: rgba(0, 200, 255, 0.5);
+            box-shadow: 0 26px 64px rgba(0, 0, 0, 0.58),
+                        0 0 52px rgba(0, 150, 255, 0.2);
+            cursor: default;
         }
         .aircraft-card.left {
             z-index: 2;
-            transform: translateX(-62%) rotate(-45deg) scale(0.8);
-            opacity: 0.92;
-            transform-origin: 80% 50%;
+            transform: translateX(-58%) rotate(-18deg) scale(0.82);
+            opacity: 0.78;
+            transform-origin: 100% 55%;
         }
         .aircraft-card.right {
             z-index: 2;
-            transform: translateX(62%) rotate(45deg) scale(0.8);
-            opacity: 0.92;
-            transform-origin: 20% 50%;
+            transform: translateX(58%) rotate(18deg) scale(0.82);
+            opacity: 0.78;
+            transform-origin: 0% 55%;
+        }
+        .aircraft-card.left:hover,
+        .aircraft-card.right:hover {
+            opacity: 0.96;
         }
 
-        .carousel-note {
-            margin-top: 0.3rem;
-            color: rgba(205, 230, 255, 0.82);
-            font-size: 0.88rem;
-            font-family: monospace;
-            text-align: center;
+        .carousel-controls {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10;
         }
+
+        .carousel-arrow {
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 200, 255, 0.3);
+            background: rgba(5, 15, 32, 0.82);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #c0e8ff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.24s ease;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.38);
+        }
+        .carousel-arrow:hover {
+            background: rgba(0, 140, 255, 0.28);
+            border-color: rgba(0, 200, 255, 0.62);
+            box-shadow: 0 4px 26px rgba(0, 150, 255, 0.34);
+            transform: scale(1.1);
+        }
+        .carousel-arrow:active { transform: scale(0.93); }
+        .carousel-arrow svg {
+            width: 20px;
+            height: 20px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            display: block;
+        }
+
+        .carousel-dots {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+        .carousel-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.22);
+            border: none;
+            cursor: pointer;
+            transition: all 0.32s ease;
+            padding: 0;
+        }
+        .carousel-dot.active {
+            background: #00c8ff;
+            box-shadow: 0 0 9px rgba(0, 200, 255, 0.58);
+            width: 22px;
+            border-radius: 3.5px;
+        }
+        .carousel-dot:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .carousel-note { display: none; }
 
         @media (max-width: 700px) {
             .collection-section {
                 margin-top: 3rem;
             }
             .cards-carousel {
-                height: clamp(360px, 95vw, 520px);
+                height: clamp(440px, 104vw, 600px);
             }
             .aircraft-card {
-                width: min(74vw, 310px);
+                width: min(76vw, 320px);
             }
             .aircraft-card.left {
-                transform: translateX(-54%) rotate(-45deg) scale(0.72);
+                transform: translateX(-54%) rotate(-16deg) scale(0.78);
             }
             .aircraft-card.right {
-                transform: translateX(54%) rotate(45deg) scale(0.72);
+                transform: translateX(54%) rotate(16deg) scale(0.78);
             }
         }
 
@@ -1075,9 +1152,8 @@
             }
 
             .cards-carousel {
-                height: clamp(320px, 92vw, 470px);
-                overflow: visible;
-                padding: 10px 0;
+                height: clamp(420px, 98vw, 580px);
+                padding-bottom: 54px;
             }
 
             .mechanics-section {
@@ -1090,19 +1166,19 @@
             }
 
             .aircraft-card {
-                width: min(66vw, 250px);
+                width: min(70vw, 280px);
             }
 
             .aircraft-card.center {
-                transform: translateX(0) rotate(0deg) scale(0.9);
+                transform: translateX(0) rotate(0deg) scale(1);
             }
 
             .aircraft-card.left {
-                transform: translateX(-50%) rotate(-20deg) scale(0.64);
+                transform: translateX(-52%) rotate(-16deg) scale(0.78);
             }
 
             .aircraft-card.right {
-                transform: translateX(50%) rotate(20deg) scale(0.64);
+                transform: translateX(52%) rotate(16deg) scale(0.78);
             }
 
             footer {
@@ -1156,23 +1232,23 @@
             }
 
             .cards-carousel {
-                height: 300px;
+                height: clamp(360px, 104vw, 460px);
             }
 
             .aircraft-card {
-                width: 70vw;
+                width: 72vw;
             }
 
             .aircraft-card.center {
-                transform: translateX(0) rotate(0deg) scale(0.84);
+                transform: translateX(0) rotate(0deg) scale(1);
             }
 
             .aircraft-card.left {
-                transform: translateX(-44%) rotate(-14deg) scale(0.56);
+                transform: translateX(-48%) rotate(-14deg) scale(0.72);
             }
 
             .aircraft-card.right {
-                transform: translateX(44%) rotate(14deg) scale(0.56);
+                transform: translateX(48%) rotate(14deg) scale(0.72);
             }
         }
 
@@ -1428,7 +1504,6 @@
                             <span class="frame-counter" aria-live="polite">1 / 6</span>
                         </div>
                         <div class="frame-dots" id="frameDotsFr"></div>
-                        <p class="frame-label">Raretés des cartes avion</p>
                     </div>
                 </section>
 
@@ -1438,10 +1513,25 @@
                         <h2 class="collection-title">Agrandis ta collection avec des avions communs, rares et iconiques.</h2>
                         <p class="collection-subtitle">Chaque scan peut débloquer une nouvelle carte et enrichir ton hangar.</p>
                     </div>
-                    <div class="cards-carousel">
-                        <article class="aircraft-card left"><img src="/common.png" alt="Carte avion niveau commun"></article>
-                        <article class="aircraft-card center"><img src="/epic.png" alt="Carte avion niveau rare"></article>
-                        <article class="aircraft-card right"><img src="/frequent.png" alt="Carte avion niveau fréquent"></article>
+                    <div class="cards-carousel" data-carousel>
+                        <article class="aircraft-card left"><img src="/common.webp" alt="Carte avion commun"></article>
+                        <article class="aircraft-card center"><img src="/epic.webp" alt="Carte avion épique"></article>
+                        <article class="aircraft-card right"><img src="/frequent.webp" alt="Carte avion fréquent"></article>
+                        <div class="carousel-controls">
+                            <button type="button" class="carousel-arrow prev" aria-label="Carte précédente">
+                                <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            </button>
+                            <div class="carousel-dots">
+                                <button class="carousel-dot active" aria-label="Carte 1"></button>
+                                <button class="carousel-dot" aria-label="Carte 2"></button>
+                                <button class="carousel-dot" aria-label="Carte 3"></button>
+                                <button class="carousel-dot" aria-label="Carte 4"></button>
+                                <button class="carousel-dot" aria-label="Carte 5"></button>
+                            </div>
+                            <button type="button" class="carousel-arrow next" aria-label="Carte suivante">
+                                <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
+                        </div>
                     </div>
                 </section>
 
@@ -1509,7 +1599,6 @@
                             <span class="frame-counter" aria-live="polite">1 / 6</span>
                         </div>
                         <div class="frame-dots" id="frameDotsEn"></div>
-                        <p class="frame-label">Aircraft card rarities</p>
                     </div>
                 </section>
 
@@ -1519,10 +1608,25 @@
                         <h2 class="collection-title">Build your collection with common, rare, and iconic aircraft cards.</h2>
                         <p class="collection-subtitle">Every scan can unlock a new card and grow your hangar.</p>
                     </div>
-                    <div class="cards-carousel">
-                        <article class="aircraft-card left"><img src="/common.png" alt="Common aircraft card"></article>
-                        <article class="aircraft-card center"><img src="/epic.png" alt="Rare aircraft card"></article>
-                        <article class="aircraft-card right"><img src="/frequent.png" alt="Frequent aircraft card"></article>
+                    <div class="cards-carousel" data-carousel>
+                        <article class="aircraft-card left"><img src="/common.webp" alt="Common aircraft card"></article>
+                        <article class="aircraft-card center"><img src="/epic.webp" alt="Epic aircraft card"></article>
+                        <article class="aircraft-card right"><img src="/frequent.webp" alt="Frequent aircraft card"></article>
+                        <div class="carousel-controls">
+                            <button type="button" class="carousel-arrow prev" aria-label="Previous card">
+                                <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            </button>
+                            <div class="carousel-dots">
+                                <button class="carousel-dot active" aria-label="Card 1"></button>
+                                <button class="carousel-dot" aria-label="Card 2"></button>
+                                <button class="carousel-dot" aria-label="Card 3"></button>
+                                <button class="carousel-dot" aria-label="Card 4"></button>
+                                <button class="carousel-dot" aria-label="Card 5"></button>
+                            </div>
+                            <button type="button" class="carousel-arrow next" aria-label="Next card">
+                                <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
+                        </div>
                     </div>
                 </section>
 
@@ -2683,6 +2787,120 @@
             });
         }
 
+        /* === Cards Carousel Controller === */
+        function setupCardsCarousel() {
+            const allCards = [
+                { src: '/legendary.webp', altFr: 'Carte légendaire', altEn: 'Legendary aircraft card' },
+                { src: '/epic.webp',      altFr: 'Carte épique',     altEn: 'Epic aircraft card' },
+                { src: '/rare.webp',      altFr: 'Carte rare',       altEn: 'Rare aircraft card' },
+                { src: '/frequent.webp',  altFr: 'Carte fréquent',   altEn: 'Frequent aircraft card' },
+                { src: '/common.webp',    altFr: 'Carte commun',     altEn: 'Common aircraft card' }
+            ];
+            const n = allCards.length;
+
+            document.querySelectorAll('[data-carousel]').forEach((carousel) => {
+                const cards = Array.from(carousel.querySelectorAll('.aircraft-card'));
+                const prevBtn = carousel.querySelector('.carousel-arrow.prev');
+                const nextBtn = carousel.querySelector('.carousel-arrow.next');
+                const dots = Array.from(carousel.querySelectorAll('.carousel-dot'));
+
+                if (cards.length < 3) return;
+
+                let centerIdx = 1;
+                let isAnimating = false;
+                let autoTimer = null;
+
+                function imgAt(offset) {
+                    return allCards[(centerIdx + offset + n) % n];
+                }
+
+                function setCardImg(card, data) {
+                    const img = card.querySelector('img');
+                    img.src = data.src;
+                    img.alt = state.lang === 'en' ? data.altEn : data.altFr;
+                }
+
+                function renderAll() {
+                    setCardImg(cards[0], imgAt(-1));
+                    setCardImg(cards[1], imgAt(0));
+                    setCardImg(cards[2], imgAt(1));
+                    dots.forEach((dot, i) => dot.classList.toggle('active', i === centerIdx));
+                }
+
+                function shift(dir) {
+                    if (isAnimating) return;
+                    isAnimating = true;
+
+                    const wrapCard = cards[dir === 1 ? 0 : 2];
+
+                    wrapCard.style.transition = 'none';
+                    wrapCard.classList.remove('left', 'center', 'right');
+                    wrapCard.classList.add(dir === 1 ? 'right' : 'left');
+
+                    centerIdx = (centerIdx + dir + n) % n;
+                    setCardImg(wrapCard, imgAt(dir === 1 ? 1 : -1));
+
+                    void wrapCard.offsetWidth;
+
+                    wrapCard.style.transition = '';
+                    cards.forEach(c => c.classList.remove('left', 'center', 'right'));
+
+                    if (dir === 1) {
+                        cards[0].classList.add('right');
+                        cards[1].classList.add('left');
+                        cards[2].classList.add('center');
+                    } else {
+                        cards[0].classList.add('center');
+                        cards[1].classList.add('right');
+                        cards[2].classList.add('left');
+                    }
+
+                    dots.forEach((dot, i) => dot.classList.toggle('active', i === centerIdx));
+                    setTimeout(() => { isAnimating = false; }, 480);
+                }
+
+                function resetAuto() {
+                    if (autoTimer) clearInterval(autoTimer);
+                    autoTimer = setInterval(() => shift(1), 3800);
+                }
+
+                if (prevBtn) prevBtn.addEventListener('click', () => { shift(-1); resetAuto(); });
+                if (nextBtn) nextBtn.addEventListener('click', () => { shift(1); resetAuto(); });
+
+                cards[0].addEventListener('click', () => { shift(-1); resetAuto(); });
+                cards[2].addEventListener('click', () => { shift(1); resetAuto(); });
+
+                dots.forEach((dot, i) => {
+                    dot.addEventListener('click', () => {
+                        if (i === centerIdx || isAnimating) return;
+                        centerIdx = i;
+                        renderAll();
+                        resetAuto();
+                    });
+                });
+
+                let touchStartX = 0;
+                carousel.addEventListener('touchstart', (e) => {
+                    touchStartX = e.changedTouches[0].screenX;
+                }, { passive: true });
+                carousel.addEventListener('touchend', (e) => {
+                    const dx = e.changedTouches[0].screenX - touchStartX;
+                    if (Math.abs(dx) > 40) {
+                        dx < 0 ? (shift(1), resetAuto()) : (shift(-1), resetAuto());
+                    }
+                }, { passive: true });
+
+                carousel.setAttribute('tabindex', '0');
+                carousel.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft') { e.preventDefault(); shift(-1); resetAuto(); }
+                    if (e.key === 'ArrowRight') { e.preventDefault(); shift(1); resetAuto(); }
+                });
+
+                renderAll();
+                resetAuto();
+            });
+        }
+
         /* === Premium Frame Carousel Controller === */
         function setupFrameCarousels() {
             const carousels = document.querySelectorAll('.frame-carousel');
@@ -2786,6 +3004,9 @@
 
             // Demande d'acces iOS
             setupIosAccessFlow();
+
+            // Carrousel de cartes avions
+            setupCardsCarousel();
 
             // Carousel premium avec les images Frame 1-6
             setupFrameCarousels();
