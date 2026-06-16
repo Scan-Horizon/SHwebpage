@@ -547,14 +547,14 @@
             align-items: center;
             justify-content: center;
             width: 100%;
-            max-width: 520px;
+            max-width: 640px;
             margin: 0 auto;
             touch-action: pan-y;
         }
 
         .frame-carousel {
             position: relative;
-            width: min(90vw, 420px);
+            width: min(90vw, 560px);
             aspect-ratio: 1;
             display: flex;
             align-items: center;
@@ -1104,7 +1104,7 @@
             }
 
             .frame-carousel {
-                width: min(88vw, 340px);
+                width: min(92vw, 440px);
             }
 
             .collection-head {
@@ -1474,12 +1474,6 @@
                             <img src="Frame%204.png" alt="Frame 4">
                             <img src="Frame%205.png" alt="Frame 5">
                             <img src="Frame%206.png" alt="Frame 6">
-                            <button type="button" class="frame-arrow prev" aria-label="Image précédente">
-                                <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-                            </button>
-                            <button type="button" class="frame-arrow next" aria-label="Image suivante">
-                                <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
-                            </button>
                             <span class="frame-counter" aria-live="polite">1 / 6</span>
                         </div>
                         <div class="frame-dots" id="frameDotsFr"></div>
@@ -1493,9 +1487,9 @@
                         <p class="collection-subtitle">Chaque scan peut débloquer une nouvelle carte et enrichir ton hangar.</p>
                     </div>
                     <div class="cards-carousel">
-                        <article class="aircraft-card left"><img src="common.png" alt="Carte avion niveau commun"></article>
-                        <article class="aircraft-card center"><img src="epic.png" alt="Carte avion niveau rare"></article>
-                        <article class="aircraft-card right"><img src="frequent.png" alt="Carte avion niveau fréquent"></article>
+                        <article class="aircraft-card left"><img src="common.webp" alt="Carte avion commun"></article>
+                        <article class="aircraft-card center"><img src="rare.webp" alt="Carte avion rare"></article>
+                        <article class="aircraft-card right"><img src="epic.webp" alt="Carte avion épique"></article>
                     </div>
                 </section>
 
@@ -1589,12 +1583,6 @@
                             <img src="Frame%204.png" alt="Frame 4">
                             <img src="Frame%205.png" alt="Frame 5">
                             <img src="Frame%206.png" alt="Frame 6">
-                            <button type="button" class="frame-arrow prev" aria-label="Previous image">
-                                <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-                            </button>
-                            <button type="button" class="frame-arrow next" aria-label="Next image">
-                                <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
-                            </button>
                             <span class="frame-counter" aria-live="polite">1 / 6</span>
                         </div>
                         <div class="frame-dots" id="frameDotsEn"></div>
@@ -1608,9 +1596,9 @@
                         <p class="collection-subtitle">Every scan can unlock a new card and grow your hangar.</p>
                     </div>
                     <div class="cards-carousel">
-                        <article class="aircraft-card left"><img src="common.png" alt="Common aircraft card"></article>
-                        <article class="aircraft-card center"><img src="epic.png" alt="Rare aircraft card"></article>
-                        <article class="aircraft-card right"><img src="frequent.png" alt="Frequent aircraft card"></article>
+                        <article class="aircraft-card left"><img src="common.webp" alt="Common aircraft card"></article>
+                        <article class="aircraft-card center"><img src="rare.webp" alt="Rare aircraft card"></article>
+                        <article class="aircraft-card right"><img src="epic.webp" alt="Epic aircraft card"></article>
                     </div>
                 </section>
 
@@ -2817,17 +2805,13 @@
             const carousels = document.querySelectorAll('.frame-carousel');
             carousels.forEach((carousel) => {
                 const images = carousel.querySelectorAll('img');
-                const prevBtn = carousel.querySelector('.frame-arrow.prev');
-                const nextBtn = carousel.querySelector('.frame-arrow.next');
                 const counter = carousel.querySelector('.frame-counter');
                 const total = images.length;
                 let current = 0;
 
-                // Create dots container reference
                 const dotsContainer = carousel.closest('.radar-scene').querySelector('.frame-dots');
                 if (!dotsContainer) return;
 
-                // Build dots
                 dotsContainer.innerHTML = '';
                 for (let i = 0; i < total; i++) {
                     const dot = document.createElement('button');
@@ -2862,41 +2846,8 @@
                     current = index;
                 }
 
-                function next() { goTo(current + 1); }
-                function prev() { goTo(current - 1); }
-
-                if (prevBtn) prevBtn.addEventListener('click', (e) => { e.preventDefault(); prev(); });
-                if (nextBtn) nextBtn.addEventListener('click', (e) => { e.preventDefault(); next(); });
-
-                dots.forEach((dot) => {
-                    dot.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        goTo(parseInt(dot.dataset.index));
-                    });
-                });
-
-                // Keyboard support
-                carousel.addEventListener('keydown', (e) => {
-                    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
-                    if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
-                });
-                carousel.setAttribute('tabindex', '0');
-
-                // Touch/swipe support
-                let startX = 0;
-                let isDragging = false;
-                carousel.addEventListener('touchstart', (e) => {
-                    startX = e.changedTouches[0].screenX;
-                    isDragging = true;
-                }, { passive: true });
-                carousel.addEventListener('touchend', (e) => {
-                    if (!isDragging) return;
-                    isDragging = false;
-                    const diff = e.changedTouches[0].screenX - startX;
-                    if (Math.abs(diff) > 40) {
-                        diff > 0 ? prev() : next();
-                    }
-                }, { passive: true });
+                goTo(0);
+                setInterval(() => goTo(current + 1), 3500);
             });
         }
 

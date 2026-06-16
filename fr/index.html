@@ -1511,12 +1511,6 @@
                                 <img src="/Frame%204.png" alt="Frame 4">
                                 <img src="/Frame%205.png" alt="Frame 5">
                                 <img src="/Frame%206.png" alt="Frame 6">
-                                <button type="button" class="frame-arrow prev" aria-label="Image précédente">
-                                    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-                                </button>
-                                <button type="button" class="frame-arrow next" aria-label="Image suivante">
-                                    <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
-                                </button>
                                 <span class="frame-counter" aria-live="polite">1 / 6</span>
                             </div>
                         </div>
@@ -1532,23 +1526,8 @@
                     </div>
                     <div class="cards-carousel" data-carousel>
                         <article class="aircraft-card left"><img src="/common.webp" alt="Carte avion commun"></article>
-                        <article class="aircraft-card center"><img src="/epic.webp" alt="Carte avion épique"></article>
-                        <article class="aircraft-card right"><img src="/frequent.webp" alt="Carte avion fréquent"></article>
-                        <div class="carousel-controls">
-                            <button type="button" class="carousel-arrow prev" aria-label="Carte précédente">
-                                <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                            </button>
-                            <div class="carousel-dots">
-                                <button class="carousel-dot active" aria-label="Carte 1"></button>
-                                <button class="carousel-dot" aria-label="Carte 2"></button>
-                                <button class="carousel-dot" aria-label="Carte 3"></button>
-                                <button class="carousel-dot" aria-label="Carte 4"></button>
-                                <button class="carousel-dot" aria-label="Carte 5"></button>
-                            </div>
-                            <button type="button" class="carousel-arrow next" aria-label="Carte suivante">
-                                <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                            </button>
-                        </div>
+                        <article class="aircraft-card center"><img src="/rare.webp" alt="Carte avion rare"></article>
+                        <article class="aircraft-card right"><img src="/epic.webp" alt="Carte avion épique"></article>
                     </div>
                 </section>
 
@@ -1608,12 +1587,6 @@
                                 <img src="/Frame%204.png" alt="Frame 4">
                                 <img src="/Frame%205.png" alt="Frame 5">
                                 <img src="/Frame%206.png" alt="Frame 6">
-                                <button type="button" class="frame-arrow prev" aria-label="Previous image">
-                                    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-                                </button>
-                                <button type="button" class="frame-arrow next" aria-label="Next image">
-                                    <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
-                                </button>
                                 <span class="frame-counter" aria-live="polite">1 / 6</span>
                             </div>
                         </div>
@@ -1629,23 +1602,8 @@
                     </div>
                     <div class="cards-carousel" data-carousel>
                         <article class="aircraft-card left"><img src="/common.webp" alt="Common aircraft card"></article>
-                        <article class="aircraft-card center"><img src="/epic.webp" alt="Epic aircraft card"></article>
-                        <article class="aircraft-card right"><img src="/frequent.webp" alt="Frequent aircraft card"></article>
-                        <div class="carousel-controls">
-                            <button type="button" class="carousel-arrow prev" aria-label="Previous card">
-                                <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"></polyline></svg>
-                            </button>
-                            <div class="carousel-dots">
-                                <button class="carousel-dot active" aria-label="Card 1"></button>
-                                <button class="carousel-dot" aria-label="Card 2"></button>
-                                <button class="carousel-dot" aria-label="Card 3"></button>
-                                <button class="carousel-dot" aria-label="Card 4"></button>
-                                <button class="carousel-dot" aria-label="Card 5"></button>
-                            </div>
-                            <button type="button" class="carousel-arrow next" aria-label="Next card">
-                                <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                            </button>
-                        </div>
+                        <article class="aircraft-card center"><img src="/rare.webp" alt="Rare aircraft card"></article>
+                        <article class="aircraft-card right"><img src="/epic.webp" alt="Epic aircraft card"></article>
                     </div>
                 </section>
 
@@ -2809,25 +2767,20 @@
         /* === Cards Carousel Controller === */
         function setupCardsCarousel() {
             const allCards = [
-                { src: '/legendary.webp', altFr: 'Carte légendaire', altEn: 'Legendary aircraft card' },
-                { src: '/epic.webp',      altFr: 'Carte épique',     altEn: 'Epic aircraft card' },
+                { src: '/common.webp',    altFr: 'Carte commune',    altEn: 'Common aircraft card' },
                 { src: '/rare.webp',      altFr: 'Carte rare',       altEn: 'Rare aircraft card' },
-                { src: '/frequent.webp',  altFr: 'Carte fréquent',   altEn: 'Frequent aircraft card' },
-                { src: '/common.webp',    altFr: 'Carte commun',     altEn: 'Common aircraft card' }
+                { src: '/epic.webp',      altFr: 'Carte épique',     altEn: 'Epic aircraft card' },
+                { src: '/legendary.webp', altFr: 'Carte légendaire', altEn: 'Legendary aircraft card' }
             ];
             const n = allCards.length;
 
             document.querySelectorAll('[data-carousel]').forEach((carousel) => {
                 const cards = Array.from(carousel.querySelectorAll('.aircraft-card'));
-                const prevBtn = carousel.querySelector('.carousel-arrow.prev');
-                const nextBtn = carousel.querySelector('.carousel-arrow.next');
-                const dots = Array.from(carousel.querySelectorAll('.carousel-dot'));
 
                 if (cards.length < 3) return;
 
                 let centerIdx = 1;
                 let isAnimating = false;
-                let autoTimer = null;
 
                 function imgAt(offset) {
                     return allCards[(centerIdx + offset + n) % n];
@@ -2843,7 +2796,6 @@
                     setCardImg(cards[0], imgAt(-1));
                     setCardImg(cards[1], imgAt(0));
                     setCardImg(cards[2], imgAt(1));
-                    dots.forEach((dot, i) => dot.classList.toggle('active', i === centerIdx));
                 }
 
                 function shift(dir) {
@@ -2874,49 +2826,11 @@
                         cards[2].classList.add('left');
                     }
 
-                    dots.forEach((dot, i) => dot.classList.toggle('active', i === centerIdx));
                     setTimeout(() => { isAnimating = false; }, 480);
                 }
 
-                function resetAuto() {
-                    if (autoTimer) clearInterval(autoTimer);
-                    autoTimer = setInterval(() => shift(1), 3800);
-                }
-
-                if (prevBtn) prevBtn.addEventListener('click', () => { shift(-1); resetAuto(); });
-                if (nextBtn) nextBtn.addEventListener('click', () => { shift(1); resetAuto(); });
-
-                cards[0].addEventListener('click', () => { shift(-1); resetAuto(); });
-                cards[2].addEventListener('click', () => { shift(1); resetAuto(); });
-
-                dots.forEach((dot, i) => {
-                    dot.addEventListener('click', () => {
-                        if (i === centerIdx || isAnimating) return;
-                        centerIdx = i;
-                        renderAll();
-                        resetAuto();
-                    });
-                });
-
-                let touchStartX = 0;
-                carousel.addEventListener('touchstart', (e) => {
-                    touchStartX = e.changedTouches[0].screenX;
-                }, { passive: true });
-                carousel.addEventListener('touchend', (e) => {
-                    const dx = e.changedTouches[0].screenX - touchStartX;
-                    if (Math.abs(dx) > 40) {
-                        dx < 0 ? (shift(1), resetAuto()) : (shift(-1), resetAuto());
-                    }
-                }, { passive: true });
-
-                carousel.setAttribute('tabindex', '0');
-                carousel.addEventListener('keydown', (e) => {
-                    if (e.key === 'ArrowLeft') { e.preventDefault(); shift(-1); resetAuto(); }
-                    if (e.key === 'ArrowRight') { e.preventDefault(); shift(1); resetAuto(); }
-                });
-
                 renderAll();
-                resetAuto();
+                setInterval(() => shift(1), 3800);
             });
         }
 
@@ -2925,17 +2839,13 @@
             const carousels = document.querySelectorAll('.frame-carousel');
             carousels.forEach((carousel) => {
                 const images = carousel.querySelectorAll('img');
-                const prevBtn = carousel.querySelector('.frame-arrow.prev');
-                const nextBtn = carousel.querySelector('.frame-arrow.next');
                 const counter = carousel.querySelector('.frame-counter');
                 const total = images.length;
                 let current = 0;
 
-                // Create dots container reference
                 const dotsContainer = carousel.closest('.radar-scene').querySelector('.frame-dots');
                 if (!dotsContainer) return;
 
-                // Build dots
                 dotsContainer.innerHTML = '';
                 for (let i = 0; i < total; i++) {
                     const dot = document.createElement('button');
@@ -2975,43 +2885,8 @@
                     current = index;
                 }
 
-                function next() { goTo(current + 1); }
-                function prev() { goTo(current - 1); }
-
-                if (prevBtn) prevBtn.addEventListener('click', (e) => { e.preventDefault(); prev(); });
-                if (nextBtn) nextBtn.addEventListener('click', (e) => { e.preventDefault(); next(); });
-
-                dots.forEach((dot) => {
-                    dot.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        goTo(parseInt(dot.dataset.index));
-                    });
-                });
-
-                // Keyboard support
-                carousel.addEventListener('keydown', (e) => {
-                    if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
-                    if (e.key === 'ArrowRight') { e.preventDefault(); next(); }
-                });
-                carousel.setAttribute('tabindex', '0');
-
-                // Touch/swipe support
-                let startX = 0;
-                let isDragging = false;
-                carousel.addEventListener('touchstart', (e) => {
-                    startX = e.changedTouches[0].screenX;
-                    isDragging = true;
-                }, { passive: true });
-                carousel.addEventListener('touchend', (e) => {
-                    if (!isDragging) return;
-                    isDragging = false;
-                    const diff = e.changedTouches[0].screenX - startX;
-                    if (Math.abs(diff) > 40) {
-                        diff > 0 ? prev() : next();
-                    }
-                }, { passive: true });
-
                 goTo(0);
+                setInterval(() => goTo(current + 1), 3500);
             });
         }
 
