@@ -186,7 +186,7 @@
         /* --- Home Redesign --- */
         .hero {
             display: grid;
-            grid-template-columns: minmax(280px, 1fr) minmax(320px, 460px);
+            grid-template-columns: minmax(280px, 1fr) minmax(340px, 500px);
             align-items: center;
             gap: 3rem;
             min-height: calc(100vh - 280px);
@@ -554,7 +554,7 @@
 
         .frame-carousel {
             position: relative;
-            width: min(45vw, 340px);
+            width: min(48vw, 400px);
             aspect-ratio: 9/16;
             display: flex;
             align-items: center;
@@ -1104,7 +1104,7 @@
             }
 
             .frame-carousel {
-                width: min(72vw, 320px);
+                width: min(80vw, 360px);
             }
 
             .collection-head {
@@ -2808,10 +2808,12 @@
                 const counter = carousel.querySelector('.frame-counter');
                 const total = images.length;
                 let current = 0;
+                let autoTimer = null;
 
                 const dotsContainer = carousel.closest('.radar-scene').querySelector('.frame-dots');
                 if (!dotsContainer) return;
 
+                // Dots
                 dotsContainer.innerHTML = '';
                 for (let i = 0; i < total; i++) {
                     const dot = document.createElement('button');
@@ -2821,6 +2823,24 @@
                     dotsContainer.appendChild(dot);
                 }
                 const dots = dotsContainer.querySelectorAll('.frame-dot');
+
+                // Prev / Next arrows
+                const prevBtn = document.createElement('button');
+                prevBtn.className = 'frame-arrow prev';
+                prevBtn.setAttribute('aria-label', 'Image précédente');
+                prevBtn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>';
+                carousel.appendChild(prevBtn);
+
+                const nextBtn = document.createElement('button');
+                nextBtn.className = 'frame-arrow next';
+                nextBtn.setAttribute('aria-label', 'Image suivante');
+                nextBtn.innerHTML = '<svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>';
+                carousel.appendChild(nextBtn);
+
+                function resetAuto() {
+                    clearInterval(autoTimer);
+                    autoTimer = setInterval(() => goTo(current + 1), 3500);
+                }
 
                 function goTo(index) {
                     if (index < 0) index = total - 1;
@@ -2846,8 +2866,22 @@
                     current = index;
                 }
 
+                prevBtn.addEventListener('click', () => { goTo(current - 1); resetAuto(); });
+                nextBtn.addEventListener('click', () => { goTo(current + 1); resetAuto(); });
+                dots.forEach((dot) => {
+                    dot.addEventListener('click', () => { goTo(parseInt(dot.dataset.index, 10)); resetAuto(); });
+                });
+
+                // Swipe tactile
+                let touchStartX = 0;
+                carousel.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+                carousel.addEventListener('touchend', (e) => {
+                    const dx = e.changedTouches[0].clientX - touchStartX;
+                    if (Math.abs(dx) > 40) { goTo(dx < 0 ? current + 1 : current - 1); resetAuto(); }
+                }, { passive: true });
+
                 goTo(0);
-                setInterval(() => goTo(current + 1), 3500);
+                autoTimer = setInterval(() => goTo(current + 1), 3500);
             });
         }
 

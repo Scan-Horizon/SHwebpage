@@ -622,10 +622,10 @@
 
         .frame-carousel {
             position: relative;
-            width: min(80vw, 380px);
-            aspect-ratio: 1;
+            width: min(48vw, 400px);
+            aspect-ratio: 9/16;
             margin: 0 auto;
-            overflow: visible;
+            overflow: hidden;
             border-radius: 24px;
             background: rgba(5, 10, 21, 0.4);
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45), 0 0 40px rgba(0, 150, 255, 0.06);
@@ -1147,7 +1147,7 @@
             }
 
             .frame-carousel {
-                width: min(82vw, 320px);
+                width: min(82vw, 360px);
             }
 
             .collection-head {
@@ -2784,6 +2784,7 @@
                 const counter = carousel.querySelector('.frame-counter');
                 const total = images.length;
                 let current = 0;
+                let autoTimer = null;
 
                 const dotsContainer = carousel.closest('.radar-scene').querySelector('.frame-dots');
                 if (!dotsContainer) return;
@@ -2797,23 +2798,21 @@
                     dotsContainer.appendChild(dot);
                 }
                 const dots = dotsContainer.querySelectorAll('.frame-dot');
+                const prevBtn = carousel.querySelector('.frame-arrow.prev');
+                const nextBtn = carousel.querySelector('.frame-arrow.next');
+
+                function resetAuto() {
+                    clearInterval(autoTimer);
+                    autoTimer = setInterval(() => goTo(current + 1), 3500);
+                }
 
                 function goTo(index) {
                     if (index < 0) index = total - 1;
                     if (index >= total) index = 0;
 
-                    const prevIdx = (index - 1 + total) % total;
-                    const nextIdx = (index + 1) % total;
-
                     images.forEach((img, i) => {
                         img.classList.remove('active', 'slide-prev', 'slide-next');
-                        if (i === index) {
-                            img.classList.add('active');
-                        } else if (i === prevIdx) {
-                            img.classList.add('slide-prev');
-                        } else if (i === nextIdx) {
-                            img.classList.add('slide-next');
-                        }
+                        if (i === index) img.classList.add('active');
                     });
 
                     dots.forEach((dot, i) => {
@@ -2827,8 +2826,22 @@
                     current = index;
                 }
 
+                if (prevBtn) prevBtn.addEventListener('click', () => { goTo(current - 1); resetAuto(); });
+                if (nextBtn) nextBtn.addEventListener('click', () => { goTo(current + 1); resetAuto(); });
+                dots.forEach((dot) => {
+                    dot.addEventListener('click', () => { goTo(parseInt(dot.dataset.index, 10)); resetAuto(); });
+                });
+
+                // Touch swipe
+                let touchStartX = 0;
+                carousel.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, { passive: true });
+                carousel.addEventListener('touchend', (e) => {
+                    const dx = e.changedTouches[0].clientX - touchStartX;
+                    if (Math.abs(dx) > 40) { goTo(dx < 0 ? current + 1 : current - 1); resetAuto(); }
+                }, { passive: true });
+
                 goTo(0);
-                setInterval(() => goTo(current + 1), 3500);
+                autoTimer = setInterval(() => goTo(current + 1), 3500);
             });
         }
 
