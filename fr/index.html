@@ -1511,6 +1511,12 @@
                                 <img src="/Frame%204.png" alt="Frame 4">
                                 <img src="/Frame%205.png" alt="Frame 5">
                                 <img src="/Frame%206.png" alt="Frame 6">
+                                <button type="button" class="frame-arrow prev" aria-label="Image précédente">
+                                    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                                </button>
+                                <button type="button" class="frame-arrow next" aria-label="Image suivante">
+                                    <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+                                </button>
                                 <span class="frame-counter" aria-live="polite">1 / 6</span>
                             </div>
                         </div>
@@ -1587,6 +1593,12 @@
                                 <img src="/Frame%204.png" alt="Frame 4">
                                 <img src="/Frame%205.png" alt="Frame 5">
                                 <img src="/Frame%206.png" alt="Frame 6">
+                                <button type="button" class="frame-arrow prev" aria-label="Previous image">
+                                    <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+                                </button>
+                                <button type="button" class="frame-arrow next" aria-label="Next image">
+                                    <svg viewBox="0 0 24 24"><polyline points="9 6 15 12 9 18"/></svg>
+                                </button>
                                 <span class="frame-counter" aria-live="polite">1 / 6</span>
                             </div>
                         </div>
@@ -2781,6 +2793,7 @@
 
                 let centerIdx = 1;
                 let isAnimating = false;
+                let slotToCard = [cards[0], cards[1], cards[2]];
 
                 function imgAt(offset) {
                     return allCards[(centerIdx + offset + n) % n];
@@ -2802,7 +2815,7 @@
                     if (isAnimating) return;
                     isAnimating = true;
 
-                    const wrapCard = cards[dir === 1 ? 0 : 2];
+                    const wrapCard = dir === 1 ? slotToCard[0] : slotToCard[2];
 
                     wrapCard.style.transition = 'none';
                     wrapCard.classList.remove('left', 'center', 'right');
@@ -2814,17 +2827,19 @@
                     void wrapCard.offsetWidth;
 
                     wrapCard.style.transition = '';
-                    cards.forEach(c => c.classList.remove('left', 'center', 'right'));
 
                     if (dir === 1) {
-                        cards[0].classList.add('right');
-                        cards[1].classList.add('left');
-                        cards[2].classList.add('center');
+                        slotToCard = [slotToCard[1], slotToCard[2], slotToCard[0]];
                     } else {
-                        cards[0].classList.add('center');
-                        cards[1].classList.add('right');
-                        cards[2].classList.add('left');
+                        slotToCard = [slotToCard[2], slotToCard[0], slotToCard[1]];
                     }
+
+                    slotToCard[0].classList.remove('left', 'center', 'right');
+                    slotToCard[0].classList.add('left');
+                    slotToCard[1].classList.remove('left', 'center', 'right');
+                    slotToCard[1].classList.add('center');
+                    slotToCard[2].classList.remove('left', 'center', 'right');
+                    slotToCard[2].classList.add('right');
 
                     setTimeout(() => { isAnimating = false; }, 480);
                 }
