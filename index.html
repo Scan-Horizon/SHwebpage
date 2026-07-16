@@ -1684,7 +1684,7 @@
             <div class="legal-content">
                 <div class="lang-fr">
                     <p><strong>POLITIQUE DE CONFIDENTIALITÉ ET DE PROTECTION DES DONNÉES</strong></p>
-                    <p>Version : 1.4<br>Date d'entrée en vigueur : 31 mai 2026</p>
+                    <p>Version : 1.5<br>Date d'entrée en vigueur : 16 juillet 2026</p>
 
                     <h3>PRÉAMBULE</h3>
                     <p>La présente Politique de Confidentialité vise à informer les Utilisateurs de l'Application mobile ScanHorizon, éditée par SAS SCAN HORIZON, des modalités de collecte, de traitement et de protection de leurs données personnelles. L'Éditeur s'engage à respecter le Règlement (UE) 2016/679 (RGPD) ainsi que la Loi Informatique et Libertés du 6 janvier 1978 modifiée.</p>
@@ -1744,7 +1744,9 @@
                     <ul>
                         <li>Identifiants publicitaires mobiles : IDFA (iOS) et GAID (Android).</li>
                         <li>Données techniques publicitaires et de performance (impressions, clics, taux de remplissage, données anti-fraude) traitées via nos partenaires publicitaires et de médiation.</li>
-                        <li>Partenaires concernés : Google AdMob (médiation), AppLovin (réseau publicitaire), Meta Audience Network et, le cas échéant, leurs partenaires de demande publicitaire.</li>
+                        <li>Partenaires susceptibles d'intervenir : <strong>Google AdMob</strong> (régie et couche de médiation), <strong>Meta Audience Network</strong> (Meta Platforms, Inc.), <strong>Unity Ads</strong> (Unity Technologies ApS), <strong>AppLovin</strong> (AppLovin Corporation), <strong>Pangle</strong> (groupe ByteDance) et <strong>Mintegral</strong> (groupe Mobvista), ainsi que, le cas échéant, leurs partenaires de demande publicitaire respectifs.</li>
+                        <li>Cette liste correspond aux réseaux intégrés à notre couche de médiation. Ils peuvent être activés ou désactivés selon les besoins de diffusion : tous ne reçoivent pas nécessairement de données à un instant donné. La liste des partenaires effectivement actifs, leurs finalités et leurs politiques de confidentialité respectives sont consultables à tout moment depuis notre plateforme de gestion des consentements, dans l'Application.</li>
+                        <li>Vérification côté serveur des publicités avec récompense : lorsque vous regardez une publicité pour obtenir une récompense, votre identifiant de compte (UID) est transmis à Google afin de créditer la récompense sur le bon compte et de prévenir la fraude.</li>
                     </ul>
 
                     <h4>2.8. PROTECTION DE L'ENFANCE (Mineurs de moins de 13 ans)</h4>
@@ -1753,6 +1755,32 @@
                     <h4>2.9. Données publiques utilisées à des fins marketing (sous réserve de consentement)</h4>
                     <p>Avec votre consentement explicite, l'Éditeur peut utiliser certaines données rendues publiques sur votre profil (par exemple : pseudo, avatar et données de jeu générales telles que statistiques globales ou accomplissements non sensibles) pour promouvoir l'Application sur ses supports de communication (site web, réseaux sociaux, visuels promotionnels). Aucune donnée sensible ni donnée de contact privée n'est utilisée à cette fin. Ces contenus font l'objet d'une revue périodique afin de vérifier leur pertinence et de limiter leur maintien en ligne au strict nécessaire au regard de la finalité marketing.</p>
                     <p>Vous pouvez retirer votre consentement à tout moment en nous contactant à contact@scan-horizon.com. Le retrait n'a pas d'effet rétroactif sur les traitements déjà réalisés avant sa prise en compte. Sauf contrainte technique ou légale justifiée, nous procédons au retrait des contenus concernés de nos supports sous 30 jours calendaires ; pour les plateformes tierces (ex. réseaux sociaux), nous effectuons les démarches de suppression dans le même délai et dans la mesure des moyens techniques disponibles.</p>
+
+
+                    <h4>2.10. Fonctionnalités sociales et multijoueur</h4>
+                    <p>L'Application propose des fonctionnalités sociales (classements, clans rattachés à des aéroports, défis d'équipe, liste d'amis, profils consultables par d'autres joueurs). Ces fonctionnalités impliquent, par nature, que certaines de vos données soient rendues visibles à d'autres utilisateurs. Le tableau ci-dessous décrit précisément ce qui est visible et par qui.</p>
+                    <p><strong>Absence de messagerie libre :</strong> l'Application ne propose <strong>aucun champ de saisie de texte libre</strong> dans ses fonctionnalités sociales. Le fil de clan n'accepte que des messages structurés prédéfinis (demande de scan, mise en avant d'une carte de votre hangar) et des réactions sous forme d'emoji issus d'une liste fermée. Les demandes d'ami et les invitations de clan ne comportent pas de champ message. Le seul texte que vous choisissez librement est votre pseudonyme.</p>
+                    <table>
+                        <thead>
+                            <tr><th>Donnée</th><th>Visible par</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Pseudo, avatar, nombre total de scans, statut d'abonné (classements hebdomadaire et général)</td><td><strong>Toute personne, y compris en dehors de l'Application et sans compte</strong>, les classements étant accessibles publiquement</td></tr>
+                            <tr><td>Pseudo, avatar, drapeau d'origine déclaré, contribution, date d'adhésion, indicateur d'activité récente (jour) au sein d'un clan</td><td>Tout utilisateur authentifié de l'Application</td></tr>
+                            <tr><td>Hangar (collection d'aéronefs), cartes favorites, statistiques de jeu agrégées (niveau, série, meilleure journée, compagnies, pays)</td><td>Tout utilisateur authentifié consultant votre profil</td></tr>
+                            <tr><td>Pseudo, avatar, équipe et score dans un défi multijoueur</td><td>Tout utilisateur authentifié</td></tr>
+                            <tr><td>Messages structurés du fil de clan (demande de scan, carte mise en avant), réactions, mention du donateur ayant répondu</td><td>Les membres de votre clan uniquement (50 membres au maximum)</td></tr>
+                            <tr><td>Relations d'amitié, invitations de clan, dons de scan</td><td>Les deux utilisateurs concernés uniquement</td></tr>
+                            <tr><td>Parrainage (qui a parrainé qui), récompenses associées</td><td>Les deux utilisateurs concernés uniquement</td></tr>
+                            <tr><td>Email, date de naissance, tranche d'âge, géolocalisation, historique détaillé des scans, données d'abonnement</td><td><strong>Personne d'autre que vous.</strong> Ces données ne sont jamais exposées aux autres utilisateurs par les fonctionnalités sociales.</td></tr>
+                        </tbody>
+                    </table>
+                    <p><strong>Recherche par pseudo :</strong> afin de permettre l'ajout d'amis, tout utilisateur authentifié peut vérifier l'existence d'un pseudo et vous adresser une demande d'ami. Votre pseudo constitue donc un identifiant public. Nous vous recommandons de ne pas y faire figurer votre nom réel ni aucune information permettant de vous identifier hors du jeu.</p>
+                    <p><strong>Aucune donnée de géolocalisation n'est partagée avec les autres utilisateurs.</strong> Le clan est rattaché à un aéroport que vous choisissez et le drapeau affiché sur votre profil est déclaré par vous : ni l'un ni l'autre ne résulte d'une mesure de votre position réelle. L'indicateur d'activité récente a une granularité d'une journée et ne permet pas de suivi en temps réel.</p>
+                    <p><strong>Le globe et les positions affichées.</strong> Le hub multijoueur présente un globe terrestre sur lequel figurent des points et des liaisons. Ces points représentent des <strong>aéroports</strong>, positionnés à leurs coordonnées géographiques réelles. <strong>Ils ne représentent pas la position des joueurs.</strong> Lorsqu'un joueur est associé à un point du globe, il l'est à l'emplacement de l'<strong>aéroport du clan qu'il a lui-même choisi de rejoindre</strong>. Cette position ne reflète ni sa position réelle, ni une position approximative, ni son pays de résidence : un joueur résidant à Lisbonne peut avoir rejoint le clan de Tokyo et apparaîtra à Tokyo. Il en va de même du drapeau affiché sur son profil, qui est déclaré par lui et n'est pas vérifié.</p>
+                    <p>Votre géolocalisation GPS est utilisée exclusivement pour l'identification des aéronefs décrite à l'Article 2.2. Elle n'est <strong>jamais</strong> transmise aux autres utilisateurs, ni affichée sur le globe, ni déduite de votre appartenance à un clan.</p>
+                    <p><strong>Autres utilisateurs en qualité de destinataires :</strong> lorsque vous utilisez ces fonctionnalités, les autres utilisateurs de l'Application constituent des destinataires de vos données au sens de l'article 13.1.e du RGPD.</p>
+                    <p><strong>Mineurs :</strong> les utilisateurs de 13 à 17 ans ont accès aux fonctionnalités sociales dans les mêmes conditions que les autres utilisateurs. Le titulaire de l'autorité parentale est invité à en prendre connaissance et peut nous écrire à contact@scan-horizon.com pour toute demande relative au compte d'un mineur, y compris son retrait des classements.</p>
 
                     <h3>ARTICLE 3. FINALITÉS ET BASES LÉGALES</h3>
                     <table>
@@ -1816,6 +1844,30 @@
                                 <td>Consentement (Art. 6.1.a)</td>
                             </tr>
                             <tr>
+                                <td>Fonctionnalités sociales : clans, fil de clan structuré, liste d'amis, invitations, dons de scan, défis d'équipe</td>
+                                <td>Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Affichage du profil (pseudo, avatar, hangar, statistiques agrégées) aux autres utilisateurs</td>
+                                <td>Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Publication des classements hebdomadaire et général</td>
+                                <td>Intérêt légitime (Art. 6.1.f) : animation compétitive du jeu. Droit d'opposition ouvert (Article 9).</td>
+                            </tr>
+                            <tr>
+                                <td>Intégrité du jeu : lutte contre la triche, les comptes multiples, l'auto-parrainage et les abus des fonctionnalités sociales</td>
+                                <td>Intérêt légitime (Art. 6.1.f)</td>
+                            </tr>
+                            <tr>
+                                <td>Traitement des signalements portant sur un contenu ou un pseudo, et mesures de restriction associées</td>
+                                <td>Intérêt légitime (Art. 6.1.f) et, le cas échéant, obligation légale (Art. 6.1.c) au titre du règlement (UE) 2022/2065</td>
+                            </tr>
+                            <tr>
+                                <td>Vérification côté serveur des publicités avec récompense (transmission de l'UID à Google)</td>
+                                <td>Exécution du contrat (Art. 6.1.b) et intérêt légitime anti-fraude (Art. 6.1.f)</td>
+                            </tr>
+                            <tr>
                                 <td>Obligations légales (conservation des logs techniques LCEN)</td>
                                 <td>Obligation légale (Art. 6.1.c)</td>
                             </tr>
@@ -1832,14 +1884,22 @@
                         <li><strong>RevenueCat (USA) :</strong> Gestion des abonnements mobiles.</li>
                         <li><strong>Resend (USA) :</strong> Envoi d'emails transactionnels liés au compte (ex. confirmation de suppression).</li>
                         <li><strong>Google AdMob (USA) :</strong> Régie publicitaire et médiation (uniquement si vous avez accepté le traçage). Lorsque vous y consentez, une tranche d'âge peut être transmise à AdMob pour le paramétrage publicitaire, la conformité mineurs et la mesure de performance.</li>
-                        <li><strong>AppLovin (USA) :</strong> Réseau publicitaire (diffusion, mesure de performance et signaux anti-fraude, sous réserve de consentement).</li>
+                        <li><strong>AppLovin (AppLovin Corporation, USA) :</strong> Réseau publicitaire (diffusion, mesure de performance et signaux anti-fraude, sous réserve de consentement).</li>
+                        <li><strong>Unity Ads (Unity Technologies ApS, Danemark) :</strong> Réseau publicitaire (diffusion, mesure de performance et signaux anti-fraude, sous réserve de consentement).</li>
+                        <li><strong>Pangle (groupe ByteDance) :</strong> Réseau publicitaire (diffusion, mesure de performance et signaux anti-fraude, sous réserve de consentement).</li>
+                        <li><strong>Mintegral (groupe Mobvista) :</strong> Réseau publicitaire (diffusion, mesure de performance et signaux anti-fraude, sous réserve de consentement).</li>
+                        <li><strong>Cloudflare, Inc. (USA) :</strong> Réseau de diffusion de contenu et stockage des ressources graphiques de l'Application (images d'aéronefs, avatars).</li>
+                        <li><strong>CARTO (CARTO / CartoDB Inc.) :</strong> Fourniture des fonds de carte affichés dans l'Application. À ce titre, CARTO reçoit l'adresse IP de votre appareil et les coordonnées des tuiles cartographiques consultées.</li>
+                        <li><strong>Les autres utilisateurs de l'Application :</strong> dans les limites décrites à l'Article 2.10.</li>
                         <li><strong>Meta Audience Network (USA) :</strong> Diffusion publicitaire et mesure de performance (sous réserve de consentement).</li>
                         <li><strong>Sentry (UE/USA selon configuration) :</strong> Supervision technique, journalisation des erreurs et rapports de crash (uniquement si vous avez donné votre consentement).</li>
                         <li><strong>Google Forms (USA) :</strong> Hébergement et traitement des demandes de suppression de compte transmises via formulaire de demande de suppression de données.</li>
                     </ul>
 
                     <h3>ARTICLE 5. TRANSFERTS HORS UE</h3>
-                    <p>Certaines données peuvent être traitées en dehors de l'Union européenne, notamment via Google (Firebase Auth, Firestore, Analytics, Crashlytics, FCM, Remote Config, AdMob, Google Sign-In), RevenueCat, Sentry et, selon les flux de données aéronautiques, PlaneFinder (Royaume-Uni). Ces transferts sont encadrés par des mécanismes appropriés (Clauses Contractuelles Types de la Commission Européenne, et/ou adhésion au Data Privacy Framework lorsque applicable) afin d'assurer un niveau de protection adéquat.</p>
+                    <p>Certaines données peuvent être traitées en dehors de l'Union européenne, notamment via Google (Firebase Auth, Firestore, Analytics, Crashlytics, FCM, Remote Config, AdMob, Google Sign-In), RevenueCat, Resend, Cloudflare, CARTO, Sentry et, selon les flux de données aéronautiques, nos fournisseurs de données de vol.</p>
+                    <p>Le recours à des réseaux publicitaires internationaux peut impliquer des transferts vers des pays tiers, y compris hors de l'Espace économique européen. Selon le partenaire concerné, les pays de destination peuvent inclure les <strong>États-Unis</strong> (Google AdMob, Meta Audience Network, AppLovin, Unity Ads) ainsi que des pays d'Asie, dont la <strong>République populaire de Chine</strong> (Pangle, groupe ByteDance ; Mintegral, groupe Mobvista). Ces transferts n'interviennent qu'après recueil de votre consentement aux traceurs publicitaires, et uniquement pour les partenaires effectivement activés à l'instant considéré.</p>
+                    <p>Tout transfert effectivement réalisé est encadré par un mécanisme approprié au sens du chapitre V du RGPD : Clauses Contractuelles Types de la Commission européenne, assorties de mesures supplémentaires lorsque le droit du pays de destination le rend nécessaire, ou adhésion au Data Privacy Framework lorsque le partenaire y est certifié. Les informations détaillées relatives aux traitements réalisés par chaque partenaire publicitaire, ainsi que leurs politiques de confidentialité respectives, sont accessibles depuis notre plateforme de gestion des consentements.</p>
 
                     <h3>ARTICLE 6. COOKIES ET SDK MOBILES</h3>
                     <p>L'Application n'utilise pas de "cookies" web classiques, mais des SDK (Software Development Kits) et des identifiants mobiles. L'utilisation des traceurs publicitaires et analytiques est soumise à votre consentement préalable, recueilli lors du premier lancement via notre plateforme de gestion des consentements (CMP) <strong>intégrée à l'Application mobile</strong>. Cette CMP n'est pas disponible sur le site web. Vous pouvez modifier ce choix à tout moment dans les paramètres de l'Application ("Gérer mes choix").</p>
@@ -1850,7 +1910,10 @@
                         <li><strong>Données de compte et d'usage :</strong> Conservées pendant la durée d'activité du compte, puis supprimées ou anonymisées selon la politique d'effacement applicable.</li>
                         <li><strong>Données de consentement :</strong> Conservées à des fins de preuve de conformité pendant la durée nécessaire au respect de nos obligations légales.</li>
                         <li><strong>Données de sécurité et anti-abus :</strong> Conservées pour une durée limitée et proportionnée à la protection du service, puis supprimées ou anonymisées.</li>
-                        <li><strong>Données analytiques, publicitaires et de mesure d'erreurs :</strong> Firebase Analytics conservées 14 mois par défaut (selon configuration Google). Autres traceurs conservés selon vos choix de consentement et paramétrages des plateformes concernées.</li>
+                        <li><strong>Données analytiques :</strong> Les données d'usage sont conservées 14 mois dans Firebase Analytics, puis exportées vers notre entrepôt d'analyse (Google BigQuery) où elles sont conservées 14 mois avant suppression automatique. Elles y sont rattachées à un identifiant technique d'installation, de nature pseudonyme, qui n'est pas relié à votre compte pour la grande majorité des événements. Lorsqu'un identifiant de compte y figure, il est effacé sur demande.</li>
+                        <li><strong>Données publicitaires et de mesure d'erreurs :</strong> Conservées selon vos choix de consentement et les paramétrages des plateformes concernées.</li>
+                        <li><strong>Données sociales :</strong> Les données de clan, d'amitié, d'invitation, de don de scan et de participation aux défis sont conservées pendant la durée d'activité du compte et pendant que vous utilisez la fonctionnalité concernée. Les messages structurés du fil de clan peuvent être supprimés par leur auteur à tout moment depuis l'Application.</li>
+                        <li><strong>Classements :</strong> Le classement hebdomadaire est réinitialisé chaque semaine. Le classement général reflète l'activité cumulée du compte tant que celui-ci est actif.</li>
                         <li><strong>Données soumises à obligations légales spécifiques :</strong> Conservées pendant la durée prévue par la réglementation applicable.</li>
                     </ul>
 
@@ -1861,6 +1924,8 @@
                     <p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de portabilité, de limitation du traitement et d'opposition. Vous recevrez une réponse à votre demande dans un délai maximum de 30 jours à compter de la réception. Pour certaines demandes, une vérification raisonnable d'identité peut être requise.</p>
                     <p>Lorsque le traitement repose sur votre consentement (ex. traceurs publicitaires / analytics / crash reporting), vous pouvez retirer ce consentement à tout moment, sans effet rétroactif sur les traitements déjà effectués avant ce retrait.</p>
                     <p>Vous pouvez également vous opposer à tout moment à l'utilisation de vos données publiques de profil à des fins marketing, ou retirer le consentement précédemment donné, en écrivant à contact@scan-horizon.com.</p>
+                    <p><strong>Opposition à la publication au classement :</strong> Vous pouvez vous opposer à tout moment à l'affichage de votre pseudo et de vos statistiques dans les classements publics, en nous écrivant à contact@scan-horizon.com. Votre compte et votre progression sont conservés ; seul l'affichage public cesse.</p>
+                    <p><strong>Suppression du compte et données sociales :</strong> La suppression de votre compte entraîne la suppression de vos données sociales : appartenance à un clan, relations d'amitié, invitations, messages structurés du fil de clan dont vous êtes l'auteur, participations aux défis, et retrait des classements. Certaines traces techniques ne comportant plus d'identifiant vous concernant (par exemple des compteurs agrégés) peuvent subsister sous forme anonymisée.</p>
                     <p><strong>Comment supprimer vos données ?</strong></p>
                     <ul>
                         <li><strong>Dans l'Application :</strong> Via le menu "Paramètres > Confidentialité > Supprimer mon compte".</li>
@@ -1882,7 +1947,7 @@
 
                 <div class="lang-en hidden">
                     <p><strong>PRIVACY AND DATA PROTECTION POLICY</strong></p>
-                    <p>Version: 1.4<br>Effective Date: May 31, 2026</p>
+                    <p>Version: 1.5<br>Effective Date: July 16, 2026</p>
 
                     <h3>PREAMBLE</h3>
                     <p>This Privacy Policy aims to inform Users of the ScanHorizon mobile application, published by SAS SCAN HORIZON, about how their personal data is collected, processed, and protected. The Publisher is committed to strictly complying with Regulation (EU) 2016/679 (GDPR) and the French Data Protection Act (Loi Informatique et Libertés).</p>
@@ -1942,7 +2007,9 @@
                     <ul>
                         <li>Mobile advertising IDs: IDFA (iOS) and GAID (Android).</li>
                         <li>Advertising and performance technical data (impressions, clicks, fill rate, anti-fraud signals) processed through our ad and mediation partners.</li>
-                        <li>Partners involved: Google AdMob (mediation), AppLovin (ad network), Meta Audience Network and, where applicable, their ad demand partners.</li>
+                        <li>Partners that may be involved: <strong>Google AdMob</strong> (ad network and mediation layer), <strong>Meta Audience Network</strong> (Meta Platforms, Inc.), <strong>Unity Ads</strong> (Unity Technologies ApS), <strong>AppLovin</strong> (AppLovin Corporation), <strong>Pangle</strong> (ByteDance group) and <strong>Mintegral</strong> (Mobvista group), and, where applicable, their respective ad demand partners.</li>
+                        <li>This list corresponds to the networks integrated into our mediation layer. They may be enabled or disabled depending on delivery needs: not all of them necessarily receive data at any given time. The list of partners actually active, their purposes and their respective privacy policies can be consulted at any time from our consent management platform, within the Application.</li>
+                        <li>Rewarded ads server-side verification: when you watch a rewarded ad, your account identifier (UID) is transmitted to Google in order to credit the reward to the correct account and to prevent fraud.</li>
                     </ul>
 
                     <h4>2.8. CHILD PROTECTION (Minors under 13)</h4>
@@ -1951,6 +2018,32 @@
                     <h4>2.9. Public data used for marketing purposes (subject to consent)</h4>
                     <p>With your explicit consent, the Publisher may use certain data made public on your profile (for example: username, avatar, and general gameplay data such as global statistics or non-sensitive achievements) to promote the Application on its communication channels (website, social media, promotional visuals). No sensitive data or private contact data is used for this purpose. These materials are subject to periodic review to ensure they remain relevant and are kept online only for as long as necessary for the marketing purpose.</p>
                     <p>You may withdraw your consent at any time by contacting contact@scan-horizon.com. Withdrawal has no retroactive effect on processing already carried out before it is taken into account. Unless technically or legally justified otherwise, we remove the relevant materials from our own channels within 30 calendar days; for third-party platforms (e.g. social media), we initiate removal actions within the same timeframe and to the extent technically available.</p>
+
+
+                    <h4>2.10. Social and multiplayer features</h4>
+                    <p>The Application offers social features (leaderboards, airport-based clans, team challenges, friend lists, profiles viewable by other players). By their nature, these features make some of your data visible to other users. The table below sets out precisely what is visible and to whom.</p>
+                    <p><strong>No free-text messaging:</strong> the Application offers <strong>no free-text input field</strong> within its social features. The clan feed only accepts predefined structured messages (scan request, showcasing a card from your hangar) and reactions drawn from a closed emoji list. Friend requests and clan invitations contain no message field. The only text you freely choose is your username.</p>
+                    <table>
+                        <thead>
+                            <tr><th>Data</th><th>Visible to</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Username, avatar, total scan count, subscriber status (weekly and all-time leaderboards)</td><td><strong>Anyone, including outside the Application and without an account</strong>, as leaderboards are publicly accessible</td></tr>
+                            <tr><td>Username, avatar, self-declared origin flag, contribution, join date, recent-activity indicator (day-level) within a clan</td><td>Any authenticated user of the Application</td></tr>
+                            <tr><td>Hangar (aircraft collection), favorite cards, aggregated gameplay statistics (level, streak, best day, airlines, countries)</td><td>Any authenticated user viewing your profile</td></tr>
+                            <tr><td>Username, avatar, team and score in a multiplayer challenge</td><td>Any authenticated user</td></tr>
+                            <tr><td>Structured clan feed messages (scan request, showcased card), reactions, name of the donor who responded</td><td>Members of your clan only (50 members maximum)</td></tr>
+                            <tr><td>Friendships, clan invitations, scan donations</td><td>The two users concerned only</td></tr>
+                            <tr><td>Referrals (who referred whom), associated rewards</td><td>The two users concerned only</td></tr>
+                            <tr><td>Email, date of birth, age bracket, geolocation, detailed scan history, subscription data</td><td><strong>No one but you.</strong> This data is never exposed to other users through the social features.</td></tr>
+                        </tbody>
+                    </table>
+                    <p><strong>Username lookup:</strong> to enable friend requests, any authenticated user may check whether a username exists and send you a friend request. Your username is therefore a public identifier. We recommend that you do not include your real name or any information allowing you to be identified outside the game.</p>
+                    <p><strong>No geolocation data is shared with other users.</strong> Your clan is tied to an airport you choose, and the flag shown on your profile is self-declared: neither results from measuring your actual position. The recent-activity indicator has day-level granularity and does not allow real-time tracking.</p>
+                    <p><strong>The globe and the positions displayed.</strong> The multiplayer hub features a globe showing points and connections. These points represent <strong>airports</strong>, placed at their actual geographic coordinates. <strong>They do not represent players' positions.</strong> Where a player is associated with a point on the globe, they are shown at the location of the <strong>airport of the clan they themselves chose to join</strong>. This position reflects neither their actual position, nor an approximate position, nor their country of residence: a player living in Lisbon may have joined the Tokyo clan and will appear in Tokyo. The same applies to the flag shown on their profile, which is self-declared and not verified.</p>
+                    <p>Your GPS geolocation is used exclusively for the aircraft identification described in Article 2.2. It is <strong>never</strong> transmitted to other users, displayed on the globe, or inferred from your clan membership.</p>
+                    <p><strong>Other users as recipients:</strong> when you use these features, other users of the Application are recipients of your data within the meaning of Article 13.1.e GDPR.</p>
+                    <p><strong>Minors:</strong> users aged 13 to 17 have access to social features under the same conditions as other users. Holders of parental authority are invited to take note of this and may write to contact@scan-horizon.com regarding a minor's account, including removal from leaderboards.</p>
 
                     <h3>ARTICLE 3. PURPOSES AND LEGAL BASES</h3>
                     <table>
@@ -2014,6 +2107,30 @@
                                 <td>Consent (Art. 6.1.a)</td>
                             </tr>
                             <tr>
+                                <td>Social features: clans, structured clan feed, friend list, invitations, scan donations, team challenges</td>
+                                <td>Contract Execution (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Display of your profile (username, avatar, hangar, aggregated statistics) to other users</td>
+                                <td>Contract Execution (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Publication of the weekly and all-time leaderboards</td>
+                                <td>Legitimate Interest (Art. 6.1.f): competitive engagement of the game. Right to object available (Article 9).</td>
+                            </tr>
+                            <tr>
+                                <td>Game integrity: prevention of cheating, multi-accounting, self-referral and abuse of social features</td>
+                                <td>Legitimate Interest (Art. 6.1.f)</td>
+                            </tr>
+                            <tr>
+                                <td>Handling of reports concerning content or a username, and related restriction measures</td>
+                                <td>Legitimate Interest (Art. 6.1.f) and, where applicable, legal obligation (Art. 6.1.c) under Regulation (EU) 2022/2065</td>
+                            </tr>
+                            <tr>
+                                <td>Server-side verification of rewarded ads (transmission of UID to Google)</td>
+                                <td>Contract Execution (Art. 6.1.b) and anti-fraud legitimate interest (Art. 6.1.f)</td>
+                            </tr>
+                            <tr>
                                 <td>Legal obligations (technical log retention)</td>
                                 <td>Legal obligation (Art. 6.1.c)</td>
                             </tr>
@@ -2030,14 +2147,22 @@
                         <li><strong>RevenueCat (USA):</strong> Mobile subscription management.</li>
                         <li><strong>Resend (USA):</strong> Transactional emails related to account lifecycle (e.g. deletion confirmation).</li>
                         <li><strong>Google AdMob (USA):</strong> Advertising network and mediation layer (only if you accepted tracking). When you consent, an age bracket may be transmitted to AdMob for ad configuration, minor-safety compliance, and performance measurement.</li>
-                        <li><strong>AppLovin (USA):</strong> Advertising network (ad delivery, performance measurement and anti-fraud signals, subject to consent).</li>
+                        <li><strong>AppLovin (AppLovin Corporation, USA):</strong> Advertising network (ad delivery, performance measurement and anti-fraud signals, subject to consent).</li>
+                        <li><strong>Unity Ads (Unity Technologies ApS, Denmark):</strong> Advertising network (ad delivery, performance measurement and anti-fraud signals, subject to consent).</li>
+                        <li><strong>Pangle (ByteDance group):</strong> Advertising network (ad delivery, performance measurement and anti-fraud signals, subject to consent).</li>
+                        <li><strong>Mintegral (Mobvista group):</strong> Advertising network (ad delivery, performance measurement and anti-fraud signals, subject to consent).</li>
+                        <li><strong>Cloudflare, Inc. (USA):</strong> Content delivery network and storage of the Application's graphic assets (aircraft images, avatars).</li>
+                        <li><strong>CARTO (CARTO / CartoDB Inc.):</strong> Provision of the map backgrounds displayed in the Application. CARTO therefore receives your device IP address and the coordinates of the map tiles viewed.</li>
+                        <li><strong>Other users of the Application:</strong> within the limits described in Article 2.10.</li>
                         <li><strong>Meta Audience Network (USA):</strong> Advertising delivery and performance measurement (subject to consent).</li>
                         <li><strong>Sentry (EU/USA depending on configuration):</strong> Technical monitoring, error logging, and crash reporting (only if you provided your consent).</li>
                         <li><strong>Google Forms (USA):</strong> Hosting and processing of account deletion requests submitted via our data deletion request form.</li>
                     </ul>
 
                     <h3>ARTICLE 5. TRANSFERS OUTSIDE THE EU</h3>
-                    <p>Some data may be processed outside the European Union, notably through Google (Firebase Auth, Firestore, Analytics, Crashlytics, FCM, Remote Config, AdMob, Google Sign-In), RevenueCat, Sentry and, depending on aeronautical data flows, PlaneFinder (United Kingdom). These transfers are governed by appropriate safeguards (European Commission Standard Contractual Clauses and/or Data Privacy Framework participation where applicable) to ensure an adequate level of protection.</p>
+                    <p>Some data may be processed outside the European Union, notably through Google (Firebase Auth, Firestore, Analytics, Crashlytics, FCM, Remote Config, AdMob, Google Sign-In), RevenueCat, Resend, Cloudflare, CARTO, Sentry and, depending on aeronautical data flows, our flight data providers.</p>
+                    <p>The use of international advertising networks may involve transfers to third countries, including outside the European Economic Area. Depending on the partner concerned, destination countries may include the <strong>United States</strong> (Google AdMob, Meta Audience Network, AppLovin, Unity Ads) as well as countries in Asia, including the <strong>People's Republic of China</strong> (Pangle, ByteDance group; Mintegral, Mobvista group). Such transfers only occur after your consent to advertising trackers has been collected, and only for the partners actually enabled at the relevant time.</p>
+                    <p>Any transfer actually carried out is governed by an appropriate safeguard within the meaning of Chapter V GDPR: European Commission Standard Contractual Clauses, supplemented by additional measures where the law of the destination country makes this necessary, or Data Privacy Framework participation where the partner is certified under it. Detailed information on the processing carried out by each advertising partner, together with their respective privacy policies, is accessible from our consent management platform.</p>
 
                     <h3>ARTICLE 6. COOKIES AND MOBILE SDKs</h3>
                     <p>The App does not use classic web "cookies" but SDKs (Software Development Kits) and mobile identifiers. The use of advertising and analytical trackers is subject to your prior consent, collected at first launch via our Consent Management Platform (CMP) <strong>integrated into the mobile application</strong>. This CMP is not available on the website. You can modify this choice at any time in App settings ("Manage my choices").</p>
@@ -2048,7 +2173,10 @@
                         <li><strong>Account and usage data:</strong> Retained for the duration of account activity, then deleted or anonymized according to the applicable deletion policy.</li>
                         <li><strong>Consent records:</strong> Retained as compliance evidence for the period required by applicable legal obligations.</li>
                         <li><strong>Security and anti-abuse data:</strong> Retained for a limited period proportionate to service protection, then deleted or anonymized.</li>
-                        <li><strong>Analytics, advertising and error-monitoring data:</strong> Firebase Analytics retained for 14 months by default (per Google configuration). Other trackers retained according to your consent choices and platform settings.</li>
+                        <li><strong>Analytics data:</strong> Usage data is retained for 14 months in Firebase Analytics, then exported to our analytics warehouse (Google BigQuery) where it is retained for 14 months before automatic deletion. There, it is linked to a technical installation identifier of a pseudonymous nature, which is not connected to your account for the vast majority of events. Where an account identifier is present, it is erased upon request.</li>
+                        <li><strong>Advertising and error-monitoring data:</strong> Retained according to your consent choices and the settings of the platforms concerned.</li>
+                        <li><strong>Social data:</strong> Clan, friendship, invitation, scan donation and challenge participation data is retained for the duration of account activity and for as long as you use the relevant feature. Structured clan feed messages may be deleted by their author at any time from within the Application.</li>
+                        <li><strong>Leaderboards:</strong> The weekly leaderboard is reset each week. The all-time leaderboard reflects the account's cumulative activity for as long as the account is active.</li>
                         <li><strong>Data subject to specific legal obligations:</strong> Retained for the duration required by applicable regulation.</li>
                     </ul>
 
@@ -2059,6 +2187,8 @@
                     <p>Under the GDPR, you have the right to access, rectify, erase, port, restrict processing of, and object to the processing of your personal data. You will receive a response to your request within a maximum of 30 days from receipt. For certain requests, reasonable identity verification may be required.</p>
                     <p>When processing is based on your consent (e.g. advertising / analytics / crash reporting trackers), you may withdraw consent at any time, without affecting processing already carried out before withdrawal.</p>
                     <p>You may also object at any time to the use of your public profile data for marketing purposes, or withdraw previously given consent, by contacting contact@scan-horizon.com.</p>
+                    <p><strong>Objection to leaderboard publication:</strong> You may object at any time to the display of your username and statistics on the public leaderboards by writing to contact@scan-horizon.com. Your account and progression are preserved; only the public display ceases.</p>
+                    <p><strong>Account deletion and social data:</strong> Deleting your account results in the deletion of your social data: clan membership, friendships, invitations, structured clan feed messages you authored, challenge participations, and removal from the leaderboards. Certain technical traces no longer containing any identifier relating to you (for example aggregated counters) may remain in anonymized form.</p>
                     <p><strong>How to delete your data?</strong></p>
                     <ul>
                         <li><strong>In the App:</strong> Via "Settings > Privacy > Delete my account".</li>
@@ -2096,7 +2226,7 @@
 
                     <h3>TITRE I : CONDITIONS D'UTILISATION (CGU)</h3>
                     
-                    <h3>ARTICLE 1. ACCÈS, CONDITIONS D'GE ET ÉQUIPEMENT</h3>
+                    <h3>ARTICLE 1. ACCÈS, CONDITIONS D'ÂGE ET ÉQUIPEMENT</h3>
                     <h4>1.1. Majorité Numérique (Interdiction stricte -13 ans)</h4>
                     <p>Conformément à la réglementation applicable, l'utilisation de l'Application est <strong>strictement interdite aux enfants de moins de 13 ans</strong>. En dessous de cet âge, la collecte de données personnelles n'est pas autorisée sans un mécanisme complexe de vérification parentale que l'Application ne met pas en oeuvre. Tout compte créé par un utilisateur de moins de 13 ans sera supprimé sans préavis.</p>
                     <h4>1.2. Mineurs (13 à 17 ans)</h4>
@@ -2120,6 +2250,7 @@
                     <p>L'ensemble de l'Application (code source, bases de données, design, sons) est la propriété exclusive de la SAS SCAN HORIZON. Interdiction de Scraping : Il est formellement interdit d'extraire la totalité ou une partie substantielle du contenu de la base de données (Art L.341-1 du CPI).</p>
                     <p>Les photos d'aéronefs utilisées dans l'Application et/ou sur le site sont créditées avec mention du photographe et, lorsque cela s'applique, du site source. Malgré le soin apporté à l'attribution, une erreur peut survenir. En cas de réclamation, de demande de correction, de retrait ou de précision de crédit, merci de nous contacter à <strong>support@scan-horizon.com</strong>. Nous nous engageons à répondre dans les meilleurs délais et à respecter le travail de chaque photographe.</p>
                     <p><strong>Cession des retours utilisateurs :</strong> Tout retour, suggestion, idée d'amélioration, recommandation, correction ou proposition transmis par un Utilisateur, testeur ou tout autre contributeur, par quelque canal que ce soit, est cédé à l'Éditeur à titre gratuit, exclusif, irrévocable et définitif dès sa transmission, pour le monde entier et pour toute la durée légale de protection applicable. Cette cession inclut notamment les droits de reproduction, représentation, adaptation, traduction, modification, exploitation, commercialisation et sous-licence, sur tout support et par tout procédé, sans contrepartie ni obligation de mention.</p>
+                    <p>L'interdiction d'extraction s'étend aux données des classements, des profils publics et des listes de membres de clan, y compris lorsqu'elles sont accessibles sans authentification. Toute extraction ou réutilisation, qualitativement ou quantitativement substantielle, du contenu de ces bases est interdite, de même que toute extraction ou réutilisation répétée et systématique de parties non substantielles (art. L.342-1 et L.342-2 du Code de la propriété intellectuelle).</p>
 
                     <h3>ARTICLE 5. DISPONIBILITÉ</h3>
                     <p>L'Application est fournie "en l'état". L'Éditeur ne garantit pas une disponibilité 100%.</p>
@@ -2139,7 +2270,7 @@
 
                     <h3>ARTICLE 8. DROIT DE RÉTRACTATION (RENONCIATION)</h3>
                     <p>Conformément à l'article L.221-28 du Code de la Consommation, le droit de rétractation ne peut être exercé pour les contrats de fourniture d'un contenu numérique sans support matériel dont l'exécution a commencé.</p>
-                    <p><strong>EN VALIDANT SON ACHAT, L'UTILISATEUR ACCEPTE L'EXÉCUTION IMMÉDIATE DU SERVICE ET RENONCE EXPRESSÉMENT ì SON DROIT DE RÉTRACTATION DE 14 JOURS.</strong> Aucun remboursement ne sera effectué par l'Éditeur.</p>
+                    <p><strong>EN VALIDANT SON ACHAT, L'UTILISATEUR ACCEPTE L'EXÉCUTION IMMÉDIATE DU SERVICE ET RENONCE EXPRESSÉMENT à SON DROIT DE RÉTRACTATION DE 14 JOURS.</strong> Aucun remboursement ne sera effectué par l'Éditeur.</p>
 
                     <h3>ARTICLE 9. RÉSILIATION DE L'ABONNEMENT</h3>
                     <p>L'Utilisateur doit résilier son abonnement via les réglages de son téléphone (Compte Apple ou Google Play). La suppression de l'Application ou du compte ScanHorizon n'arrête pas l'abonnement facturé par le Store.</p>
@@ -2154,6 +2285,49 @@
                     <p>L'Éditeur peut proposer un programme de parrainage permettant à un Utilisateur ("Parrain") d'inviter un tiers ("Filleul") à créer un compte et à utiliser l'Application.</p>
                     <p>Les récompenses, seuils d'attribution, délais de validation, plafonds éventuels, exclusions, conditions d'éligibilité et modalités de retrait des avantages sont définis dans l'Application, sur les pages d'information associées ou dans toute communication officielle de l'Éditeur. Ces éléments ne sont pas garantis de manière permanente et peuvent être modifiés, suspendus ou supprimés à tout moment.</p>
                     <p>Les avantages de parrainage n'ont pas de valeur monétaire, ne sont ni cessibles ni échangeables contre de l'argent, sauf mention contraire expresse. En cas d'abus, de fraude, de création de comptes multiples, d'auto-parrainage, de contournement technique ou de non-respect des présentes CGU/CGV, l'Éditeur peut annuler les récompenses, suspendre l'accès au programme ou fermer les comptes concernés, sans préjudice de tout autre recours.</p>
+
+                    <h3>ARTICLE 11. FONCTIONNALITÉS SOCIALES ET MULTIJOUEUR</h3>
+
+                    <h4>11.1. Objet</h4>
+                    <p>L'Application propose des fonctionnalités sociales : classements, clans rattachés à des aéroports, fil de clan à messages structurés, défis d'équipe, liste d'amis, invitations et profils consultables par les autres joueurs. Leur utilisation est facultative et emporte acceptation du présent article.</p>
+                    <p>L'Utilisateur est informé que ces fonctionnalités rendent visibles à d'autres utilisateurs certaines de ses données, dans les conditions décrites à l'article 2.10 de la Politique de Confidentialité, et que les classements sont accessibles publiquement.</p>
+
+                    <h4>11.2. Absence de messagerie libre</h4>
+                    <p>L'Application ne propose aucun champ de saisie de texte libre dans ses fonctionnalités sociales. Le fil de clan n'accepte que des messages structurés prédéfinis (demande de scan, mise en avant d'une carte issue de votre hangar) et des réactions choisies dans une liste fermée d'emoji. Les demandes d'ami et les invitations de clan ne comportent aucun champ message. Le seul texte que l'Utilisateur choisit librement est son pseudonyme, soumis aux règles de l'article 11.3.</p>
+
+                    <h4>11.3. Règles de conduite et choix du pseudonyme</h4>
+                    <p>L'Utilisateur s'engage à ne pas utiliser les fonctionnalités sociales pour :</p>
+                    <ul>
+                        <li>choisir un pseudonyme illicite, injurieux, haineux, discriminatoire, à caractère sexuel, faisant l'apologie du terrorisme ou de crimes contre l'humanité, ou portant atteinte aux droits d'un tiers (notamment un nom, une marque ou l'identité d'autrui) ;</li>
+                        <li>se faire passer pour un tiers, pour un membre de l'équipe ScanHorizon, ou pour une autorité publique ou aéroportuaire ;</li>
+                        <li>harceler, importuner ou solliciter de manière répétée un autre utilisateur, en particulier un mineur ;</li>
+                        <li>créer des comptes multiples, s'auto-parrainer, recourir à un logiciel tiers, à un client modifié, à une automatisation ou à tout moyen de contournement technique en vue de fausser un classement, un défi, un compteur de scans ou un mécanisme de récompense ;</li>
+                        <li>extraire, collecter ou réutiliser de manière automatisée les données des autres utilisateurs, y compris celles figurant sur les classements.</li>
+                    </ul>
+
+                    <h4>11.4. Signalement d'un contenu ou d'un comportement</h4>
+                    <p>Conformément à l'article 16 du règlement (UE) 2022/2065 (règlement sur les services numériques), toute personne peut signaler un contenu qu'elle estime illicite, notamment un pseudonyme, en écrivant à <strong>contact@scan-horizon.com</strong>.</p>
+                    <p>Afin de permettre un traitement efficace, le signalement doit comporter : une explication suffisamment motivée des raisons pour lesquelles le contenu est estimé illicite, sa localisation précise (par exemple le pseudonyme concerné et l'écran où il apparaît), le nom et l'adresse électronique de l'auteur du signalement (sauf lorsque le contenu relève d'infractions visées aux articles 3 à 7 de la directive 2011/93/UE), et une déclaration de bonne foi quant à l'exactitude des informations transmises.</p>
+                    <p>Nous accusons réception du signalement sans retard et informons son auteur de la décision prise ainsi que des voies de recours disponibles.</p>
+
+                    <h4>11.5. Modération : politiques, procédures, mesures et outils</h4>
+                    <p>Le présent article est publié en application de l'article 14 du règlement (UE) 2022/2065.</p>
+                    <p><strong>Outils automatisés :</strong> les pseudonymes font l'objet, lors de leur création, d'un filtrage automatisé au regard d'une liste de termes prohibés. Ce filtrage est appliqué sans intervention humaine et peut conduire au refus immédiat d'un pseudonyme. Aucun autre traitement automatisé de modération n'est mis en oeuvre, l'Application ne comportant pas de contenu textuel libre.</p>
+                    <p><strong>Réexamen humain :</strong> toute décision de restriction autre que le refus automatisé d'un pseudonyme (suspension, suppression de compte, retrait d'un pseudonyme déjà attribué, retrait d'un message structuré, exclusion d'un classement ou d'un défi) est prise après examen humain par l'Éditeur.</p>
+                    <p><strong>Mesures susceptibles d'être prises :</strong> refus ou retrait d'un pseudonyme et demande d'en choisir un nouveau ; retrait d'un message structuré du fil de clan ; exclusion d'un clan, d'un défi ou d'un classement ; annulation de récompenses obtenues irrégulièrement ; suspension temporaire ; résiliation du compte.</p>
+                    <p><strong>Proportionnalité :</strong> conformément à l'article 14.4 du même règlement, l'Éditeur applique ces restrictions de manière diligente, objective et proportionnée, en tenant dûment compte des droits et intérêts légitimes de toutes les parties concernées, y compris de la liberté d'expression de l'Utilisateur.</p>
+                    <p><strong>Motivation :</strong> conformément à l'article 17 du même règlement, l'Utilisateur concerné par une mesure de restriction reçoit un exposé des motifs clair et spécifique, indiquant la mesure prise et sa portée, les faits qui l'ont justifiée, le fondement retenu (disposition des présentes CGU ou disposition légale), le recours au traitement automatisé le cas échéant, et les voies de recours disponibles.</p>
+                    <p><strong>Recours :</strong> l'Utilisateur peut contester toute mesure en écrivant à <strong>contact@scan-horizon.com</strong> dans un délai de six mois. La contestation fait l'objet d'un examen humain et d'une réponse motivée. L'Utilisateur conserve en tout état de cause la faculté de saisir la juridiction compétente et, s'il est consommateur, de recourir à la médiation prévue à l'article 13.</p>
+
+                    <h4>11.6. Récompenses, classements et défis</h4>
+                    <p>Les récompenses, avantages, scans bonus, boosts et éléments virtuels obtenus via les fonctionnalités sociales n'ont aucune valeur monétaire, ne sont ni cessibles, ni échangeables, ni remboursables. Les seuils, barèmes, périodes, formats et récompenses des classements et défis peuvent être modifiés, suspendus ou supprimés à tout moment, notamment pour des raisons techniques, d'équilibrage ou de lutte contre les abus.</p>
+                    <p>Les classements sont établis à partir de données calculées automatiquement et peuvent comporter des retards d'actualisation, des erreurs ou des indisponibilités. Ils ne créent aucun droit acquis.</p>
+
+                    <h4>11.7. Contenus des autres utilisateurs</h4>
+                    <p>L'Éditeur héberge, au sens du règlement (UE) 2022/2065, les pseudonymes et les messages structurés publiés par les Utilisateurs. Il n'exerce aucun contrôle a priori sur les pseudonymes autres que le filtrage automatisé décrit à l'article 11.5, et ne saurait être tenu responsable des contenus publiés par les Utilisateurs, sous réserve de son obligation d'agir promptement dès qu'il a connaissance d'un contenu manifestement illicite.</p>
+
+                    <h4>11.8. Mineurs</h4>
+                    <p>Les fonctionnalités sociales sont accessibles aux Utilisateurs de 13 à 17 ans dans les conditions de l'article 1.2. Le titulaire de l'autorité parentale est invité à prendre connaissance de la visibilité des données décrite à l'article 2.10 de la Politique de Confidentialité et peut demander à tout moment le retrait du compte d'un mineur des classements publics en écrivant à contact@scan-horizon.com.</p>
 
                     <h3>TITRE III : DISPOSITIONS FINALES</h3>
 
@@ -2187,8 +2361,8 @@
                     <h4>1.2. Minors (13 to 17 years)</h4>
                     <p>Minors aged 13 to 17 are authorized to use the Application only under the supervision and with the prior agreement of their parents or legal guardians. The holder of parental authority is liable for the minor's compliance with these TOU.</p>
                     <p><strong>Purchases:</strong> The Publisher will not issue any refunds for purchases made by a minor; such purchases are deemed to have been made with the tacit agreement of the bank account holder.</p>
-                    <h4>1.3. Équipement</h4>
-                    <p>L'Utilisateur est seul responsable de la compatibilité technique de son matériel et de ses frais de connexion.</p>
+                    <h4>1.3. Equipment</h4>
+                    <p>The User is solely responsible for the technical compatibility of their device and for their own connection costs.</p>
 
                     <div class="warning-box">
                     <h3>ARTICLE 2. CRITICAL WARNING: PHYSICAL SAFETY</h3>
@@ -2205,6 +2379,7 @@
                     <p>The entire ScanHorizon application (Flutter source code, algorithms, design, "Cyberpunk" graphics) is protected by French and international copyright law. Any unauthorized reproduction is strictly prohibited and constitutes infringement.</p>
                     <p>Aircraft photos used in the Application and/or on the website include attribution to the photographer and, where applicable, to the source website. Despite our best efforts, attribution errors may occur. For any claim, correction request, takedown request, or credit update, please contact <strong>support@scan-horizon.com</strong>. We will respond as quickly as possible and we respect the work of every photographer.</p>
                     <p><strong>Assignment of user feedback:</strong> Any feedback, suggestion, improvement idea, recommendation, correction, or proposal submitted by a User, tester, or any contributor through any channel is assigned to the Publisher free of charge, on an exclusive, irrevocable, and final basis upon submission, worldwide and for the full legal term of protection. This assignment includes, in particular, rights of reproduction, representation, adaptation, translation, modification, exploitation, commercialization, and sublicensing, on any medium and by any process, without compensation and without attribution obligation.</p>
+                    <p>The prohibition on extraction extends to leaderboard data, public profiles and clan member lists, including where accessible without authentication. Any qualitatively or quantitatively substantial extraction or reuse of the contents of these databases is prohibited, as is any repeated and systematic extraction or reuse of insubstantial parts.</p>
 
                     <h3>ARTICLE 5. AVAILABILITY</h3>
                     <p>The Application is provided "as is". The Publisher does not guarantee 100% availability.</p>
@@ -2213,7 +2388,7 @@
                     <h3>TITLE II: TERMS OF SALE (TOS)</h3>
 
                     <h3>ARTICLE 6. PAID PRODUCTS AND SERVICES</h3>
-                    <p>The App offers In-App Purchases via stores: "PRO" Subscriptions (automatically renewable) and Consumables (Skins, Crédits).</p>
+                    <p>The App offers In-App Purchases via stores: "PRO" Subscriptions (automatically renewable) and Consumables (Skins, Credits).</p>
                     <p>The features, duration, included benefits, any trial periods, and commercial terms applicable to each offer are those displayed at the time of purchase on the relevant Store product page.</p>
                     <p><strong>Modification of benefits and service scope:</strong> The Publisher exclusively reserves the right to modify, add, remove, or transform the benefits associated with the Premium subscription, their nature, quantity, functional scope, or access conditions, including for technical, security, service optimization, or commercial evolution reasons. These modifications may take effect without notice and apply immediately, including to ongoing subscriptions. The absence of refunds or credits due to such modifications is expressly agreed by the User as compensation for the commercial terms offered at the time of purchase.</p>
 
@@ -2239,6 +2414,49 @@
                     <p>The Publisher may offer a referral program allowing a User ("Referrer") to invite a third party ("Referee") to create an account and use the Application.</p>
                     <p>Rewards, attribution thresholds, validation delays, potential caps, exclusions, eligibility criteria and benefit withdrawal rules are defined in the Application, on associated information pages, or in any official Publisher communication. These elements are not guaranteed permanently and may be modified, suspended, or discontinued at any time.</p>
                     <p>Referral benefits have no cash value and are not transferable or redeemable for money unless expressly stated otherwise. In case of abuse, fraud, multiple-account creation, self-referral, technical circumvention, or breach of these Terms, the Publisher may cancel rewards, suspend program access, or close related accounts, without prejudice to any other available remedy.</p>
+
+                    <h3>ARTICLE 11. SOCIAL AND MULTIPLAYER FEATURES</h3>
+
+                    <h4>11.1. Purpose</h4>
+                    <p>The Application offers social features: leaderboards, airport-based clans, a structured-message clan feed, team challenges, friend lists, invitations and profiles viewable by other players. Their use is optional and implies acceptance of this article.</p>
+                    <p>The User is informed that these features make some of their data visible to other users, under the conditions described in Article 2.10 of the Privacy Policy, and that leaderboards are publicly accessible.</p>
+
+                    <h4>11.2. No free-text messaging</h4>
+                    <p>The Application offers no free-text input field within its social features. The clan feed only accepts predefined structured messages (scan request, showcasing a card from your hangar) and reactions chosen from a closed emoji list. Friend requests and clan invitations contain no message field. The only text the User freely chooses is their username, governed by Article 11.3.</p>
+
+                    <h4>11.3. Rules of conduct and choice of username</h4>
+                    <p>The User undertakes not to use the social features to:</p>
+                    <ul>
+                        <li>choose a username that is unlawful, insulting, hateful, discriminatory, sexual in nature, glorifying terrorism or crimes against humanity, or infringing the rights of a third party (in particular a name, a trademark, or another person's identity);</li>
+                        <li>impersonate a third party, a member of the ScanHorizon team, or a public or airport authority;</li>
+                        <li>harass, disturb or repeatedly solicit another user, in particular a minor;</li>
+                        <li>create multiple accounts, self-refer, use third-party software, a modified client, automation, or any technical circumvention in order to distort a leaderboard, a challenge, a scan counter or a reward mechanism;</li>
+                        <li>extract, collect or reuse other users' data by automated means, including data appearing on the leaderboards.</li>
+                    </ul>
+
+                    <h4>11.4. Reporting content or behaviour</h4>
+                    <p>In accordance with Article 16 of Regulation (EU) 2022/2065 (Digital Services Act), any person may report content they consider illegal, in particular a username, by writing to <strong>contact@scan-horizon.com</strong>.</p>
+                    <p>To enable effective handling, the report should include: a sufficiently substantiated explanation of the reasons why the content is considered illegal, its precise location (for example the username concerned and the screen on which it appears), the name and email address of the reporting party (except where the content concerns offences referred to in Articles 3 to 7 of Directive 2011/93/EU), and a statement of good faith as to the accuracy of the information provided.</p>
+                    <p>We acknowledge receipt of the report without delay and inform its author of the decision taken and of the available redress options.</p>
+
+                    <h4>11.5. Moderation: policies, procedures, measures and tools</h4>
+                    <p>This article is published pursuant to Article 14 of Regulation (EU) 2022/2065.</p>
+                    <p><strong>Automated tools:</strong> usernames are subject, upon creation, to automated filtering against a list of prohibited terms. This filtering is applied without human intervention and may result in the immediate rejection of a username. No other automated moderation processing is carried out, as the Application contains no free-text content.</p>
+                    <p><strong>Human review:</strong> any restriction decision other than the automated rejection of a username (suspension, account deletion, withdrawal of an already-assigned username, removal of a structured message, exclusion from a leaderboard or challenge) is taken after human review by the Publisher.</p>
+                    <p><strong>Measures that may be taken:</strong> rejection or withdrawal of a username and a request to choose a new one; removal of a structured message from the clan feed; exclusion from a clan, a challenge or a leaderboard; cancellation of improperly obtained rewards; temporary suspension; termination of the account.</p>
+                    <p><strong>Proportionality:</strong> in accordance with Article 14.4 of the same Regulation, the Publisher applies these restrictions in a diligent, objective and proportionate manner, with due regard to the rights and legitimate interests of all parties involved, including the User's freedom of expression.</p>
+                    <p><strong>Statement of reasons:</strong> in accordance with Article 17 of the same Regulation, a User affected by a restriction measure receives a clear and specific statement of reasons, indicating the measure taken and its scope, the facts justifying it, the basis relied upon (a provision of these Terms or a legal provision), the use of automated processing where applicable, and the available redress options.</p>
+                    <p><strong>Redress:</strong> the User may contest any measure by writing to <strong>contact@scan-horizon.com</strong> within six months. The complaint is subject to human review and a reasoned response. The User retains in all cases the right to bring the matter before the competent court and, if a consumer, to use the mediation provided for in Article 13.</p>
+
+                    <h4>11.6. Rewards, leaderboards and challenges</h4>
+                    <p>Rewards, benefits, bonus scans, boosts and virtual items obtained through the social features have no monetary value and are neither transferable, exchangeable, nor refundable. The thresholds, scales, periods, formats and rewards of leaderboards and challenges may be modified, suspended or discontinued at any time, in particular for technical, balancing or anti-abuse reasons.</p>
+                    <p>Leaderboards are established from automatically computed data and may be subject to refresh delays, errors or unavailability. They create no vested rights.</p>
+
+                    <h4>11.7. Other users' content</h4>
+                    <p>The Publisher hosts, within the meaning of Regulation (EU) 2022/2065, the usernames and structured messages published by Users. It exercises no prior control over usernames other than the automated filtering described in Article 11.5, and shall not be held liable for content published by Users, subject to its obligation to act promptly upon becoming aware of manifestly illegal content.</p>
+
+                    <h4>11.8. Minors</h4>
+                    <p>Social features are accessible to Users aged 13 to 17 under the conditions of Article 1.2. Holders of parental authority are invited to review the data visibility described in Article 2.10 of the Privacy Policy and may at any time request the removal of a minor's account from the public leaderboards by writing to contact@scan-horizon.com.</p>
 
                     <h3>TITLE III: FINAL PROVISIONS</h3>
 
@@ -2279,6 +2497,17 @@
                         <li><strong>Contact :</strong> contact@scan-horizon.com</li>
                     </ul>
 
+                    <h3>1 BIS. POINTS DE CONTACT (RÈGLEMENT SUR LES SERVICES NUMÉRIQUES)</h3>
+                    <p>En application des articles 11, 12 et 16 du règlement (UE) 2022/2065 du 19 octobre 2022 relatif à un marché unique des services numériques, l'Éditeur désigne une adresse électronique unique :</p>
+                    <p><strong>contact@scan-horizon.com</strong> — langues acceptées : français, anglais.</p>
+                    <p>Cette adresse constitue :</p>
+                    <ul>
+                        <li>le <strong>point de contact unique pour les autorités</strong> (article 11) : Commission européenne, Comité européen des services numériques et coordinateurs pour les services numériques, dont l'ARCOM pour la France ;</li>
+                        <li>le <strong>point de contact pour les destinataires du service</strong> (article 12), permettant une communication directe et rapide par voie électronique, sans recours exclusif à des outils automatisés ;</li>
+                        <li>le <strong>canal de signalement des contenus illicites</strong> (article 16), dont les modalités sont détaillées à l'article 11.4 de nos Conditions Générales.</li>
+                    </ul>
+                    <p>SAS SCAN HORIZON étant établie en France, elle n'est pas tenue de désigner un représentant légal au sens de l'article 13 du même règlement.</p>
+
                     <h3>2. HÉBERGEMENT DES DONNÉES</h3>
                     <p>L'application ne dispose pas de serveurs physiques en propre mais utilise une infrastructure Cloud (Serverless).</p>
                     <ul>
@@ -2293,6 +2522,10 @@
                         1032 E Brandon Blvd #3003, Brandon, FL 33511, ÉTATS-UNIS</li>
                         <li><strong>Prestataire emailing transactionnel :</strong><br>
                         Resend, Inc. (USA)</li>
+                        <li><strong>Réseau de diffusion de contenu et stockage des ressources :</strong><br>
+                        Cloudflare, Inc. (Workers, R2) — USA / réseau mondial</li>
+                        <li><strong>Fonds cartographiques :</strong><br>
+                        CARTO (CartoDB Inc.)</li>
                     </ul>
 
                     <h3>3. PROPRIÉTÉ INTELLECTUELLE (AVERTISSEMENT)</h3>
@@ -2320,6 +2553,17 @@
                         <li><strong>Contact:</strong> contact@scan-horizon.com</li>
                     </ul>
 
+                    <h3>1 BIS. POINTS OF CONTACT (DIGITAL SERVICES ACT)</h3>
+                    <p>Pursuant to Articles 11, 12 and 16 of Regulation (EU) 2022/2065 of 19 October 2022 on a Single Market for Digital Services, the Publisher designates a single email address:</p>
+                    <p><strong>contact@scan-horizon.com</strong> — languages accepted: French, English.</p>
+                    <p>This address constitutes:</p>
+                    <ul>
+                        <li>the <strong>single point of contact for authorities</strong> (Article 11): European Commission, European Board for Digital Services and Digital Services Coordinators, including ARCOM for France;</li>
+                        <li>the <strong>point of contact for recipients of the service</strong> (Article 12), allowing direct and rapid communication by electronic means, without relying solely on automated tools;</li>
+                        <li>the <strong>channel for reporting illegal content</strong> (Article 16), the procedure for which is detailed in Article 11.4 of our Terms and Conditions.</li>
+                    </ul>
+                    <p>As SAS SCAN HORIZON is established in France, it is not required to designate a legal representative within the meaning of Article 13 of the same Regulation.</p>
+
                     <h3>2. DATA HOSTING</h3>
                     <ul>
                         <li><strong>Main Host (Data & Auth):</strong><br>
@@ -2332,6 +2576,10 @@
                         1032 E Brandon Blvd #3003, Brandon, FL 33511, USA</li>
                         <li><strong>Transactional Email Provider:</strong><br>
                         Resend, Inc. (USA)</li>
+                        <li><strong>Content delivery network and asset storage:</strong><br>
+                        Cloudflare, Inc. (Workers, R2) — USA / global network</li>
+                        <li><strong>Map tiles:</strong><br>
+                        CARTO (CartoDB Inc.)</li>
                     </ul>
 
                     <h3>3. INTELLECTUAL PROPERTY</h3>
