@@ -389,6 +389,35 @@
             color: #ffd96a;
         }
 
+        .store-rating {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            margin-top: 0.75rem;
+            padding: 0.34rem 0.62rem;
+            border-radius: 999px;
+            border: 1px solid rgba(186, 219, 255, 0.35);
+            background: rgba(7, 22, 40, 0.52);
+            color: #eaf5ff;
+            width: fit-content;
+        }
+
+        .store-rating-score {
+            font-size: 0.95rem;
+            font-weight: 700;
+            line-height: 1;
+            letter-spacing: 0.02em;
+        }
+
+        .store-rating-stars {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.06rem;
+            color: #ffd96a;
+            font-size: 0.9rem;
+            line-height: 1;
+        }
+
         .store-badge {
             display: inline-flex;
             align-items: center;
@@ -797,6 +826,11 @@
             }
 
             .store-stars {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .store-rating {
                 margin-left: auto;
                 margin-right: auto;
             }
@@ -1420,16 +1454,23 @@
                 "@id": "https://scan-horizon.com/fr/#application",
                 "name": "ScanHorizon",
                 "url": "https://scan-horizon.com/fr/",
-                "description": "ScanHorizon revolutionizes flight tracking with a gamified augmented reality experience. Point your smartphone at aircraft in the sky to identify the plane with live ADS-B data, then unlock aircraft cards and build your virtual hangar.",
-                "applicationCategory": "UtilitiesApplication",
+                "description": "ScanHorizon revolutionizes flight tracking with a gamified augmented reality experience. Point your smartphone at aircraft in the sky or on the ground at the airport to identify the plane with live ADS-B data, then unlock aircraft cards and build your virtual hangar.",
+                "applicationCategory": "GameApplication, TravelApplication",
                 "operatingSystem": "Android, iOS",
                 "isAccessibleForFree": true,
                 "featureList": [
                     "Real-time flight tracking via live ADS-B and PlaneFinder data stream",
-                    "Directional pointing-based aircraft identification",
+                    "Directional pointing-based aircraft identification, in flight and on the ground (airports, museums)",
                     "Aviation card collecting gameplay",
                     "Personalized virtual hangar"
                 ],
+                "aggregateRating": {
+                    "@type": "AggregateRating",
+                    "ratingValue": "5.0",
+                    "reviewCount": "70",
+                    "bestRating": "5",
+                    "worstRating": "1"
+                },
                 "sameAs": [
                     "https://apps.apple.com/fr/app/scanhorizon/id6761936970",
                     "https://play.google.com/store/apps/details?id=com.app.flighttracktest"
@@ -1494,13 +1535,16 @@
                                 </span>
                             </a>
                         </div>
-                        <span class="store-stars" aria-label="Note moyenne 4,8 sur 5">
-                            <span class="star-full" aria-hidden="true">★</span>
-                            <span class="star-full" aria-hidden="true">★</span>
-                            <span class="star-full" aria-hidden="true">★</span>
-                            <span class="star-full" aria-hidden="true">★</span>
-                            <span class="star-partial" aria-hidden="true">★</span>
-                        </span>
+                        <div class="store-rating" aria-label="Note moyenne 5,0 sur 5">
+                            <span class="store-rating-score">5,0</span>
+                            <span class="store-rating-stars" aria-hidden="true">
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                            </span>
+                        </div>
                     </div>
                     <div class="radar-scene" aria-hidden="true">
                         <div class="frame-viewport">
@@ -1576,13 +1620,16 @@
                                 </span>
                             </a>
                         </div>
-                        <span class="store-stars" aria-label="Average rating 4.8 out of 5">
-                            <span class="star-full" aria-hidden="true">★</span>
-                            <span class="star-full" aria-hidden="true">★</span>
-                            <span class="star-full" aria-hidden="true">★</span>
-                            <span class="star-full" aria-hidden="true">★</span>
-                            <span class="star-partial" aria-hidden="true">★</span>
-                        </span>
+                        <div class="store-rating" aria-label="Average rating 5.0 out of 5">
+                            <span class="store-rating-score">5.0</span>
+                            <span class="store-rating-stars" aria-hidden="true">
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                                <span>&#9733;</span>
+                            </span>
+                        </div>
                     </div>
                     <div class="radar-scene" aria-hidden="true">
                         <div class="frame-viewport">
