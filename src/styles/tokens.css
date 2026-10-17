@@ -1,0 +1,65 @@
+/*
+ * Tokens de la DA ScanHorizon, repris de l'app (lib/theme/app_colors.dart).
+ * Quand une couleur change dans l'app, la changer ici aussi.
+ * Mise en page : fond nuit, un seul bleu d'accent, etiquettes HUD en monospace,
+ * couleurs reservees aux raretes.
+ */
+:root {
+  /* Fond et surfaces */
+  --c-night: #050a15;            /* fond du site */
+  --c-panel: #0a1426;            /* blocs poses sur le fond */
+  --c-panel-raised: #0e1b33;
+  --c-line: rgba(56, 182, 255, 0.16);
+  --c-line-strong: rgba(56, 182, 255, 0.34);
+
+  /* Texte */
+  --c-ink: #e8f1fb;
+  --c-ink-dim: #9fb3cc;
+  --c-ink-faint: #6f84a0;
+
+  /* Marque */
+  --c-brand: #38b6ff;            /* AppColors.brand */
+  --c-brand-deep: #0a6ebd;       /* AppColors.brandDeep */
+  --c-danger: #ff5e85;           /* lien « Supprimer mes donnees » du site actuel */
+  --c-warning: #f59e0b;          /* AppColors.warning */
+  --c-business-gold: #e6c56a;    /* AppColors.businessGold */
+  --c-nvg: #00ff41;              /* AppColors.nvgPrimary */
+
+  /* Raretes (memes valeurs que les cartes du Hangar) */
+  --c-rarity-common: #9e9e9e;
+  --c-rarity-frequent: #4caf50;
+  --c-rarity-rare: #007aff;
+  --c-rarity-epic: #9c27b0;
+  --c-rarity-legendary: #ffd700;
+  --c-rarity-event: #b6c6ff;
+
+  /* Typographie */
+  --f-display: 'Montserrat', 'Avenir Next', 'Segoe UI', sans-serif;
+  --f-body: 'IBM Plex Sans', 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  --f-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Rayons (echelle AppRadii de l'app) */
+  --r-xs: 8px;
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-lg: 20px;
+  --r-xl: 24px;
+  --r-pill: 999px;
+
+  /* Espacements (grille de 4 px, comme AppSpacing) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-6: 24px;
+  --s-8: 32px;
+  --s-12: 48px;
+  --s-16: 64px;
+
+  /* Largeurs */
+  --w-page: 1200px;
+  --w-text: 70ch;
+  --header-h: 64px;
+
+  color-scheme: dark;
+}

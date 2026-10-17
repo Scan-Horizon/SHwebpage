@@ -1,0 +1,357 @@
+<p><strong>POLITIQUE DE CONFIDENTIALITÉ ET DE PROTECTION DES DONNÉES</strong></p>
+                    <p>Version : 2.1<br>Date d'entrée en vigueur : 13 octobre 2026</p>
+
+                    <h3>PRÉAMBULE</h3>
+                    <p>La présente Politique de Confidentialité vise à informer les Utilisateurs de l'Application mobile ScanHorizon, éditée par SAS SCAN HORIZON, des modalités de collecte, de traitement et de protection de leurs données personnelles. L'Éditeur s'engage à respecter le Règlement (UE) 2016/679 (RGPD) ainsi que la Loi Informatique et Libertés du 6 janvier 1978 modifiée.</p>
+
+                    <h3>ARTICLE 1. DÉFINITIONS</h3>
+                    <ul>
+                        <li><strong>Donnée Personnelle :</strong> Toute information identifiant directement ou indirectement une personne physique (ex : localisation, identifiant publicitaire, IP).</li>
+                        <li><strong>Traitement :</strong> Toute opération sur ces données (collecte, stockage, suppression).</li>
+                        <li><strong>Responsable de Traitement :</strong> La société SAS SCAN HORIZON.</li>
+                        <li><strong>Profilage :</strong> Tout traitement automatisé de données personnelles consistant à utiliser ces données pour évaluer certains aspects personnels, notamment pour analyser ou prédire le comportement d'une personne physique.</li>
+                    </ul>
+
+                    <h3>ARTICLE 2. DONNÉES COLLECTÉES</h3>
+                    <p>Nous collectons uniquement les données strictement nécessaires au bon fonctionnement du service ("Privacy by Design").</p>
+
+                    <h4>2.1. Données de compte</h4>
+                    <ul>
+                        <li><strong>Identifiant utilisateur (UID Firebase) :</strong> Généré lors de la création du compte, utilisé pour l'authentification et la gestion du profil.</li>
+                        <li><strong>Email, pseudo, avatarId :</strong> Saisis lors de l'inscription ou de la configuration du profil.</li>
+                        <li><strong>Statut du compte et tranche d'âge (ageRange) :</strong> Utilisés pour le contrôle d'accès, la conformité COPPA et le paramétrage des publicités.</li>
+                        <li><strong>Consentements horodatés :</strong> Vos choix de consentement (analytics, crash reporting) et leur horodatage sont stockés à des fins de preuve de conformité.</li>
+                    </ul>
+
+                    <h4>2.2. Données de Géolocalisation et Capteurs</h4>
+                    <ul>
+                        <li><strong>Géolocalisation (GPS) :</strong> latitude, longitude, altitude. Ces données sont collectées en temps réel lorsque l'Application est utilisée, <strong>uniquement au premier plan</strong>, afin d'identifier les aéronefs via les services de données aéronautiques. L'Application ne demande pas et n'utilise pas d'autorisation de localisation en arrière-plan.</li>
+                        <li><strong>Capteurs d'orientation :</strong> boussole, accéléromètre, gyroscope. Ces données sont traitées <strong>localement</strong> sur votre appareil pour le calcul de visée en réalité augmentée et ne sont pas transmises à nos serveurs.</li>
+                    </ul>
+
+                    <h4>2.3. Données Techniques et Sécurité Backend</h4>
+                    <ul>
+                        <li><strong>Adresse IP :</strong> Collectée côté serveur pour la sécurisation du service, la prévention des abus et la conformité légale (LCEN).</li>
+                        <li><strong>En-têtes HTTP techniques :</strong> User-agent, x-forwarded-for, origine de la requête — utilisés à des fins de sécurité et de lutte contre les abus.</li>
+                        <li><strong>Données de position (anti-fraude) :</strong> Les coordonnées GPS peuvent être temporairement traitées côté serveur pour détecter des comportements anormaux (ex : déplacements géographiquement incohérents). Ces données ne sont pas conservées au-delà des durées mentionnées à l'Article 7.</li>
+                        <li><strong>Notifications :</strong> L'Application utilise deux mécanismes distincts. <strong>Notifications distantes :</strong> un jeton de notification (Firebase Cloud Messaging) est associé à votre appareil pour permettre l'envoi de notifications depuis nos serveurs. Ce jeton est révoqué à la déconnexion et renouvelé automatiquement par votre système d'exploitation. <strong>Notifications locales :</strong> certains rappels (série de scans, défis en cours) sont planifiés directement sur votre appareil et déclenchés par celui-ci. Ils ne donnent lieu à aucune transmission de données à nos serveurs.</li>
+                    </ul>
+
+                    <h4>2.4. Données liées à la Réalité Augmentée</h4>
+                    <ul>
+                        <li><strong>Flux Caméra :</strong> L'Application accède à la caméra arrière pour superposer les informations de vol.</li>
+                        <li><strong>Traitement :</strong> Le traitement d'image est effectué <strong>localement</strong> sur votre appareil. Aucune image n'est transmise à nos serveurs, sauf action manuelle de votre part (ex : envoi d'un rapport de bug avec capture d'écran).</li>
+                    </ul>
+
+                    <h4>2.5. Données d'usage et Historique</h4>
+                    <ul>
+                        <li><strong>Historique des scans :</strong> Les scans réalisés (label aéronef, détails, horodatage, statut) sont stockés dans votre compte pour permettre la synchronisation multi-appareils et la consultation de votre historique.</li>
+                        <li><strong>Données de signalement :</strong> En cas de signalement d'un aéronef ou d'envoi de feedback via l'Application, les informations soumises (type de rapport, commentaire libre, données aéronef, horodatage) sont conservées à des fins de qualité et d'amélioration de la base de données aéronautiques.</li>
+                        <li><strong>Compteurs d'usage :</strong> Nombre de scans gratuits, scans bonus, total cumulé — rattachés à votre compte pour la gestion des limites de service.</li>
+                    </ul>
+
+                    <h4>2.6. Données commerciales (Achats In-App)</h4>
+                    <ul>
+                        <li>Historique des achats et statut de l'abonnement (Free/Pro).</li>
+                        <li><strong>Note importante :</strong> L'Éditeur n'a jamais accès à vos coordonnées bancaires. Les transactions sont sécurisées et gérées exclusivement par Apple (App Store) et Google (Play Store).</li>
+                    </ul>
+
+                    <h4>2.7. Traceurs publicitaires et mesure (Sous réserve de consentement)</h4>
+                    <ul>
+                        <li>Identifiants publicitaires mobiles : IDFA (iOS) et GAID (Android).</li>
+                        <li>Données techniques publicitaires et de performance (impressions, clics, taux de remplissage, données anti-fraude) traitées via nos partenaires publicitaires et de médiation.</li>
+                        <li>Partenaires susceptibles d'intervenir : <strong>Google AdMob</strong> (régie et couche de médiation), <strong>Meta Audience Network</strong> (Meta Platforms, Inc.), <strong>Unity Ads</strong> (Unity Technologies ApS), <strong>Pangle</strong> (groupe ByteDance) et <strong>Mintegral</strong> (groupe Mobvista), ainsi que, le cas échéant, leurs partenaires de demande publicitaire respectifs.</li>
+                        <li>Cette liste correspond aux réseaux intégrés à notre couche de médiation. Ils peuvent être activés ou désactivés selon les besoins de diffusion : tous ne reçoivent pas nécessairement de données à un instant donné. La liste des partenaires effectivement actifs, leurs finalités et leurs politiques de confidentialité respectives sont consultables à tout moment depuis notre plateforme de gestion des consentements, dans l'Application.</li>
+                        <li>Vérification côté serveur des publicités avec récompense : lorsque vous regardez une publicité pour obtenir une récompense, votre identifiant de compte (UID) est transmis à Google afin de créditer la récompense sur le bon compte et de prévenir la fraude.</li>
+                        <li>Conformément à l'article 45 de la loi Informatique et Libertés, qui fixe à 15 ans la majorité numérique pour tout traitement fondé sur le consentement, la publicité personnalisée et les traceurs publicitaires restent désactivés pour les utilisateurs de 13 à 15 ans une fois leur âge vérifié. Par mesure de prudence supplémentaire, l'indicateur technique signalant un utilisateur mineur (tag TFUA) est appliqué à l'ensemble des utilisateurs de 13 à 17 ans, à chaque lancement de l'Application, quelle que soit la réponse donnée à un écran de consentement, y compris depuis les paramètres de l'Application : seules des publicités non personnalisées peuvent leur être diffusées.</li>
+                    </ul>
+
+                    <h4>2.8. PROTECTION DE L'ENFANCE (Mineurs de moins de 13 ans, et restrictions 13-15 ans)</h4>
+                    <p>Conformément à nos CGU, l'Application est interdite aux moins de 13 ans. Un contrôle d'accès technique est appliqué lors de l'inscription. L'Éditeur ne collecte pas sciemment de données auprès de mineurs de moins de 13 ans.</p>
+                    <p>Conformément à l'article 45 de la loi n° 78-17 du 6 janvier 1978 modifiée (Loi Informatique et Libertés), qui fixe à 15 ans la majorité numérique pour tout traitement fondé sur le consentement, la publicité personnalisée, l'analytics, le crash reporting et la valorisation marketing du profil restent désactivés pour les utilisateurs de 13 à 15 ans une fois leur âge vérifié, quelle que soit la réponse donnée lors de l'écran de consentement initial affiché au premier lancement (l'âge de l'Utilisateur n'étant pas encore connu à cet instant). Seules des publicités non personnalisées peuvent, le cas échéant, leur être diffusées (tag TFUA). Si un parent ou tuteur découvre que son enfant a fourni des données sans autorisation, il peut nous contacter à contact@scan-horizon.com pour exiger la suppression immédiate de ces informations.</p>
+                    <p><strong>Chat de clan :</strong> les utilisateurs de 13 à 15 ans bénéficient de protections renforcées (filtrage plus strict, limites d'envoi réduites, examen prioritaire de leurs signalements), décrites aux articles 11.4 et 11.5.2 des Conditions Générales. Le rôle de modérateur, qui donne accès à des messages signalés, est réservé aux utilisateurs majeurs.</p>
+
+                    <h4>2.9. Données publiques utilisées à des fins marketing (sous réserve de consentement)</h4>
+                    <p>Avec votre consentement explicite, l'Éditeur peut utiliser certaines données rendues publiques sur votre profil (par exemple : pseudo, avatar et données de jeu générales telles que statistiques globales ou accomplissements non sensibles) pour promouvoir l'Application sur ses supports de communication (site web, réseaux sociaux, visuels promotionnels). Aucune donnée sensible ni donnée de contact privée n'est utilisée à cette fin. Ces contenus font l'objet d'une revue périodique afin de vérifier leur pertinence et de limiter leur maintien en ligne au strict nécessaire au regard de la finalité marketing.</p>
+                    <p>Vous pouvez retirer votre consentement à tout moment en nous contactant à contact@scan-horizon.com. Le retrait n'a pas d'effet rétroactif sur les traitements déjà réalisés avant sa prise en compte. Sauf contrainte technique ou légale justifiée, nous procédons au retrait des contenus concernés de nos supports sous 30 jours calendaires ; pour les plateformes tierces (ex. réseaux sociaux), nous effectuons les démarches de suppression dans le même délai et dans la mesure des moyens techniques disponibles.</p>
+
+
+                    <h4>2.10. Fonctionnalités sociales et multijoueur</h4>
+                    <p>L'Application propose des fonctionnalités sociales (classements, clans rattachés à des aéroports, défis d'équipe, liste d'amis, profils consultables par d'autres joueurs). Ces fonctionnalités impliquent, par nature, que certaines de vos données soient rendues visibles à d'autres utilisateurs. Le tableau ci-dessous décrit précisément ce qui est visible et par qui.</p>
+                    <p><strong>Chat de clan :</strong> le fil de clan comprend un salon de discussion en texte libre, réservé aux membres de votre clan, décrit à l'article 2.12. Il n'existe pas de messagerie privée entre joueurs. Les demandes d'ami et les invitations de clan ne comportent pas de champ message. Ne partagez dans le chat aucune information permettant de vous identifier ou de vous retrouver hors du jeu (nom, adresse, école, numéro de téléphone).</p>
+                    <table>
+                        <thead>
+                            <tr><th>Donnée</th><th>Visible par</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Pseudo, avatar, nombre total de scans, statut d'abonné (classements hebdomadaire et général)</td><td><strong>Tout utilisateur de l'Application, y compris en mode invité</strong>, les classements étant accessibles à tout joueur de l'Application</td></tr>
+                            <tr><td>Pseudo, avatar, drapeau d'origine déclaré, contribution, date d'adhésion, indicateur d'activité récente (jour) au sein d'un clan</td><td>Tout utilisateur authentifié de l'Application</td></tr>
+                            <tr><td>Hangar (collection d'aéronefs), cartes favorites, statistiques de jeu agrégées (niveau, série, meilleure journée, compagnies, pays)</td><td>Tout utilisateur authentifié consultant votre profil</td></tr>
+                            <tr><td>Pseudo, avatar, équipe et score dans un défi multijoueur</td><td>Tout utilisateur authentifié</td></tr>
+                            <tr><td>Messages structurés du fil de clan (demande de scan, carte mise en avant), réactions, mention du donateur ayant répondu</td><td>Les membres de votre clan uniquement (50 membres au maximum)</td></tr>
+                            <tr><td>Messages du chat de clan, avec le pseudo, l'avatar et le drapeau affichés au moment de l'envoi</td><td>Les membres de votre clan uniquement ; en cas de signalement, un modérateur joueur d'un autre clan et l'équipe ScanHorizon. Si le signalement vous vise, ils peuvent aussi lire vos messages des trente derniers jours (article 4)</td></tr>
+                            <tr><td>Relations d'amitié, invitations de clan, dons de scan, dons de Premium</td><td>Les deux utilisateurs concernés uniquement</td></tr>
+                            <tr><td>Parrainage (qui a parrainé qui), récompenses associées</td><td>Les deux utilisateurs concernés uniquement</td></tr>
+                            <tr><td>Email, date de naissance, tranche d'âge, géolocalisation, historique détaillé des scans, données d'abonnement</td><td><strong>Personne d'autre que vous.</strong> Ces données ne sont jamais exposées aux autres utilisateurs par les fonctionnalités sociales.</td></tr>
+                        </tbody>
+                    </table>
+                    <p><strong>Recherche par pseudo :</strong> afin de permettre l'ajout d'amis, tout utilisateur authentifié peut vérifier l'existence d'un pseudo et vous adresser une demande d'ami. Votre pseudo constitue donc un identifiant public. Nous vous recommandons de ne pas y faire figurer votre nom réel ni aucune information permettant de vous identifier hors du jeu.</p>
+                    <p><strong>Aucune donnée de géolocalisation n'est partagée avec les autres utilisateurs.</strong> Le clan est rattaché à un aéroport que vous choisissez et le drapeau affiché sur votre profil est déclaré par vous : ni l'un ni l'autre ne résulte d'une mesure de votre position réelle. L'indicateur d'activité récente a une granularité d'une journée et ne permet pas de suivi en temps réel.</p>
+                    <p><strong>Le globe et les positions affichées.</strong> Le hub multijoueur présente un globe terrestre sur lequel figurent des points et des liaisons. Ces points représentent des <strong>aéroports</strong>, positionnés à leurs coordonnées géographiques réelles. <strong>Ils ne représentent pas la position des joueurs.</strong> Lorsqu'un joueur est associé à un point du globe, il l'est à l'emplacement de l'<strong>aéroport du clan qu'il a lui-même choisi de rejoindre</strong>. Cette position ne reflète ni sa position réelle, ni une position approximative, ni son pays de résidence : un joueur résidant à Lisbonne peut avoir rejoint le clan de Tokyo et apparaîtra à Tokyo. Il en va de même du drapeau affiché sur son profil, qui est déclaré par lui et n'est pas vérifié.</p>
+                    <p>Votre géolocalisation GPS est utilisée exclusivement pour l'identification des aéronefs décrite à l'Article 2.2. Elle n'est <strong>jamais</strong> transmise aux autres utilisateurs, ni affichée sur le globe, ni déduite de votre appartenance à un clan.</p>
+                    <p><strong>Autres utilisateurs en qualité de destinataires :</strong> lorsque vous utilisez ces fonctionnalités, les autres utilisateurs de l'Application constituent des destinataires de vos données au sens de l'article 13.1.e du RGPD.</p>
+                    <p><strong>Données vous concernant fournies par un autre utilisateur.</strong> Lorsqu'un autre utilisateur vous adresse une demande d'ami, une invitation de clan, un don de scan, un don de Premium, ou vous désigne comme filleul dans le cadre du programme de parrainage, votre pseudonyme et votre identifiant de compte apparaissent dans les données relatives à cet autre utilisateur. Ces informations proviennent de nos propres services et ne sont pas obtenues auprès de tiers extérieurs à l'Application.</p>
+                    <p><strong>Mineurs :</strong> les utilisateurs de 13 à 17 ans ont accès aux fonctionnalités sociales dans les mêmes conditions que les autres utilisateurs. Le titulaire de l'autorité parentale est invité à en prendre connaissance et peut demander le retrait du compte d'un mineur des classements directement depuis l'Application ("Paramètres > Compte > Masquer des classements publics") ou en nous écrivant à contact@scan-horizon.com pour toute autre demande relative au compte d'un mineur.</p>
+
+                    <h4>2.11. Caractère obligatoire ou facultatif des données</h4>
+                    <p>Certaines données sont nécessaires au fonctionnement même du service. D'autres sont facultatives et ne sont collectées qu'avec votre accord.</p>
+                    <table>
+                        <thead>
+                            <tr><th>Donnée</th><th>Caractère</th><th>Conséquence en cas de refus</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Identifiant de compte, adresse email ou identifiant de connexion</td><td>Nécessaire à la création et à la gestion du compte</td><td>Le compte ne peut pas être créé ni conservé</td></tr>
+                            <tr><td>Pseudonyme</td><td>Nécessaire aux fonctionnalités de jeu et sociales</td><td>Le compte ne peut pas être finalisé</td></tr>
+                            <tr><td>Tranche d'âge</td><td>Nécessaire au contrôle d'accès et au paramétrage publicitaire conforme</td><td>L'accès à l'Application est bloqué</td></tr>
+                            <tr><td>Géolocalisation au premier plan</td><td>Nécessaire à l'identification des aéronefs</td><td>La fonction de scan est indisponible, le reste de l'Application demeure accessible</td></tr>
+                            <tr><td>Accès à la caméra</td><td>Nécessaire à la visée en réalité augmentée</td><td>La fonction de scan en réalité augmentée est indisponible</td></tr>
+                            <tr><td>Traceurs publicitaires et de mesure d'audience</td><td>Facultatif, soumis à votre consentement</td><td>L'Application reste pleinement utilisable. Des publicités non personnalisées peuvent être diffusées</td></tr>
+                            <tr><td>Analytics et rapports d'erreur</td><td>Facultatif, soumis à votre consentement</td><td>Aucune conséquence sur l'usage de l'Application</td></tr>
+                            <tr><td>Notifications</td><td>Facultatif</td><td>Vous ne recevez plus de rappels ni d'alertes</td></tr>
+                            <tr><td>Valorisation marketing du profil public</td><td>Facultatif, soumis à votre consentement exprès</td><td>Aucune conséquence sur l'usage de l'Application</td></tr>
+                            <tr><td>Messages du chat de clan</td><td>Facultatif</td><td>Vous n'écrivez pas dans le chat ; le reste du jeu, y compris les actions du fil de clan, reste accessible</td></tr>
+                        </tbody>
+                    </table>
+
+                    <h4>2.12. Chat de clan</h4>
+                    <p>Si vous êtes membre d'un clan, vous pouvez écrire dans le chat de votre clan. Nous traitons alors :</p>
+                    <ul>
+                        <li>le contenu de vos messages, leur date et leur heure d'envoi (heure de nos serveurs) ;</li>
+                        <li>votre identifiant de compte (UID), ainsi que votre pseudo, votre avatar et votre drapeau tels qu'ils sont au moment de l'envoi, copiés avec le message pour l'afficher rapidement ;</li>
+                        <li>un identifiant technique propre à chaque message, qui évite les envois en double ;</li>
+                        <li>si vous bloquez un joueur : la liste des joueurs que vous avez bloqués ;</li>
+                        <li>si vous signalez un message ou si l'un de vos messages est signalé : le motif choisi, la précision facultative écrite par l'auteur du signalement (240 caractères au plus), le message et les cinq messages échangés juste avant et juste après, copiés pour l'examen. Si vous êtes l'auteur du signalement, votre pseudo est visible de la personne qui l'examine, pas du joueur signalé ;</li>
+                        <li>si une mesure est prise à votre égard (avertissement, mise en sourdine, bannissement, masquage ou suppression d'un message) : sa nature, sa durée, son motif, le fait que vous avez pris connaissance d'un avertissement et, le cas échéant, le texte de votre contestation. Ces mesures forment votre historique de modération, consulté par l'équipe et par le modérateur qui traite un signalement vous visant ;</li>
+                        <li>si un modérateur propose à l'équipe une mesure vous concernant : la mesure proposée et son commentaire.</li>
+                    </ul>
+                    <p>Nous ne conservons avec vos messages ni votre adresse IP, ni votre position, ni l'identifiant de votre appareil. Votre adresse IP est seulement traitée, de façon transitoire, pour sécuriser la connexion au chat (limitation du nombre de connexions simultanées), dans les conditions de l'article 2.3. Le contenu de vos messages n'est utilisé ni pour la publicité, ni pour vous profiler, et n'est transmis à aucun partenaire publicitaire.</p>
+                    <p>Si vous devenez modérateur, nous traitons en outre la date à laquelle ce rôle vous a été confié, la date de votre acceptation de la Charte des modérateurs et le journal des actions de modération que vous effectuez.</p>
+                    <div class="plain-box">
+                        <p><strong>En clair :</strong> quand tu écris dans le chat de ton clan, on garde ce que tu as écrit, l'heure et ton pseudo. On ne sait pas où tu es quand tu écris. Tes messages ne servent jamais à la pub. Si quelqu'un signale un message, on garde ce message et ceux d'à côté le temps de vérifier ce qui s'est passé. La personne qui vérifie peut aussi relire ce que l'auteur du message a écrit pendant les 30 derniers jours.</p>
+                    </div>
+
+                    <h3>ARTICLE 3. FINALITÉS ET BASES LÉGALES</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Finalité du traitement</th>
+                                <th>Base Légale (RGPD)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Création et gestion du compte (authentification, profil, restauration)</td>
+                                <td>Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Fonctionnement du Radar &amp; Identification aéronautique</td>
+                                <td>Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Historique des scans et synchronisation multi-appareils</td>
+                                <td>Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Contrôle d'accès mineurs / conformité COPPA</td>
+                                <td>Obligation légale (Art. 6.1.c)</td>
+                            </tr>
+                            <tr>
+                                <td>Envoi de notifications push</td>
+                                <td>Consentement (Art. 6.1.a) + Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Stockage et preuve des consentements horodatés</td>
+                                <td>Consentement (Art. 6.1.a)</td>
+                            </tr>
+                            <tr>
+                                <td>Gestion des Abonnements Premium</td>
+                                <td>Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Signalement / support qualité base de données aéronautiques</td>
+                                <td>Intérêt légitime (Art. 6.1.f)</td>
+                            </tr>
+                            <tr>
+                                <td>Détection de crashs &amp; supervision technique (Firebase Crashlytics, Sentry)</td>
+                                <td>Consentement (Art. 6.1.a) — collecte conditionnée à votre accord. Pour les utilisateurs de 13 à 15 ans, cette collecte reste désactivée une fois leur âge vérifié, quelle que soit la réponse donnée à l'écran de consentement initial affiché avant que l'âge ne soit connu.</td>
+                            </tr>
+                            <tr>
+                                <td>Sécurité backend, prévention des abus, rate limiting</td>
+                                <td>Intérêt légitime sécurité (Art. 6.1.f)</td>
+                            </tr>
+                            <tr>
+                                <td>Analytics produit (Firebase Analytics)</td>
+                                <td>Consentement (Art. 6.1.a). Pour les utilisateurs de 13 à 15 ans, ce traitement reste désactivé une fois leur âge vérifié, quelle que soit la réponse donnée à l'écran de consentement initial affiché avant que l'âge ne soit connu.</td>
+                            </tr>
+                            <tr>
+                                <td>Publicité et mesure de performance publicitaire (Google AdMob en régie et médiation, Meta Audience Network, Unity Ads, Pangle, Mintegral)</td>
+                                <td>Consentement (Art. 6.1.a). Pour les utilisateurs de 13 à 15 ans, seules des publicités non personnalisées peuvent être diffusées une fois leur âge vérifié, au moyen du tag TFUA appliqué à chaque lancement, quelle que soit la réponse donnée à un écran de consentement, y compris depuis les paramètres.</td>
+                            </tr>
+                            <tr>
+                                <td>Valorisation marketing de données publiques de profil (pseudo, avatar, données de jeu générales)</td>
+                                <td>Consentement (Art. 6.1.a). Non activé pour les utilisateurs de 13 à 15 ans une fois leur âge vérifié.</td>
+                            </tr>
+                            <tr>
+                                <td>Fonctionnalités sociales : clans, fil de clan structuré, liste d'amis, invitations, dons de scan, défis d'équipe</td>
+                                <td>Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Affichage du profil (pseudo, avatar, hangar, statistiques agrégées) aux autres utilisateurs</td>
+                                <td>Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Publication des classements hebdomadaire et général</td>
+                                <td>Intérêt légitime (Art. 6.1.f) : animation compétitive du jeu, mise en balance avec les droits de l'Utilisateur au regard de la portée limitée des données publiées (pseudo, avatar, nombre de scans, statut d'abonné) et de la disponibilité d'un droit d'opposition immédiat, sans justification à apporter (Article 9).</td>
+                            </tr>
+                            <tr>
+                                <td>Intégrité du jeu : lutte contre la triche, les comptes multiples, l'auto-parrainage et les abus des fonctionnalités sociales</td>
+                                <td>Intérêt légitime (Art. 6.1.f)</td>
+                            </tr>
+                            <tr>
+                                <td>Détection des tentatives de scan issues d'outils d'automatisation, par analyse comportementale des interactions avec l'Application</td>
+                                <td>Intérêt légitime (Art. 6.1.f) : préservation de l'équité du jeu et de l'intégrité des classements, mise en balance avec les droits de l'Utilisateur au regard du caractère réversible et non pénalisant de la mesure appliquée, détaillée à l'article 8 bis.</td>
+                            </tr>
+                            <tr>
+                                <td>Fonctionnement du chat de clan : envoi, réception, affichage des 100 derniers messages, suppression de ses messages, blocage d'un joueur</td>
+                                <td>Exécution du contrat (Art. 6.1.b)</td>
+                            </tr>
+                            <tr>
+                                <td>Traitement des signalements portant sur un contenu, un pseudo ou un message du chat : filtrage automatisé, examen par un modérateur ou par l'équipe (y compris la consultation de l'historique de modération et des messages récents du joueur signalé), avertissements et mesures de restriction, contestations</td>
+                                <td>Intérêt légitime (Art. 6.1.f), la sécurité des utilisateurs et en particulier des mineurs ; obligation légale (Art. 6.1.c) pour la part de ce traitement qui met en oeuvre les articles 14, 16, 17 et 18 du règlement (UE) 2022/2065</td>
+                            </tr>
+                            <tr>
+                                <td>Gestion du rôle de modérateur joueur : attribution et retrait, vérification de la majorité, acceptation de la charte, journal des actions</td>
+                                <td>Intérêt légitime (Art. 6.1.f), le bon fonctionnement de la modération communautaire</td>
+                            </tr>
+                            <tr>
+                                <td>Conservation et transmission aux autorités d'un contenu illicite grave</td>
+                                <td>Obligation légale (Art. 6.1.c)</td>
+                            </tr>
+                            <tr>
+                                <td>Vérification côté serveur des publicités avec récompense (transmission de l'UID à Google)</td>
+                                <td>Exécution du contrat (Art. 6.1.b) et intérêt légitime anti-fraude (Art. 6.1.f)</td>
+                            </tr>
+                            <tr>
+                                <td>Obligations légales (conservation des logs techniques LCEN)</td>
+                                <td>Obligation légale (Art. 6.1.c)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>ARTICLE 4. DESTINATAIRES DES DONNÉES</h3>
+                    <p>À la date de dernière mise à jour de la présente politique, vos données ne font pas l'objet d'une <strong>vente</strong> au sens usuel. Elles sont transmises à nos sous-traitants techniques pour l'exécution du service, et peuvent l'être à d'autres destinataires lorsque cela est nécessaire à la fourniture du service, fondé sur une base légale valable et, le cas échéant, sur votre consentement :</p>
+                    <ul>
+                        <li><strong>Google Cloud / Firebase (Irlande) :</strong> Authentification (Firebase Auth), base de données (Firestore), analytics (Firebase Analytics), rapports d'erreur (Crashlytics), notifications (FCM), configuration à distance (Remote Config), vérification applicative (App Check) et attestation d'intégrité de l'appareil (Google Play Integrity, Android uniquement).</li>
+                        <li><strong>Google Sign-In (Google LLC, USA) :</strong> Authentification via compte Google.</li>
+                        <li><strong>Railway (Pays-Bas) :</strong> Hébergement du backend applicatif avec serveur localisé à Amsterdam. Railway héberge également le cache Redis utilisé pour la sécurité anti-abus, ainsi que le service de chat de clan (serveur temps réel et base de données des messages, région EU West).</li>
+                        <li><strong>PlaneFinder (Royaume-Uni) :</strong> fournisseur des données de vol. Le flux de données aéronautiques est reçu par nos serveurs, qui en extraient localement les aéronefs pertinents. Aucune donnée vous concernant, et en particulier aucune coordonnée de géolocalisation, n'est transmise à ce fournisseur.</li>
+                        <li><strong>RevenueCat (USA) :</strong> Gestion des abonnements mobiles.</li>
+                        <li><strong>Resend (USA) :</strong> Envoi d'emails transactionnels liés au compte (ex. confirmation de suppression).</li>
+                        <li><strong>Google AdMob (USA) :</strong> Régie publicitaire et médiation (uniquement si vous avez accepté le traçage). Lorsque vous y consentez, une tranche d'âge peut être transmise à AdMob pour le paramétrage publicitaire, la conformité mineurs et la mesure de performance.</li>
+                        <li><strong>Unity Ads (Unity Technologies ApS, Danemark) :</strong> Réseau publicitaire (diffusion, mesure de performance et signaux anti-fraude, sous réserve de consentement).</li>
+                        <li><strong>Pangle (groupe ByteDance) :</strong> Réseau publicitaire (diffusion, mesure de performance et signaux anti-fraude, sous réserve de consentement).</li>
+                        <li><strong>Mintegral (groupe Mobvista) :</strong> Réseau publicitaire (diffusion, mesure de performance et signaux anti-fraude, sous réserve de consentement).</li>
+                        <li><strong>Cloudflare, Inc. (USA) :</strong> Réseau de diffusion de contenu et stockage des ressources graphiques de l'Application (images d'aéronefs, avatars).</li>
+                        <li><strong>CARTO (CARTO / CartoDB Inc.) :</strong> Fourniture des fonds de carte affichés dans l'Application. À ce titre, CARTO reçoit l'adresse IP de votre appareil et les coordonnées des tuiles cartographiques consultées.</li>
+                        <li><strong>Les autres utilisateurs de l'Application :</strong> dans les limites décrites à l'Article 2.10.</li>
+                        <li><strong>Modérateurs joueurs bénévoles :</strong> pour traiter un signalement, un modérateur peut consulter, uniquement pour un clan autre que le sien, le message signalé et les messages qui l'entourent, le pseudo et l'avatar de leurs auteurs, le pseudo de l'auteur du signalement et la précision qu'il a jointe. Pour apprécier la situation, il peut aussi consulter les mesures de modération déjà prises à l'égard du joueur signalé et les messages que celui-ci a publiés au cours des trente derniers jours. Il n'a accès ni à votre adresse électronique, ni aux autres données de votre profil. Il agit sous l'autorité de l'Éditeur, après acceptation d'une charte de confidentialité ; ses actions, ainsi que chaque consultation de messages passés, sont enregistrées.</li>
+                        <li><strong>Meta Audience Network (USA) :</strong> Diffusion publicitaire et mesure de performance (sous réserve de consentement).</li>
+                        <li><strong>Sentry (UE/USA selon configuration) :</strong> Supervision technique, journalisation des erreurs et rapports de crash (uniquement si vous avez donné votre consentement).</li>
+                        <li><strong>Google Forms (USA) :</strong> Hébergement et traitement des demandes de suppression de compte transmises via formulaire de demande de suppression de données.</li>
+                    </ul>
+
+                    <h3>ARTICLE 5. TRANSFERTS HORS UE</h3>
+                    <p>Certaines données peuvent être traitées en dehors de l'Union européenne, notamment via Google (Firebase Auth, Firestore, Analytics, Crashlytics, FCM, Remote Config, AdMob, Google Sign-In), RevenueCat, Resend, Cloudflare, CARTO, Sentry et, selon les flux de données aéronautiques, nos fournisseurs de données de vol.</p>
+                    <p>Les données du chat de clan sont stockées dans l'Union européenne (Railway, région EU West). Railway étant une société établie aux États-Unis, un accès à ces données depuis les États-Unis par ce prestataire reste possible ; il est encadré par les mécanismes décrits au présent article. L'authentification au chat repose sur Firebase, déjà mentionné ci-dessus.</p>
+                    <p>Le recours à des réseaux publicitaires internationaux peut impliquer des transferts vers des pays tiers, y compris hors de l'Espace économique européen. Selon le partenaire concerné, les pays de destination peuvent inclure les <strong>États-Unis</strong> (Google AdMob, Meta Audience Network, Unity Ads) ainsi que des pays d'Asie, dont la <strong>République populaire de Chine</strong> (Pangle, groupe ByteDance ; Mintegral, groupe Mobvista). Ces transferts n'interviennent qu'après recueil de votre consentement aux traceurs publicitaires, et uniquement pour les partenaires effectivement activés à l'instant considéré.</p>
+                    <p>Tout transfert effectivement réalisé est encadré par un mécanisme approprié au sens du chapitre V du RGPD : Clauses Contractuelles Types de la Commission européenne, ou adhésion au Data Privacy Framework lorsque le partenaire y est certifié.</p>
+                    <p>S'agissant en particulier des transferts vers la République populaire de Chine (Pangle, Mintegral), l'Éditeur a réalisé une analyse des garanties selon la méthodologie des recommandations du Comité européen de la protection des données (EDPB) 01/2020. Cette analyse constate que les données effectivement transmises à ces deux partenaires se limitent à un identifiant publicitaire mobile et à des signaux techniques d'enchère et de mesure, à l'exclusion de toute identité, adresse email, identifiant de compte ScanHorizon ou géolocalisation précise ; que les utilisateurs de 13 à 17 ans ne reçoivent, pour ces partenaires, que de la publicité non personnalisée, indépendamment de leur consentement individuel ; et que ce transfert n'intervient qu'après recueil de votre consentement préalable, que vous pouvez retirer à tout moment. Ces éléments constituent les mesures supplémentaires retenues au sens des recommandations EDPB 01/2020. Les informations détaillées relatives aux traitements réalisés par chaque partenaire publicitaire, ainsi que leurs politiques de confidentialité respectives, sont accessibles depuis notre plateforme de gestion des consentements.</p>
+
+                    <h3>ARTICLE 6. COOKIES ET SDK MOBILES</h3>
+                    <p>L'Application n'utilise pas de cookies web classiques, mais des kits de développement logiciel (SDK) et des identifiants mobiles. L'utilisation des traceurs publicitaires et analytiques est soumise à votre consentement préalable, recueilli au premier lancement via notre plateforme de gestion des consentements <strong>intégrée à l'Application</strong>. Vous pouvez modifier ce choix à tout moment dans les paramètres de l'Application, rubrique "Gérer mes choix".</p>
+                    <p>Si vous acceptez les traceurs via la CMP, nous pouvons également stocker une <strong>tranche d'âge</strong> (ex. 15-17, 18-24, 25-34, etc.) à des fins de personnalisation, d'analyse statistique et d'adaptation des contenus, et la transmettre à Google AdMob pour le paramétrage publicitaire, la conformité mineurs et la mesure de performance. Nous ne stockons pas votre date de naissance complète dans ce cadre. En l'absence de consentement, cette donnée n'est pas collectée ni transmise via les traceurs publicitaires ou de mesure d'audience.</p>
+                    <p>Le site internet scan-horizon.com, quant à lui, ne dépose aucun traceur : il ne comporte ni cookie de mesure d'audience, ni cookie publicitaire, ni pixel de suivi. Aucun consentement n'y est donc requis, et aucune plateforme de gestion des consentements n'y est nécessaire.</p>
+
+                    <h3>ARTICLE 7. DURÉE DE CONSERVATION</h3>
+                    <ul>
+                        <li><strong>Données de compte et d'usage :</strong> Comptes invités (anonymes) : en l'absence d'activité pendant 30 jours, le compte et les données associées sont automatiquement supprimés. Comptes enregistrés (Google, Apple, email) : les données sont conservées tant que le compte reste actif. Nous procédons chaque année à un réexamen des comptes sans aucune connexion depuis plus de 2 ans, et supprimons ceux dont l'inactivité est confirmée, selon les modalités de l'Article 9, sauf obligation légale de conservation contraire. Vous pouvez demander la suppression de votre compte à tout moment, sans attendre ce délai.</li>
+                        <li><strong>Conservation après une demande de suppression :</strong> Lorsque vous demandez la suppression de votre compte, celui-ci est immédiatement désactivé et cesse d'être visible des autres utilisateurs. Vos données sont ensuite conservées pendant 30 jours avant suppression définitive, seule finalité étant de vous permettre de récupérer un compte supprimé par erreur en vous reconnectant avant son terme. Passé ce délai, la suppression est définitive et irréversible. Vous pouvez demander une suppression anticipée en écrivant à contact@scan-horizon.com.</li>
+                        <li><strong>Journaux techniques conservés au titre d'une obligation légale :</strong> En application des obligations pesant sur les fournisseurs de services de communication au public en ligne, les données permettant d'identifier l'auteur d'un contenu sont conservées pendant un an à compter de leur enregistrement, puis supprimées. Ces données ne sont accessibles qu'aux autorités judiciaires habilitées, sur réquisition.</li>
+                        <li><strong>Signalements et décisions de modération, hors chat :</strong> Les signalements reçus, les décisions de restriction prises et leurs motifs sont conservés pendant six mois à compter de la notification de la décision, durée correspondant au délai de contestation ouvert par l'article 11.5.8 de nos Conditions Générales. Ils sont ensuite supprimés ou anonymisés, sauf si une contestation ou une procédure est en cours.</li>
+                        <li><strong>Messages du chat de clan :</strong> un message qui sort des 100 derniers messages de votre clan est supprimé 7 jours plus tard, et tout message est supprimé au plus tard 3 mois après son envoi. Un message que vous supprimez est masqué aussitôt et suit les mêmes règles. Une purge automatique s'exécute chaque jour.</li>
+                        <li><strong>Messages signalés ou modérés :</strong> un message signalé, avec les messages de contexte copiés pour l'examen, est conservé au moins 3 mois après le signalement. Si une mesure est prise sur ce message ou contre son auteur, il est conservé jusqu'à la plus tardive des dates suivantes : 3 mois après la fin de la mesure ; 6 mois après sa date (délai de contestation). Pour un avertissement, qui n'a pas de durée, seule cette seconde date s'applique. Une mesure sans fin (bannissement permanent) le fait conserver tant qu'elle est active, puis 3 mois après sa levée. Il n'est jamais supprimé tant qu'une contestation est en cours.</li>
+                        <li><strong>Journal des actions de modération et des sanctions, avertissements compris :</strong> 12 mois. Il contient les identifiants des personnes concernées, la nature, la date et le motif de chaque action et, le cas échéant, le texte des contestations ; il ne reproduit pas le contenu des messages du chat. Il enregistre aussi chaque consultation, par un modérateur, des messages passés d'un joueur signalé. L'historique de modération d'un joueur est tiré de ce journal et ne remonte donc pas au-delà de 12 mois. Le journal est anonymisé à la suppression de votre compte, sauf bannissement du chat encore actif.</li>
+                        <li><strong>Blocages :</strong> tant que vous ne débloquez pas le joueur concerné, et au plus tard jusqu'à la suppression de votre compte.</li>
+                        <li><strong>Rôle de modérateur :</strong> pendant l'exercice du rôle ; les actions effectuées restent dans le journal de modération pour sa durée de 12 mois.</li>
+                        <li><strong>Contenus transmis aux autorités :</strong> pendant la durée nécessaire à la procédure, au-delà des durées ci-dessus (article 11.5.10 des Conditions Générales).</li>
+                        <li><strong>Codes cadeaux et dons de Premium :</strong> un code cadeau acheté et le reçu d'achat qui lui est associé sont conservés jusqu'à l'utilisation ou l'expiration du code, puis douze (12) mois au plus à compter de l'achat pour permettre sa réémission (article 6 ter.4 des Conditions Générales), puis supprimés. Une invitation de don de Premium adressée à un autre joueur expire et est supprimée au bout de sept (7) jours si elle n'a pas été acceptée.</li>
+                        <li><strong>Données de consentement :</strong> Conservées à des fins de preuve de conformité pendant la durée nécessaire au respect de nos obligations légales.</li>
+                        <li><strong>Données de sécurité et anti-abus :</strong> Conservées pour une durée limitée et proportionnée à la protection du service, puis supprimées ou anonymisées.</li>
+                        <li><strong>Données analytiques :</strong> Les données d'usage sont conservées 14 mois dans Firebase Analytics, puis exportées vers notre entrepôt d'analyse (Google BigQuery) où elles sont conservées 14 mois avant suppression automatique. Elles y sont rattachées à un identifiant technique d'installation, de nature pseudonyme, qui n'est pas relié à votre compte pour la grande majorité des événements. Lorsqu'un identifiant de compte y figure, il est effacé sur demande.</li>
+                        <li><strong>Données publicitaires et de mesure d'erreurs :</strong> Conservées selon vos choix de consentement et les paramétrages des plateformes concernées.</li>
+                        <li><strong>Données sociales :</strong> Les données de clan, d'amitié, d'invitation, de don de scan et de participation aux défis sont conservées pendant la durée d'activité du compte et pendant que vous utilisez la fonctionnalité concernée. Les messages structurés du fil de clan restent visibles aux membres du clan tant que votre compte reste actif ; ils ne peuvent pas être supprimés individuellement par leur auteur, mais sont supprimés avec l'ensemble de vos données sociales lors de la suppression de votre compte (Article 9).</li>
+                        <li><strong>Classements :</strong> Le classement hebdomadaire est réinitialisé chaque semaine. Le classement général reflète l'activité cumulée du compte tant que celui-ci est actif.</li>
+                        <li><strong>Données soumises à obligations légales spécifiques :</strong> Conservées pendant la durée prévue par la réglementation applicable.</li>
+                    </ul>
+                    <div class="plain-box">
+                        <p><strong>En clair :</strong> tes messages ne restent pas éternellement. Un vieux message disparaît 7 jours après être sorti des 100 derniers, et au plus tard 3 mois après avoir été écrit. Un message signalé est gardé plus longtemps, le temps de vérifier et de traiter une éventuelle contestation.</p>
+                    </div>
+
+                    <h3>ARTICLE 8. SÉCURITÉ ET NOTIFICATION DE FAILLE</h3>
+                    <p>Nous mettons en œuvre des mesures techniques et organisationnelles adaptées (chiffrement en transit, contrôles d'accès, mécanismes anti-abus, journalisation de sécurité, supervision). Pour le chat de clan : connexions chiffrées (wss et HTTPS), base de données accessible uniquement par le réseau privé de l'hébergeur, aucun contenu de message dans les journaux techniques, et lecture des messages par l'équipe et par les modérateurs réservée au traitement des signalements et des contestations (messages signalés et, pour apprécier la situation, messages des trente derniers jours du joueur signalé, chaque consultation étant journalisée). Certaines mesures automatisées de protection (ex. limitation temporaire de certaines actions) peuvent être appliquées en cas d'anomalie ou d'abus détecté ; elles sont proportionnées et peuvent faire l'objet d'une demande de réexamen via contact@scan-horizon.com. Conformément à l'article 33 du RGPD, en cas de violation de données présentant un risque pour vos droits, l'Éditeur s'engage à notifier la CNIL dans les 72 heures et, si nécessaire, à informer les utilisateurs concernés.</p>
+
+                    <h3>ARTICLE 8 BIS. PROFILAGE ET MESURES AUTOMATISÉES</h3>
+                    <p><strong>Ce que nous faisons.</strong> Afin de préserver l'équité du jeu et l'intégrité des classements, nous analysons automatiquement certaines caractéristiques de vos interactions avec l'Application, notamment la régularité des intervalles entre deux actions, la constance des coordonnées de contact tactile et la cohérence des données de capteurs. Cette analyse vise exclusivement à distinguer une utilisation humaine d'une utilisation pilotée par un logiciel d'automatisation.</p>
+                    <p><strong>Ce que cela peut déclencher.</strong> Lorsque l'analyse aboutit à un score élevé, l'Application peut vous présenter une étape de vérification simple, consistant en une interaction que seul un utilisateur humain peut effectuer de façon fiable. Échouer à cette étape n'entraîne aucune sanction : la tentative de scan concernée n'est pas décomptée et vous pouvez immédiatement réessayer. En cas d'anomalies répétées et caractérisées, des mesures de restriction prévues par nos Conditions Générales peuvent être appliquées, après examen humain.</p>
+                    <p><strong>Vos droits.</strong> Aucune décision produisant des effets juridiques à votre égard n'est prise sur le seul fondement de ce traitement automatisé. Vous pouvez à tout moment demander une intervention humaine, exprimer votre point de vue et contester une mesure qui vous aurait été appliquée, en écrivant à contact@scan-horizon.com.</p>
+                    <p>Base légale : intérêt légitime (article 6.1.f du RGPD).</p>
+
+                    <h3>ARTICLE 9. VOS DROITS ET SUPPRESSION DE COMPTE</h3>
+                    <p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification, d'effacement, de portabilité, de limitation du traitement et d'opposition.</p>
+                    <p>Nous répondons à votre demande dans un délai d'un mois à compter de sa réception. Ce délai peut être prolongé de deux mois supplémentaires compte tenu de la complexité ou du nombre de demandes ; dans ce cas, nous vous en informons dans le mois suivant la réception de votre demande, en vous en indiquant les motifs. Pour certaines demandes, une vérification raisonnable de votre identité peut être requise.</p>
+                    <p>Lorsque le traitement repose sur votre consentement (ex. traceurs publicitaires / analytics / crash reporting), vous pouvez retirer ce consentement à tout moment, sans effet rétroactif sur les traitements déjà effectués avant ce retrait.</p>
+                    <p>Vous pouvez également vous opposer à tout moment à l'utilisation de vos données publiques de profil à des fins marketing, ou retirer le consentement précédemment donné, en écrivant à contact@scan-horizon.com.</p>
+                    <p><strong>Opposition à la publication au classement :</strong> Vous pouvez vous opposer à tout moment à l'affichage de votre pseudo et de vos statistiques dans les classements publics, directement depuis l'Application ("Paramètres > Compte > Masquer des classements publics") ou en nous écrivant à contact@scan-horizon.com. Votre compte et votre progression sont conservés ; seul l'affichage public cesse.</p>
+                    <p><strong>Comment se déroule la suppression de votre compte.</strong> La suppression s'effectue en deux temps.</p>
+                    <ul>
+                        <li><strong>1. Désactivation immédiate.</strong> Dès réception de votre demande, votre compte est désactivé : il cesse d'apparaître dans les classements, dans les listes de membres de clan et dans les recherches par pseudonyme. Un email de confirmation vous est adressé.</li>
+                        <li><strong>2. Suppression définitive après 30 jours.</strong> Vos données sont conservées pendant trente jours, à seule fin de vous permettre de récupérer un compte supprimé par erreur en vous reconnectant. À l'expiration de ce délai, la suppression est définitive et irréversible.</li>
+                    </ul>
+                    <p><strong>Ce qui est supprimé.</strong> La suppression définitive entraîne l'effacement de vos données de compte, de votre historique de scans, de votre collection, ainsi que de vos données sociales : appartenance à un clan, relations d'amitié, invitations, messages structurés du fil de clan dont vous êtes l'auteur, participations aux défis, et retrait des classements. Vos messages du chat de clan sont dissociés de votre profil : leur contenu est effacé et votre pseudo et votre avatar sont remplacés par une mention indiquant que le joueur a été supprimé. Les messages signalés et leur contexte restent conservés pour la durée prévue à l'article 7. Les blocages et signalements que vous avez émis sont supprimés. Votre statut d'abonné est également supprimé auprès de notre prestataire de gestion des abonnements. Pendant les 30 jours qui précèdent la suppression définitive, vous ne pouvez plus vous connecter au chat.</p>
+                    <p><strong>Copie de vos messages.</strong> Vous pouvez demander une copie de l'ensemble de vos messages du chat de clan, au format JSON, en écrivant à contact@scan-horizon.com. Elle vous est fournie dans le délai d'un mois indiqué ci-dessus.</p>
+                    <div class="plain-box">
+                        <p><strong>En clair :</strong> tu peux demander une copie de tous tes messages. Si tu supprimes ton compte, leur contenu est effacé et ton pseudo n'apparaît plus : le chat indique seulement qu'un joueur a été supprimé.</p>
+                    </div>
+                    <p><strong>Ce qui peut subsister.</strong> Certaines traces techniques ne comportant plus aucun identifiant vous concernant peuvent subsister sous forme anonymisée. Les données que nous sommes légalement tenus de conserver le sont pour la durée prévue à l'article 7.</p>
+                    <p><strong>Attention, votre abonnement.</strong> La suppression de votre compte ScanHorizon n'annule pas un abonnement en cours, qui est facturé par l'App Store ou par Google Play. Vous devez l'annuler séparément, selon les modalités de l'article 6 bis.5 de nos Conditions Générales.</p>
+                    <p><strong>Comment supprimer vos données ?</strong></p>
+                    <ul>
+                        <li><strong>Dans l'Application :</strong> Via le menu "Paramètres > Confidentialité > Supprimer mon compte".</li>
+                        <li><strong>Sur le Web (sans l'app) :</strong> Via notre formulaire de suppression dédié accessible sur cette page.</li>
+                        <li><strong>Par Email :</strong> En écrivant à contact@scan-horizon.com.</li>
+                    </ul>
+                    <p>Vous avez également le droit d'introduire une réclamation auprès de la Commission Nationale de l'Informatique et des Libertés (CNIL), 3 place de Fontenoy, TSA 80715, 75334 Paris Cedex 07, <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a>.</p>
+
+                    <h3>ARTICLE 10. UTILISATEURS RÉSIDANT EN CALIFORNIE</h3>
+                    <p>Au regard de sa taille et de son volume d'activité, SAS SCAN HORIZON n'atteint pas, à la date de dernière mise à jour de la présente politique, les seuils d'assujettissement du California Consumer Privacy Act tel que modifié par le California Privacy Rights Act.</p>
+                    <p>Nous appliquons néanmoins aux utilisateurs résidant en Californie les mêmes garanties qu'aux utilisateurs européens : droit d'accès, de rectification, d'effacement et de portabilité selon les modalités de l'article 9, et recueil préalable de votre consentement avant tout dépôt de traceur publicitaire.</p>
+                    <p>Nous ne vendons pas vos données personnelles. Lorsque vous consentez aux traceurs publicitaires, votre identifiant publicitaire mobile est transmis à nos partenaires de régie aux fins de publicité personnalisée, ce qui peut constituer un partage au sens du droit californien. Vous pouvez à tout moment refuser ou retirer ce consentement depuis les paramètres de l'Application, rubrique "Gérer mes choix", ce qui met fin à ce partage.</p>
+                    <p>Si notre situation venait à évoluer au-delà des seuils applicables, nous mettrions en place l'ensemble des mécanismes requis et mettrions à jour la présente section.</p>
+
+                    <h3>ARTICLE 11. CONTACT</h3>
+                    <p>Pour toute question relative à la présente politique, ou pour exercer vos droits, vous pouvez nous écrire :<br>
+                    SAS SCAN HORIZON<br>
+                    Point de contact "Protection des données"<br>
+                    10 impasse du Pegan, 01210 Ferney-Voltaire, France<br>
+                    Email : contact@scan-horizon.com<br><br>
+                    Vous pouvez également introduire une réclamation auprès de la Commission Nationale de l'Informatique et des Libertés (CNIL), 3 place de Fontenoy, TSA 80715, 75334 Paris Cedex 07, <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer">www.cnil.fr</a>.</p>

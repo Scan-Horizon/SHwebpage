@@ -1,0 +1,65 @@
+---
+// Gabarit commun a toutes les pages construites par Astro : balises de tete,
+// polices auto-hebergees (aucun appel a Google Fonts), en-tete et pied de page.
+import '@fontsource/montserrat/latin-700.css';
+import '@fontsource/montserrat/latin-800.css';
+import '@fontsource/ibm-plex-sans/latin-400.css';
+import '@fontsource/ibm-plex-sans/latin-500.css';
+import '@fontsource/ibm-plex-sans/latin-600.css';
+import '@fontsource/ibm-plex-mono/latin-500.css';
+import '../styles/global.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { UI, type Lang } from '../data/site';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  /** Adresse de cette page dans l'autre langue (pour hreflang et le bouton FR/EN). */
+  alternatePath?: string;
+  noindex?: boolean;
+}
+
+const { lang, title, description, alternatePath, noindex = false } = Astro.props;
+const site = Astro.site ?? new URL('https://scan-horizon.com');
+const canonical = new URL(Astro.url.pathname, site).href;
+const otherLang: Lang = lang === 'fr' ? 'en' : 'fr';
+const alternate = alternatePath ? new URL(alternatePath, site).href : undefined;
+const fullTitle = `${title} | ScanHorizon`;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#050a15" />
+    <meta name="robots" content={noindex ? 'noindex' : 'index, follow'} />
+    <meta name="apple-itunes-app" content="app-id=6761936970" />
+    <link rel="canonical" href={canonical} />
+    {alternate && <link rel="alternate" hreflang={lang} href={canonical} />}
+    {alternate && <link rel="alternate" hreflang={otherLang} href={alternate} />}
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ScanHorizon" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content="https://scan-horizon.com/Fav2.jpg" />
+    <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_US'} />
+    <meta name="twitter:card" content="summary" />
+  </head>
+  <body>
+    <a class="skip-link" href="#contenu">{UI[lang].skip}</a>
+    <SiteHeader lang={lang} alternatePath={alternatePath} />
+    <main id="contenu" tabindex="-1">
+      <slot />
+    </main>
+    <SiteFooter lang={lang} />
+  </body>
+</html>

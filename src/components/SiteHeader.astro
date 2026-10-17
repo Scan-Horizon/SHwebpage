@@ -1,0 +1,103 @@
+---
+// En-tete commun : logo vers l'accueil de la langue, lien Accueil, bascule FR/EN.
+// La navigation complete (Collection, Clans, Aide, Telecharger) arrive en phase 2.
+import { UI, homePath, type Lang } from '../data/site';
+
+interface Props {
+  lang: Lang;
+  alternatePath?: string;
+}
+
+const { lang, alternatePath } = Astro.props;
+const t = UI[lang];
+const other: Lang = lang === 'fr' ? 'en' : 'fr';
+const switchHref = alternatePath ?? homePath(other);
+---
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href={homePath(lang)} aria-label={`ScanHorizon, ${t.home}`}>
+      <img src="/logo.webp" alt="" width="36" height="36" />
+      <span>ScanHorizon</span>
+    </a>
+    <nav class="actions" aria-label={lang === 'fr' ? 'Navigation principale' : 'Main navigation'}>
+      <a class="home-link" href={homePath(lang)}>{t.home}</a>
+      <a class="lang-switch" href={switchHref} hreflang={other} lang={other} aria-label={t.switchLabel}>
+        <span aria-hidden="true">{other.toUpperCase()}</span>
+      </a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 50;
+    background: color-mix(in srgb, var(--c-night) 86%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--c-line);
+  }
+
+  .bar {
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+    color: var(--c-ink);
+    text-decoration: none;
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.01em;
+  }
+
+  .brand img {
+    width: 36px;
+    height: 36px;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+  }
+
+  .home-link {
+    color: var(--c-ink-dim);
+    text-decoration: none;
+    font-size: 15px;
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-pill);
+  }
+
+  .home-link:hover {
+    color: var(--c-ink);
+  }
+
+  .lang-switch {
+    font-family: var(--f-mono);
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.12em;
+    color: var(--c-brand);
+    text-decoration: none;
+    border: 1px solid var(--c-line-strong);
+    border-radius: var(--r-pill);
+    padding: 7px 14px;
+    transition: background-color 0.2s;
+  }
+
+  .lang-switch:hover {
+    background: rgba(56, 182, 255, 0.12);
+    color: var(--c-brand);
+  }
+</style>
