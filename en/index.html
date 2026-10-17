@@ -33,8 +33,8 @@
     <meta name="twitter:description" content="Identify planes in the sky with a live ADS-B tracker, unlock aircraft cards, and collect them in your virtual hangar app.">
     <meta name="twitter:image" content="https://scan-horizon.com/Fav2.jpg">
 
-    <link rel="icon" type="image/jpeg" href="/Fav2.jpg">
-    <link rel="apple-touch-icon" href="/Fav2.jpg">    
+    <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">    
     
     <title>ScanHorizon | Augmented Reality Flight Tracking & Virtual Hangar App</title>
     
@@ -79,6 +79,12 @@
             isolation: isolate;
         }
 
+        /* Les cartes inclinees du carrousel depassent l'ecran sur mobile : on coupe
+           ce depassement pour que la page ne glisse jamais sur le cote. */
+        html {
+            overflow-x: clip;
+        }
+
         html,
         body,
         .legal-container {
@@ -116,7 +122,7 @@
             left: 0;
             width: min(70vw, 760px);
             height: 100vh;
-            background-image: url('/A380.png');
+            background-image: url('/a380.webp');
             background-repeat: no-repeat;
             background-size: contain;
             background-position: left center;
@@ -132,7 +138,7 @@
             right: 0;
             width: min(70vw, 760px);
             height: 100vh;
-            background-image: url('/planes_AS50.png');
+            background-image: url('/as50.webp');
             background-repeat: no-repeat;
             background-size: contain;
             background-position: right center;
@@ -1463,8 +1469,8 @@
     <div class="plane-bg-right" aria-hidden="true"></div>
     <header>
         <div class="logo-container" onclick="navigate('home')" title="Retour Accueil">
-            <img src="/logo text hor. couleur 1.png" alt="ScanHorizon Logo" class="logo-img logo-desktop">
-            <img src="/logo couleur 1.png" alt="ScanHorizon Logo" class="logo-img logo-mobile">
+            <img src="/logo-horizontal.webp" alt="ScanHorizon Logo" class="logo-img logo-desktop" width="400" height="400">
+            <img src="/logo.webp" alt="ScanHorizon Logo" class="logo-img logo-mobile" width="160" height="160">
         </div>
         <div class="lang-switch">
             <button id="btn-fr" onclick="window.location.href='/fr/' + window.location.hash">FR</button>
@@ -1526,12 +1532,12 @@
                     <div class="radar-scene" aria-hidden="true">
                         <div class="frame-viewport">
                             <div class="frame-carousel" id="frameCarouselFr">
-                                <img src="/Frame%201.png" alt="Frame 1" class="active">
-                                <img src="/Frame%202.png" alt="Frame 2">
-                                <img src="/Frame%203.png" alt="Frame 3">
-                                <img src="/Frame%204.png" alt="Frame 4">
-                                <img src="/Frame%205.png" alt="Frame 5">
-                                <img src="/Frame%206.png" alt="Frame 6">
+                                <img src="/frame-1.webp" alt="Frame 1" class="active" width="800" height="1422" decoding="async" fetchpriority="high">
+                                <img src="/frame-2.webp" alt="Frame 2" width="800" height="1422" decoding="async" loading="lazy">
+                                <img src="/frame-3.webp" alt="Frame 3" width="800" height="1422" decoding="async" loading="lazy">
+                                <img src="/frame-4.webp" alt="Frame 4" width="800" height="1422" decoding="async" loading="lazy">
+                                <img src="/frame-5.webp" alt="Frame 5" width="800" height="1422" decoding="async" loading="lazy">
+                                <img src="/frame-6.webp" alt="Frame 6" width="800" height="1422" decoding="async" loading="lazy">
                                 <button type="button" class="frame-arrow prev" aria-label="Image précédente">
                                     <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
                                 </button>
@@ -1611,12 +1617,12 @@
                     <div class="radar-scene" aria-hidden="true">
                         <div class="frame-viewport">
                             <div class="frame-carousel" id="frameCarouselEn">
-                                <img src="/Frame%201.png" alt="Frame 1" class="active">
-                                <img src="/Frame%202.png" alt="Frame 2">
-                                <img src="/Frame%203.png" alt="Frame 3">
-                                <img src="/Frame%204.png" alt="Frame 4">
-                                <img src="/Frame%205.png" alt="Frame 5">
-                                <img src="/Frame%206.png" alt="Frame 6">
+                                <img src="/frame-1.webp" alt="Frame 1" class="active" width="800" height="1422" decoding="async" fetchpriority="high">
+                                <img src="/frame-2.webp" alt="Frame 2" width="800" height="1422" decoding="async" loading="lazy">
+                                <img src="/frame-3.webp" alt="Frame 3" width="800" height="1422" decoding="async" loading="lazy">
+                                <img src="/frame-4.webp" alt="Frame 4" width="800" height="1422" decoding="async" loading="lazy">
+                                <img src="/frame-5.webp" alt="Frame 5" width="800" height="1422" decoding="async" loading="lazy">
+                                <img src="/frame-6.webp" alt="Frame 6" width="800" height="1422" decoding="async" loading="lazy">
                                 <span class="frame-counter" aria-live="polite">1 / 6</span>
                             </div>
                         </div>
@@ -1637,35 +1643,6 @@
                     </div>
                 </section>
 
-            </div>
-        </div>
-
-        <div id="ios-access-modal" class="ios-modal hidden" aria-hidden="true">
-            <div class="ios-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="ios-modal-title">
-                <div class="ios-modal-head">
-                    <h3 id="ios-modal-title" class="ios-modal-title">Demander un acces iOS beta</h3>
-                    <button type="button" class="ios-modal-close" data-close-ios-modal aria-label="Fermer">X</button>
-                </div>
-                <p id="ios-modal-desc" class="ios-modal-desc">Réponds au court sondage puis laisse ton e-mail pour préparer ton accès iOS.</p>
-                <form id="ios-access-form" novalidate>
-                    <label for="ios-source" id="ios-source-label" class="ios-field-label">Comment as-tu entendu parler de l'app ?</label>
-                    <select id="ios-source" class="ios-select-input" required>
-                        <option value="" selected>Choisis une option</option>
-                        <option value="social">Réseaux Sociaux</option>
-                        <option value="friend">Ami</option>
-                        <option value="ai">IA</option>
-                        <option value="other">Autre</option>
-                    </select>
-                    <label for="ios-source-other" id="ios-source-other-label" class="ios-field-label hidden">Précise la source</label>
-                    <input id="ios-source-other" class="ios-email-input hidden" type="text" autocomplete="off" placeholder="Précise ici">
-                    <label for="ios-email" id="ios-email-label" class="ios-field-label">Ton e-mail</label>
-                    <input id="ios-email" class="ios-email-input" type="email" inputmode="email" autocomplete="email" required placeholder="ton@email.com">
-                    <div class="ios-modal-actions">
-                        <button type="button" class="ios-modal-btn" data-close-ios-modal id="ios-cancel-btn">Annuler</button>
-                        <button type="submit" class="ios-modal-btn primary" id="ios-submit-btn">Envoyer la demande</button>
-                    </div>
-                    <p id="ios-modal-status" class="ios-modal-status hidden" aria-live="polite"></p>
-                </form>
             </div>
         </div>
 
@@ -3210,7 +3187,7 @@
                 <span class="lang-fr hidden">Contact</span><span class="lang-en">Contact Us</span>
             </a>
         </nav>
-        <p class="copyright">SCANHORIZON TERMINAL v1.3.0 — © 2026</p>
+        <p class="copyright">SCANHORIZON TERMINAL · © 2026</p>
     </footer>
 
     <script>
@@ -3378,8 +3355,8 @@
             }
 
             async function fetchJsonWithCorsFallback(url) {
-                const attempts = attemptUrls(url).map(async (attemptUrl) => {
-                    const response = await fetchWithTimeout(attemptUrl, 2200);
+                async function fetchOne(attemptUrl, timeoutMs) {
+                    const response = await fetchWithTimeout(attemptUrl, timeoutMs);
                     if (!response.ok) {
                         const error = new Error(`HTTP ${response.status}`);
                         error.status = response.status;
@@ -3387,10 +3364,22 @@
                     }
                     const parsed = await parseToObject(response);
                     return normalizePayload(parsed);
-                });
+                }
 
+                const [directUrl, ...relayUrls] = attemptUrls(url);
+
+                // 1. Appel direct a Railway : aucun tiers ne voit le visiteur.
                 try {
-                    return await Promise.any(attempts);
+                    return await fetchOne(directUrl, 2500);
+                } catch (directError) {
+                    if (directError && directError.status === 401) {
+                        throw directError;
+                    }
+                }
+
+                // 2. Secours seulement si l'appel direct echoue (relais tiers).
+                try {
+                    return await Promise.any(relayUrls.map((relayUrl) => fetchOne(relayUrl, 2200)));
                 } catch (error) {
                     if (error instanceof AggregateError && Array.isArray(error.errors)) {
                         const unauthorized = error.errors.find((err) => err && err.status === 401);
@@ -3420,203 +3409,6 @@
                 setStatsUnavailable(fallbackValue);
                 console.error('Impossible de charger les statistiques live :', error);
             }
-        }
-
-        function setupIosAccessFlow() {
-            const modal = document.getElementById('ios-access-modal');
-            const modalTitle = document.getElementById('ios-modal-title');
-            const modalDesc = document.getElementById('ios-modal-desc');
-            const sourceLabel = document.getElementById('ios-source-label');
-            const sourceSelect = document.getElementById('ios-source');
-            const sourceOtherLabel = document.getElementById('ios-source-other-label');
-            const sourceOtherInput = document.getElementById('ios-source-other');
-            const emailLabel = document.getElementById('ios-email-label');
-            const emailInput = document.getElementById('ios-email');
-            const submitBtn = document.getElementById('ios-submit-btn');
-            const cancelBtn = document.getElementById('ios-cancel-btn');
-            const status = document.getElementById('ios-modal-status');
-            const form = document.getElementById('ios-access-form');
-            const openButtons = document.querySelectorAll('.js-ios-request');
-
-            if (!modal || !emailInput || !form || !status || !sourceSelect || !sourceOtherInput) {
-                return;
-            }
-
-            const textByLang = {
-                fr: {
-                    title: 'Demander un accès iOS bêta',
-                    desc: 'Réponds au sondage puis laisse ton e-mail pour préparer ton accès ScanHorizon iOS.',
-                    sourceLabel: 'Comment as-tu entendu parler de l\'app ?',
-                    sourcePlaceholder: 'Choisis une option',
-                    sourceSocial: 'Réseaux sociaux',
-                    sourceFriend: 'Ami',
-                    sourceAi: 'IA',
-                    sourceOther: 'Autre (préciser)',
-                    sourceOtherLabel: 'Précise la source',
-                    sourceOtherPlaceholder: 'Précise ici',
-                    emailLabel: 'Ton e-mail',
-                    emailPlaceholder: 'ton@email.com',
-                    cancel: 'Annuler',
-                    submit: 'Envoyer la demande',
-                    success: 'Merci. Ton client e-mail va s\'ouvrir avec une demande pré-remplie pour contact@scan-horizon.com.',
-                    invalid: 'Entre une adresse e-mail valide.',
-                    invalidSource: 'Indique comment tu as entendu parler de l\'app.',
-                    invalidSourceOther: 'Précise la source dans "Autre (préciser)".'
-                },
-                en: {
-                    title: 'Request iOS beta access',
-                    desc: 'Answer the short survey, then share your email so we can prepare your ScanHorizon iOS access.',
-                    sourceLabel: 'How did you hear about the app?',
-                    sourcePlaceholder: 'Choose an option',
-                    sourceSocial: 'Social Media',
-                    sourceFriend: 'Friend',
-                    sourceAi: 'AI',
-                    sourceOther: 'Other (specify)',
-                    sourceOtherLabel: 'Please specify',
-                    sourceOtherPlaceholder: 'Specify here',
-                    emailLabel: 'Your email',
-                    emailPlaceholder: 'you@email.com',
-                    cancel: 'Cancel',
-                    submit: 'Send my request',
-                    success: 'Thanks. Your email app will open with a pre-filled request to contact@scan-horizon.com.',
-                    invalid: 'Please enter a valid email address.',
-                    invalidSource: 'Please select how you heard about the app.',
-                    invalidSourceOther: 'Please specify your source in "Other (specify)".'
-                }
-            };
-
-            function updateSourceOtherVisibility() {
-                const showOther = sourceSelect.value === 'other';
-                sourceOtherLabel.classList.toggle('hidden', !showOther);
-                sourceOtherInput.classList.toggle('hidden', !showOther);
-                if (!showOther) {
-                    sourceOtherInput.value = '';
-                }
-            }
-
-            function getSelectedSourceForEmail(copy) {
-                if (sourceSelect.value === 'social') {
-                    return copy.sourceSocial;
-                }
-                if (sourceSelect.value === 'friend') {
-                    return copy.sourceFriend;
-                }
-                if (sourceSelect.value === 'ai') {
-                    return copy.sourceAi;
-                }
-                if (sourceSelect.value === 'other') {
-                    return `${copy.sourceOther}: ${sourceOtherInput.value.trim()}`;
-                }
-                return '';
-            }
-
-            function applyModalLanguage() {
-                const copy = textByLang[state.lang] || textByLang.fr;
-                modalTitle.textContent = copy.title;
-                modalDesc.textContent = copy.desc;
-                sourceLabel.textContent = copy.sourceLabel;
-                sourceOtherLabel.textContent = copy.sourceOtherLabel;
-                sourceOtherInput.placeholder = copy.sourceOtherPlaceholder;
-
-                const sourceOptions = sourceSelect.options;
-                if (sourceOptions.length >= 5) {
-                    sourceOptions[0].textContent = copy.sourcePlaceholder;
-                    sourceOptions[1].textContent = copy.sourceSocial;
-                    sourceOptions[2].textContent = copy.sourceFriend;
-                    sourceOptions[3].textContent = copy.sourceAi;
-                    sourceOptions[4].textContent = copy.sourceOther;
-                }
-
-                emailLabel.textContent = copy.emailLabel;
-                emailInput.placeholder = copy.emailPlaceholder;
-                cancelBtn.textContent = copy.cancel;
-                submitBtn.textContent = copy.submit;
-            }
-
-            function openModal() {
-                applyModalLanguage();
-                status.classList.add('hidden');
-                status.textContent = '';
-                sourceSelect.value = '';
-                sourceOtherInput.value = '';
-                updateSourceOtherVisibility();
-                modal.classList.remove('hidden');
-                modal.setAttribute('aria-hidden', 'false');
-                setTimeout(() => {
-                    sourceSelect.focus();
-                }, 0);
-            }
-
-            function closeModal() {
-                modal.classList.add('hidden');
-                modal.setAttribute('aria-hidden', 'true');
-            }
-
-            function isValidEmail(email) {
-                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-            }
-
-            openButtons.forEach((btn) => {
-                btn.addEventListener('click', openModal);
-            });
-
-            modal.querySelectorAll('[data-close-ios-modal]').forEach((btn) => {
-                btn.addEventListener('click', closeModal);
-            });
-
-            sourceSelect.addEventListener('change', updateSourceOtherVisibility);
-
-            modal.addEventListener('click', (event) => {
-                if (event.target === modal) {
-                    closeModal();
-                }
-            });
-
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
-                    closeModal();
-                }
-            });
-
-            form.addEventListener('submit', (event) => {
-                event.preventDefault();
-                const email = emailInput.value.trim();
-                const copy = textByLang[state.lang] || textByLang.fr;
-                const sourceOther = sourceOtherInput.value.trim();
-
-                if (!sourceSelect.value) {
-                    status.textContent = copy.invalidSource;
-                    status.classList.remove('hidden');
-                    return;
-                }
-
-                if (sourceSelect.value === 'other' && !sourceOther) {
-                    status.textContent = copy.invalidSourceOther;
-                    status.classList.remove('hidden');
-                    return;
-                }
-
-                if (!isValidEmail(email)) {
-                    status.textContent = copy.invalid;
-                    status.classList.remove('hidden');
-                    return;
-                }
-
-                const sourceForEmail = getSelectedSourceForEmail(copy);
-
-                const subject = state.lang === 'en'
-                    ? 'iOS beta access request - Scan Horizon'
-                    : 'Demande accès bêta iOS - Scan Horizon';
-                const body = state.lang === 'en'
-                    ? `Hello Scan Horizon,%0D%0A%0D%0AI would like to test the iOS beta.%0D%0AHow I heard about the app: ${encodeURIComponent(sourceForEmail)}%0D%0AEmail: ${encodeURIComponent(email)}%0D%0ADate: ${encodeURIComponent(new Date().toISOString())}%0D%0A%0D%0AThanks.`
-                    : `Bonjour Scan Horizon,%0D%0A%0D%0AJe souhaite tester la beta iOS.%0D%0AComment j'ai entendu parler de l'app: ${encodeURIComponent(sourceForEmail)}%0D%0AEmail: ${encodeURIComponent(email)}%0D%0ADate: ${encodeURIComponent(new Date().toISOString())}%0D%0A%0D%0AMerci.`;
-
-                const mailtoUrl = `mailto:contact@scan-horizon.com?subject=${encodeURIComponent(subject)}&body=${body}`;
-                window.location.href = mailtoUrl;
-
-                status.textContent = copy.success;
-                status.classList.remove('hidden');
-            });
         }
 
         /* === Premium Frame Carousel Controller === */
@@ -3773,9 +3565,6 @@
 
             // Stats live
             fetchLiveStats();
-
-            // Demande d'acces iOS
-            setupIosAccessFlow();
 
             // Carousel premium avec les images Frame 1-6
             setupFrameCarousels();
