@@ -4,12 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <script>
-        // Page d'aiguillage : envoie chaque visiteur vers /fr/ ou /en/ selon la langue du navigateur,
-        // en gardant l'ancre (#privacy, #terms, #legal, #delete) utilisee par l'app et les e-mails.
+        // Page d'aiguillage : envoie chaque visiteur vers /fr/ ou /en/ selon la langue du navigateur.
+        // Les anciens liens de l'app et des e-mails (#privacy, #terms, #legal, #delete) vont
+        // directement a la page legale correspondante.
         (function () {
-            var userLang = (navigator.language || "").toLowerCase();
-            var target = userLang.indexOf("fr") === 0 ? "/fr/" : "/en/";
-            window.location.replace(target + window.location.search + window.location.hash);
+            var pages = {
+                fr: { privacy: "/fr/confidentialite/", terms: "/fr/cgu/", legal: "/fr/mentions-legales/", delete: "/fr/supprimer-mes-donnees/" },
+                en: { privacy: "/en/privacy/", terms: "/en/terms/", legal: "/en/legal-notice/", delete: "/en/delete-my-data/" }
+            };
+            var lang = (navigator.language || "").toLowerCase().indexOf("fr") === 0 ? "fr" : "en";
+            var legal = pages[lang][window.location.hash.slice(1)];
+            window.location.replace(legal || ("/" + lang + "/" + window.location.search + window.location.hash));
         })();
     </script>
     <noscript>

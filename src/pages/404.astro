@@ -1,0 +1,72 @@
+---
+// Page affichee par Cloudflare Pages pour toute adresse inconnue (dist/404.html).
+// Bilingue : on ne connait pas la langue du visiteur.
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  lang="fr"
+  title="Page introuvable"
+  description="Cette page n'existe pas ou a changé d'adresse."
+  noindex
+>
+  <section class="wrap lost">
+    <p class="eyebrow">Erreur 404 · Signal perdu</p>
+    <h1>Cet avion a quitté le radar.</h1>
+    <p class="lead">
+      La page demandée n'existe pas ou a changé d'adresse.<br />
+      <span lang="en">This page has left the radar.</span>
+    </p>
+    <nav class="links" aria-label="Retour / Back">
+      <a href="/fr/" hreflang="fr">Retour à l'accueil</a>
+      <a href="/en/" hreflang="en" lang="en">Back to home</a>
+    </nav>
+  </section>
+</BaseLayout>
+
+<style>
+  .lost {
+    padding-block: var(--s-16);
+    display: grid;
+    justify-items: center;
+    gap: var(--s-4);
+    text-align: center;
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: clamp(30px, 6vw, 52px);
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  .lead {
+    margin: 0;
+    max-width: 48ch;
+    color: var(--c-ink-dim);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--s-3);
+    margin-top: var(--s-4);
+  }
+
+  .links a {
+    color: var(--c-brand);
+    text-decoration: none;
+    font-family: var(--f-mono);
+    font-weight: 500;
+    border: 1px solid var(--c-line-strong);
+    border-radius: var(--r-pill);
+    padding: 10px 18px;
+  }
+
+  .links a:hover {
+    background: rgba(56, 182, 255, 0.12);
+  }
+</style>

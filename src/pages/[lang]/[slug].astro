@@ -1,0 +1,407 @@
+---
+// Les 8 pages legales : 4 documents x 2 langues.
+// Les textes viennent de src/legal/<langue>/<document>.html, copies a l'identique
+// depuis l'ancien site. Ne pas les modifier ici sans mettre a jour la source validee
+// (ScanHorizon_Frontend/legal/) et sans accord : ce sont des textes opposables.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import {
+  CONTACT_EMAIL,
+  DELETION_FORM_URL,
+  LEGAL_ORDER,
+  LEGAL_PAGES,
+  UI,
+  legalPath,
+  type Lang,
+  type LegalKey,
+} from '../../data/site';
+import { prepareLegalHtml } from '../../lib/legal';
+
+const sources = import.meta.glob('../../legal/*/*.html', {
+  query: '?raw',
+  import: 'default',
+  eager: true,
+}) as Record<string, string>;
+
+export function getStaticPaths() {
+  const langs: Lang[] = ['fr', 'en'];
+  return langs.flatMap((lang) =>
+    LEGAL_ORDER.map((key) => ({
+      params: { lang, slug: LEGAL_PAGES[key][lang].slug },
+      props: { lang, key },
+    })),
+  );
+}
+
+interface Props {
+  lang: Lang;
+  key: LegalKey;
+}
+
+const { lang, key } = Astro.props;
+const other: Lang = lang === 'fr' ? 'en' : 'fr';
+const page = LEGAL_PAGES[key][lang];
+const t = UI[lang];
+const raw = sources[`../../legal/${lang}/${key}.html`];
+const { html, toc } = prepareLegalHtml(raw, lang === 'fr' ? 'Tableau' : 'Table');
+const isDelete = key === 'delete';
+---
+
+<BaseLayout
+  lang={lang}
+  title={page.title}
+  description={page.description}
+  alternatePath={legalPath(key, other)}
+>
+  <div class="wrap legal-page">
+    <header class="legal-head">
+      <p class="eyebrow">{t.legalEyebrow}</p>
+      <h1 class={isDelete ? 'danger' : undefined}>{page.title}</h1>
+      <nav class="doc-switch" aria-label={t.legalEyebrow}>
+        {
+          LEGAL_ORDER.map((k) => (
+            <a
+              href={legalPath(k, lang)}
+              aria-current={k === key ? 'page' : undefined}
+              class={k === 'delete' ? 'danger' : undefined}
+            >
+              {LEGAL_PAGES[k][lang].navLabel}
+            </a>
+          ))
+        }
+      </nav>
+    </header>
+
+    {
+      isDelete ? (
+        <section class="delete-card">
+          <div class="legal-body" set:html={html} />
+          <a class="delete-button" href={DELETION_FORM_URL} rel="noopener">
+            {lang === 'fr' ? 'OUVRIR LE FORMULAIRE DE SUPPRESSION' : 'OPEN DELETION FORM'}
+          </a>
+          <p class="delete-contact">
+            {lang === 'fr' ? 'Ou contactez-nous directement : ' : 'Or contact us directly: '}
+            <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>
+          </p>
+        </section>
+      ) : (
+        <div class="layout">
+          <aside class="toc" aria-labelledby="toc-title">
+            <details open>
+              <summary id="toc-title">{t.toc}</summary>
+              <ol>
+                {toc.map((entry) => (
+                  <li>
+                    <a href={`#${entry.id}`}>{entry.label}</a>
+                  </li>
+                ))}
+              </ol>
+            </details>
+          </aside>
+          <article class="legal-body" set:html={html} />
+        </div>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<script>
+  // Sur petit ecran, le sommaire demarre replie pour laisser voir le texte.
+  const details = document.querySelector<HTMLDetailsElement>('.toc details');
+  if (details && window.matchMedia('(max-width: 999px)').matches) {
+    details.open = false;
+  }
+</script>
+
+<style>
+  .legal-page {
+    padding-block: var(--s-12) var(--s-16);
+  }
+
+  .legal-head {
+    display: grid;
+    gap: var(--s-3);
+    margin-bottom: var(--s-8);
+    padding-bottom: var(--s-6);
+    border-bottom: 1px solid var(--c-line);
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: clamp(30px, 5vw, 48px);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  h1.danger {
+    color: var(--c-danger);
+  }
+
+  .doc-switch {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s-2);
+    margin-top: var(--s-2);
+  }
+
+  .doc-switch a {
+    font-size: 14px;
+    color: var(--c-ink-dim);
+    text-decoration: none;
+    padding: 6px 14px;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-pill);
+  }
+
+  .doc-switch a:hover {
+    color: var(--c-ink);
+    border-color: var(--c-line-strong);
+  }
+
+  .doc-switch a[aria-current='page'] {
+    color: var(--c-night);
+    background: var(--c-brand);
+    border-color: var(--c-brand);
+    font-weight: 600;
+  }
+
+  .doc-switch a.danger:not([aria-current='page']) {
+    color: var(--c-danger);
+  }
+
+  .doc-switch a.danger[aria-current='page'] {
+    background: var(--c-danger);
+    border-color: var(--c-danger);
+  }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+    gap: var(--s-12);
+    align-items: start;
+  }
+
+  .toc {
+    position: sticky;
+    top: calc(var(--header-h) + var(--s-6));
+    max-height: calc(100vh - var(--header-h) - var(--s-12));
+    overflow-y: auto;
+    padding: var(--s-4);
+    background: var(--c-panel);
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-md);
+  }
+
+  .toc summary {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-brand);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .toc summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .toc summary::after {
+    content: '+';
+    float: right;
+    color: var(--c-ink-faint);
+  }
+
+  .toc details[open] summary::after {
+    content: '−';
+  }
+
+  .toc ol {
+    list-style: none;
+    margin: var(--s-3) 0 0;
+    padding: 0;
+    display: grid;
+    gap: 2px;
+  }
+
+  .toc a {
+    display: block;
+    padding: 5px var(--s-2);
+    border-radius: var(--r-xs);
+    font-size: 12.5px;
+    line-height: 1.35;
+    color: var(--c-ink-dim);
+    text-decoration: none;
+  }
+
+  .toc a:hover {
+    color: var(--c-ink);
+    background: rgba(56, 182, 255, 0.08);
+  }
+
+  .delete-card {
+    max-width: 640px;
+    padding: var(--s-8);
+    background: var(--c-panel);
+    border: 1px solid rgba(255, 94, 133, 0.35);
+    border-radius: var(--r-lg);
+  }
+
+  .delete-button {
+    display: inline-block;
+    margin-top: var(--s-4);
+    padding: 14px 22px;
+    background: var(--c-danger);
+    color: #1a0610;
+    font-family: var(--f-mono);
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    border-radius: var(--r-sm);
+  }
+
+  .delete-button:hover {
+    color: #1a0610;
+    filter: brightness(1.08);
+  }
+
+  .delete-contact {
+    margin: var(--s-6) 0 0;
+    color: var(--c-ink-dim);
+    font-size: 15px;
+    overflow-wrap: anywhere;
+  }
+
+  @media (max-width: 999px) {
+    .layout {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--s-6);
+    }
+
+    .toc {
+      position: static;
+      max-height: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .delete-card {
+      padding: var(--s-6) var(--s-4);
+    }
+  }
+
+  /* Le texte legal est injecte tel quel : ses balises sont stylees ici. */
+  .legal-body {
+    min-width: 0;
+    max-width: var(--w-text);
+    color: #c9d6e6;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  .legal-body :global(h3) {
+    margin: var(--s-12) 0 var(--s-4);
+    padding-top: var(--s-4);
+    border-top: 1px solid var(--c-line);
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.35;
+    letter-spacing: 0.02em;
+    color: var(--c-ink);
+  }
+
+  .legal-body :global(h3:first-of-type) {
+    margin-top: var(--s-8);
+  }
+
+  .legal-body :global(h4) {
+    margin: var(--s-8) 0 var(--s-3);
+    font-family: var(--f-body);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--c-ink);
+  }
+
+  .legal-body :global(p),
+  .legal-body :global(li) {
+    margin: 0 0 var(--s-4);
+    overflow-wrap: anywhere;
+  }
+
+  .legal-body :global(ul) {
+    margin: 0 0 var(--s-4);
+    padding-left: 1.4em;
+  }
+
+  .legal-body :global(strong) {
+    color: var(--c-ink);
+    font-weight: 600;
+  }
+
+  .legal-body :global(a) {
+    color: var(--c-brand);
+  }
+
+  .legal-body :global(.table-scroll) {
+    margin: var(--s-6) 0;
+    overflow-x: auto;
+    border: 1px solid var(--c-line);
+    border-radius: var(--r-sm);
+  }
+
+  .legal-body :global(table) {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .legal-body :global(th),
+  .legal-body :global(td) {
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--c-line);
+  }
+
+  .legal-body :global(th) {
+    background: rgba(56, 182, 255, 0.08);
+    color: var(--c-brand);
+    font-family: var(--f-mono);
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+  }
+
+  .legal-body :global(tr:last-child td) {
+    border-bottom: 0;
+  }
+
+  .legal-body :global(.warning-box),
+  .legal-body :global(.plain-box) {
+    margin: var(--s-6) 0;
+    padding: var(--s-4) var(--s-6);
+    border-radius: var(--r-sm);
+  }
+
+  .legal-body :global(.warning-box) {
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+  }
+
+  .legal-body :global(.plain-box) {
+    background: var(--c-panel);
+    border: 1px solid var(--c-line);
+  }
+
+  .legal-body :global(.warning-box p:last-child),
+  .legal-body :global(.plain-box p:last-child) {
+    margin-bottom: 0;
+  }
+</style>

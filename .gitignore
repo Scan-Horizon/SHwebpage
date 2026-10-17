@@ -1,3 +1,4 @@
-# Dossier genere par npm run build (publie par Cloudflare Pages)
+# Genere par npm run build (publie par Cloudflare Pages)
 dist/
+.astro/
 node_modules/

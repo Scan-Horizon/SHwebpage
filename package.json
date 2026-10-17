@@ -1,11 +1,20 @@
 {
   "name": "scanhorizon-site",
   "private": true,
+  "type": "module",
   "description": "Site vitrine scan-horizon.com",
   "scripts": {
-    "build": "node scripts/build.mjs"
+    "dev": "astro dev",
+    "build": "astro build && node scripts/check-dist.mjs",
+    "preview": "astro preview"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22.12.0"
+  },
+  "dependencies": {
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "@fontsource/ibm-plex-sans": "5.3.0",
+    "@fontsource/montserrat": "5.3.0",
+    "astro": "7.3.5"
   }
 }
