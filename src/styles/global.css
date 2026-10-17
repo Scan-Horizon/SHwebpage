@@ -93,7 +93,16 @@ a:hover {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/*
+ * Vision nocturne (bouton de l'en-tete) : un clin d'oeil au mode du viseur de l'app.
+ * Un seul filtre sur toute la page plutot que des couleurs a dupliquer partout.
+ */
+html.nvg body {
+  filter: grayscale(1) sepia(1) hue-rotate(68deg) saturate(3.2) brightness(0.95);
 }

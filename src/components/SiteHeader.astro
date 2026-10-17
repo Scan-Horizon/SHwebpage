@@ -1,17 +1,23 @@
 ---
-// En-tete commun : logo vers l'accueil de la langue, lien Accueil, bascule FR/EN.
-// La navigation complete (Collection, Clans, Aide, Telecharger) arrive en phase 2.
+// En-tete commun : logo, sections de l'accueil, vision nocturne, FR/EN, Telecharger.
 import { UI, homePath, type Lang } from '../data/site';
+import { HOME } from '../data/home';
 
 interface Props {
   lang: Lang;
   alternatePath?: string;
+  /** Sur l'accueil, les liens pointent vers les sections de la page elle-meme. */
+  home?: boolean;
 }
 
-const { lang, alternatePath } = Astro.props;
+const { lang, alternatePath, home = false } = Astro.props;
 const t = UI[lang];
+const nav = HOME[lang].nav;
 const other: Lang = lang === 'fr' ? 'en' : 'fr';
 const switchHref = alternatePath ?? homePath(other);
+const base = home ? '' : homePath(lang);
+const downloadHref = lang === 'fr' ? '/fr/telecharger/' : '/en/download/';
+const nvgLabel = lang === 'fr' ? 'Vision nocturne' : 'Night vision';
 ---
 
 <header class="site-header">
@@ -20,14 +26,46 @@ const switchHref = alternatePath ?? homePath(other);
       <img src="/logo.webp" alt="" width="36" height="36" />
       <span>ScanHorizon</span>
     </a>
-    <nav class="actions" aria-label={lang === 'fr' ? 'Navigation principale' : 'Main navigation'}>
-      <a class="home-link" href={homePath(lang)}>{t.home}</a>
+
+    <nav class="sections" aria-label={lang === 'fr' ? 'Sections' : 'Sections'}>
+      <a href={`${base}#collection`}>{nav.collection}</a>
+      <a href={`${base}#clans`}>{nav.clans}</a>
+      <a href={`${base}#business`}>{nav.business}</a>
+    </nav>
+
+    <div class="actions">
+      <button type="button" class="icon-btn" data-nvg-toggle aria-pressed="false" aria-label={nvgLabel} title={nvgLabel}>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      </button>
       <a class="lang-switch" href={switchHref} hreflang={other} lang={other} aria-label={t.switchLabel}>
         <span aria-hidden="true">{other.toUpperCase()}</span>
       </a>
-    </nav>
+      <a class="download" href={downloadHref}>{nav.download}</a>
+    </div>
   </div>
 </header>
+
+<script>
+  // Vision nocturne : bascule tout le site en vert, comme le mode du viseur de l'app.
+  const root = document.documentElement;
+  document.querySelectorAll<HTMLButtonElement>('[data-nvg-toggle]').forEach((btn) => {
+    const sync = () => btn.setAttribute('aria-pressed', root.classList.contains('nvg') ? 'true' : 'false');
+    sync();
+    btn.addEventListener('click', () => {
+      const on = !root.classList.contains('nvg');
+      root.classList.toggle('nvg', on);
+      try {
+        localStorage.setItem('sh-nvg', on ? '1' : '0');
+      } catch {
+        /* preference non memorisee, sans consequence */
+      }
+      sync();
+    });
+  });
+</script>
 
 <style>
   .site-header {
@@ -44,8 +82,7 @@ const switchHref = alternatePath ?? homePath(other);
     height: var(--header-h);
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--s-4);
+    gap: var(--s-6);
   }
 
   .brand {
@@ -58,6 +95,7 @@ const switchHref = alternatePath ?? homePath(other);
     font-weight: 700;
     font-size: 18px;
     letter-spacing: 0.01em;
+    flex-shrink: 0;
   }
 
   .brand img {
@@ -65,13 +103,13 @@ const switchHref = alternatePath ?? homePath(other);
     height: 36px;
   }
 
-  .actions {
+  .sections {
     display: flex;
-    align-items: center;
-    gap: var(--s-2);
+    gap: var(--s-1);
+    margin-right: auto;
   }
 
-  .home-link {
+  .sections a {
     color: var(--c-ink-dim);
     text-decoration: none;
     font-size: 15px;
@@ -79,8 +117,41 @@ const switchHref = alternatePath ?? homePath(other);
     border-radius: var(--r-pill);
   }
 
-  .home-link:hover {
+  .sections a:hover {
     color: var(--c-ink);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s-2);
+    margin-left: auto;
+  }
+
+  .icon-btn {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid var(--c-line-strong);
+    background: transparent;
+    color: var(--c-ink-dim);
+    cursor: pointer;
+  }
+
+  .icon-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+  }
+
+  .icon-btn[aria-pressed='true'] {
+    color: var(--c-night);
+    background: var(--c-brand);
+    border-color: var(--c-brand);
   }
 
   .lang-switch {
@@ -92,12 +163,43 @@ const switchHref = alternatePath ?? homePath(other);
     text-decoration: none;
     border: 1px solid var(--c-line-strong);
     border-radius: var(--r-pill);
-    padding: 7px 14px;
-    transition: background-color 0.2s;
+    padding: 8px 13px;
   }
 
   .lang-switch:hover {
     background: rgba(56, 182, 255, 0.12);
     color: var(--c-brand);
+  }
+
+  .download {
+    padding: 9px 16px;
+    border-radius: var(--r-pill);
+    background: var(--c-brand);
+    color: var(--c-night);
+    font-weight: 600;
+    font-size: 15px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .download:hover {
+    color: var(--c-night);
+    filter: brightness(1.08);
+  }
+
+  @media (max-width: 860px) {
+    .sections {
+      display: none;
+    }
+  }
+
+  @media (max-width: 440px) {
+    .brand span {
+      display: none;
+    }
+
+    .bar {
+      gap: var(--s-3);
+    }
   }
 </style>

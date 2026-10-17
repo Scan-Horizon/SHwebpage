@@ -19,9 +19,11 @@ interface Props {
   /** Adresse de cette page dans l'autre langue (pour hreflang et le bouton FR/EN). */
   alternatePath?: string;
   noindex?: boolean;
+  /** Page d'accueil : l'en-tete pointe vers les sections de la page elle-meme. */
+  home?: boolean;
 }
 
-const { lang, title, description, alternatePath, noindex = false } = Astro.props;
+const { lang, title, description, alternatePath, noindex = false, home = false } = Astro.props;
 const site = Astro.site ?? new URL('https://scan-horizon.com');
 const canonical = new URL(Astro.url.pathname, site).href;
 const otherLang: Lang = lang === 'fr' ? 'en' : 'fr';
@@ -53,10 +55,17 @@ const fullTitle = `${title} | ScanHorizon`;
     <meta property="og:image" content="https://scan-horizon.com/Fav2.jpg" />
     <meta property="og:locale" content={lang === 'fr' ? 'fr_FR' : 'en_US'} />
     <meta name="twitter:card" content="summary" />
+    <script is:inline>
+      // Vision nocturne : appliquee avant l'affichage pour eviter un flash.
+      try {
+        if (localStorage.getItem('sh-nvg') === '1') document.documentElement.classList.add('nvg');
+      } catch (e) {}
+    </script>
+    <slot name="head" />
   </head>
   <body>
     <a class="skip-link" href="#contenu">{UI[lang].skip}</a>
-    <SiteHeader lang={lang} alternatePath={alternatePath} />
+    <SiteHeader lang={lang} alternatePath={alternatePath} home={home} />
     <main id="contenu" tabindex="-1">
       <slot />
     </main>
