@@ -1,0 +1,18 @@
+# En-tetes HTTP appliques par Cloudflare Pages (ignores par GitHub Pages).
+# Documentation : https://developers.cloudflare.com/pages/configuration/headers/
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
+# Images : mises en cache 1 jour par les navigateurs (les noms de fichiers ne sont pas versionnes).
+/*.webp
+  Cache-Control: public, max-age=86400
+
+/*.png
+  Cache-Control: public, max-age=86400
+
+/*.jpg
+  Cache-Control: public, max-age=86400

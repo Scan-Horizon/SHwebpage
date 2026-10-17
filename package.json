@@ -1,0 +1,11 @@
+{
+  "name": "scanhorizon-site",
+  "private": true,
+  "description": "Site vitrine scan-horizon.com",
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
