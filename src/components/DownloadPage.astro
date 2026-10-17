@@ -1,0 +1,70 @@
+---
+// Page « Telecharger » : ouvre directement le bon store sur telephone,
+// et affiche les deux badges sur ordinateur (cible du QR code de l'accueil).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StoreBadges from './StoreBadges.astro';
+import { STORE_LINKS, type Lang } from '../data/site';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const fr = lang === 'fr';
+const other = fr ? '/en/download/' : '/fr/telecharger/';
+const stores = { ios: STORE_LINKS.ios, android: STORE_LINKS.android };
+---
+
+<BaseLayout
+  lang={lang}
+  title={fr ? 'Télécharger' : 'Download'}
+  description={fr ? 'Télécharger ScanHorizon sur iPhone ou Android.' : 'Download ScanHorizon on iPhone or Android.'}
+  alternatePath={other}
+  noindex
+>
+  <Fragment slot="head">
+    <script is:inline define:vars={{ stores }}>
+      (function () {
+        var ua = navigator.userAgent || '';
+        var isIos = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        var isAndroid = /Android/i.test(ua);
+        if (isIos) window.location.replace(stores.ios);
+        else if (isAndroid) window.location.replace(stores.android);
+      })();
+    </script>
+  </Fragment>
+  <section class="wrap dl">
+    <h1>{fr ? 'Télécharger ScanHorizon' : 'Download ScanHorizon'}</h1>
+    <p>
+      {
+        fr
+          ? 'Gratuit, avec achats intégrés. Choisis ton store :'
+          : 'Free, with in-app purchases. Pick your store:'
+      }
+    </p>
+    <StoreBadges />
+  </section>
+</BaseLayout>
+
+<style>
+  .dl {
+    padding-block: var(--s-16);
+    display: grid;
+    justify-items: start;
+    gap: var(--s-4);
+  }
+
+  h1 {
+    margin: 0;
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.05;
+  }
+
+  p {
+    margin: 0 0 var(--s-2);
+    color: var(--c-ink-dim);
+    font-size: 18px;
+  }
+</style>

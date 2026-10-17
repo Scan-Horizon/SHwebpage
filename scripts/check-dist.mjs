@@ -21,6 +21,8 @@ const REQUIRED = [
   'sitemap.xml',
   'llms.txt',
   '_headers',
+  'fr/telecharger/index.html',
+  'en/download/index.html',
 ];
 
 const LEGAL = {

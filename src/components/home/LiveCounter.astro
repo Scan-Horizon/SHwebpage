@@ -1,0 +1,140 @@
+---
+// Compteur « avions scannes » en direct, alimente par Railway (service diffusion,
+// cache serveur de 5 min). Meme logique que l'ancien site, gardee telle quelle :
+// appel direct d'abord, relais tiers seulement en secours. A simplifier quand
+// Paulin aura confirme que scan-horizon.com est autorise (CORS_ALLOWED_ORIGINS).
+interface Props {
+  label: string;
+  lang: 'fr' | 'en';
+}
+
+const { label, lang } = Astro.props;
+---
+
+<p class="counter" data-live-counter data-lang={lang}>
+  <span class="value" data-value aria-live="polite">&nbsp;</span>
+  <span class="label">{label}</span>
+</p>
+
+<script>
+  const SCANS_URL = 'https://diffusion-api-production.up.railway.app/api/stats/scans-count';
+  const CACHE_KEY = 'scan_horizon_scans_cache';
+  const FALLBACK = 4589;
+
+  function readCache(): number | null {
+    try {
+      const v = Number(localStorage.getItem(CACHE_KEY));
+      return Number.isFinite(v) && v > 0 ? v : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function writeCache(v: number) {
+    try {
+      localStorage.setItem(CACHE_KEY, String(v));
+    } catch {
+      /* stockage indisponible : sans consequence */
+    }
+  }
+
+  async function fetchWithTimeout(url: string, ms: number) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), ms);
+    try {
+      return await fetch(url, { signal: controller.signal, cache: 'no-store', mode: 'cors' });
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  function firstJson(text: string) {
+    const m = text.match(/\{[\s\S]*?\}/);
+    if (!m) throw new Error('no json');
+    return JSON.parse(m[0]);
+  }
+
+  async function readCount(url: string, ms: number): Promise<number> {
+    const res = await fetchWithTimeout(url, ms);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const type = (res.headers.get('content-type') || '').toLowerCase();
+    let data: any = type.includes('application/json') ? await res.json() : firstJson(await res.text());
+    if (data && typeof data.contents === 'string') data = firstJson(data.contents);
+    const n = Number(data?.total_scans_in_db);
+    if (!Number.isFinite(n)) throw new Error('bad payload');
+    return n;
+  }
+
+  async function loadCount(): Promise<number> {
+    const bust = `cb=${Date.now()}`;
+    const direct = `${SCANS_URL}?${bust}`;
+    try {
+      return await readCount(direct, 2500);
+    } catch {
+      const relays = [
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(direct)}`,
+        `https://api.allorigins.win/get?url=${encodeURIComponent(direct)}`,
+        `https://r.jina.ai/http://${direct.replace(/^https?:\/\//, '')}`,
+      ];
+      return await Promise.any(relays.map((u) => readCount(u, 2200)));
+    }
+  }
+
+  function render(el: HTMLElement, value: number, animate: boolean) {
+    const locale = el.dataset.lang === 'en' ? 'en-US' : 'fr-FR';
+    const target = el.querySelector<HTMLElement>('[data-value]');
+    if (!target) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!animate || reduce) {
+      target.textContent = value.toLocaleString(locale);
+      return;
+    }
+    const start = performance.now();
+    const from = Math.round(value * 0.92);
+    const step = (now: number) => {
+      const t = Math.min((now - start) / 900, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      target.textContent = Math.round(from + (value - from) * eased).toLocaleString(locale);
+      if (t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  const counters = document.querySelectorAll<HTMLElement>('[data-live-counter]');
+  const cached = readCache();
+  counters.forEach((el) => render(el, cached ?? FALLBACK, false));
+
+  loadCount()
+    .then((n) => {
+      writeCache(n);
+      counters.forEach((el) => render(el, n, true));
+    })
+    .catch(() => {
+      /* on garde la derniere valeur connue */
+    });
+</script>
+
+<style>
+  .counter {
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    gap: var(--s-2);
+    flex-wrap: wrap;
+  }
+
+  .value {
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: 28px;
+    letter-spacing: -0.01em;
+    color: var(--c-ink);
+    font-variant-numeric: tabular-nums;
+    min-width: 4ch;
+  }
+
+  .label {
+    color: var(--c-ink-dim);
+    font-size: 15px;
+  }
+</style>
