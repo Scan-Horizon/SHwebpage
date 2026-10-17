@@ -9,7 +9,7 @@ Site vitrine de l'application ScanHorizon (SAS SCAN HORIZON), construit avec [As
 | `src/pages/` | Pages construites par Astro : accueil FR/EN (`fr/index.astro`, `en/index.astro`), pages Télécharger (`fr/telecharger.astro`, `en/download.astro`), les 8 pages légales (`[lang]/[slug].astro`) et la page 404. |
 | `src/legal/fr/`, `src/legal/en/` | Textes légaux v2.1, **copiés mot pour mot** de la version validée. Ne pas les modifier sans accord : ce sont des textes opposables. |
 | `src/layouts/`, `src/components/` | Gabarit commun, en-tête (avec le bouton vision nocturne), pied de page, badges des stores, page Télécharger. |
-| `src/components/home/` | Blocs de l'accueil : démo du scanner (`ScanDemo`), compteur en direct, carrousel 3D des cartes, globe des clans, carte Business Class. |
+| `src/components/home/` | Blocs de l'accueil : démo du scanner (`SkyScope`), compteur en direct, carrousel 3D des cartes, globe des clans, carte Business Class. |
 | `src/scripts/globe-runtime.ts`, `src/data/globe-110m.json` | Dessin du globe et carte du monde (côtes et frontières Natural Earth, reprises de l'app par `scripts/gen-globe-data.mjs`). |
 | `public/img/scan/` | Bouton et animations du scan, repris de l'app (`assets/logos/`), réduits pour le web. |
 | `src/data/home.ts` | Textes de l'accueil FR/EN et liste des cartes du carrousel. |
@@ -40,7 +40,7 @@ L'app et l'e-mail de suppression de compte pointent vers `scan-horizon.com/#priv
 
 ## Accueil
 
-- **Démo du scanner** (haut de page) : un avion traverse le viseur, le visiteur touche le bouton Scan de l'app, l'animation de chargement de l'app tourne (`load.webp` puis `caught.webp`), puis une carte tirée au hasard apparaît. Les étapes Vise, Scanne, Collectionne s'allument au fil de la démo. Les animations ne se chargent qu'une fois la page affichée.
+- **Démo du scanner** (haut de page, `SkyScope`) : le ciel au-dessus du visiteur dessiné comme un instrument (rose des vents, cercles d'élévation), traversé par des avions vus du dessous avec leurs traînées. Le viseur suit la souris et s'accroche aux avions ; un clic ou un toucher scanne l'avion : les animations de l'app se jouent (`load.webp` puis `caught.webp`) et la carte de cet avion apparaît (A320 Commun, 747 Fréquent, Super Puma Rare, A300 Épique, Rafale Légendaire). Les silhouettes sont dessinées pour le site, dans le composant. Les étapes Vise, Scanne, Collectionne s'allument au fil de la démo.
 - **Compteur en direct** : lit `/api/stats/scans-count` du service Railway `diffusion` (cache serveur de 5 minutes). Il essaie d'abord Railway en direct, puis des relais publics si le navigateur refuse l'appel. Pour supprimer les relais : ajouter `https://scan-horizon.com` à la variable `CORS_ALLOWED_ORIGINS` du service `diffusion` (liste séparée par des virgules). En cas d'échec, il garde la dernière valeur connue.
 - **Cartes du carrousel** : `src/data/home.ts`. Une carte par rareté, plus une carte Événement en silhouette, sans aucun indice sur la façon de l'obtenir.
 - **Vision nocturne** : un filtre CSS sur toute la page (`src/styles/global.css`), mémorisé dans le navigateur.
