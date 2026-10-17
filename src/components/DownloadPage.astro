@@ -43,6 +43,9 @@ const stores = { ios: STORE_LINKS.ios, android: STORE_LINKS.android };
       }
     </p>
     <StoreBadges />
+    <p class="more">
+      <a href={fr ? '/fr/' : '/en/'}>{fr ? "Découvrir l'app" : 'Discover the app'}</a>
+    </p>
   </section>
 </BaseLayout>
 
@@ -66,5 +69,10 @@ const stores = { ios: STORE_LINKS.ios, android: STORE_LINKS.android };
     margin: 0 0 var(--s-2);
     color: var(--c-ink-dim);
     font-size: 18px;
+  }
+
+  .more {
+    margin-top: var(--s-4);
+    font-size: 16px;
   }
 </style>
