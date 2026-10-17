@@ -1,0 +1,1092 @@
+---
+// Demo du scanner en haut de l'accueil : le ciel au-dessus du visiteur, vu comme
+// un instrument (rose des vents, cercles d'elevation a 30 et 60 degres). Des avions
+// le traversent, vus du dessous, avec leurs trainees. On vise un avion (le viseur
+// suit la souris), on le touche : les vraies animations de l'app se jouent
+// (assets/logos/load.webp puis caught.webp) et la carte de CET avion apparait.
+//
+// Les silhouettes sont dessinees pour le site (vue de dessous, nez en haut) dans un
+// carre de 100 x 100 ; le script les copie pour chaque avion.
+// Les etapes Vise / Scanne / Collectionne de la page suivent la demo
+// (elements [data-demo-step] du document).
+import { CARDS, HOME } from '../../data/home';
+import type { Lang } from '../../data/site';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = HOME[lang].hero.demo;
+const rarities = HOME[lang].collection.rarities;
+const cards = CARDS.map((c) => ({ key: c.key, img: c.img, aircraft: c.aircraft, label: rarities[c.key], color: c.color }));
+
+// Geometrie de l'instrument (unites du viewBox 600 x 600).
+const C = 300;
+const R = 270;
+const polar = (deg: number, r: number) => {
+  const a = ((deg - 90) * Math.PI) / 180;
+  return [C + r * Math.cos(a), C + r * Math.sin(a)].map((v) => Math.round(v * 10) / 10);
+};
+const ticks = Array.from({ length: 72 }, (_, i) => i * 5).map((deg) => {
+  const len = deg % 30 === 0 ? 16 : deg % 10 === 0 ? 9 : 5;
+  const [x1, y1] = polar(deg, R);
+  const [x2, y2] = polar(deg, R - len);
+  return { x1, y1, x2, y2, major: deg % 30 === 0 };
+});
+const cardinals = [
+  { deg: 0, label: t.compass.n },
+  { deg: 90, label: t.compass.e },
+  { deg: 180, label: t.compass.s },
+  { deg: 270, label: t.compass.w },
+].map((c) => {
+  const [x, y] = polar(c.deg, R - 32);
+  return { ...c, x, y };
+});
+const degrees = [30, 60, 120, 150, 210, 240, 300, 330].map((deg) => {
+  const [x, y] = polar(deg, R - 30);
+  return { deg, x, y };
+});
+const [e30x, e30y] = polar(35, 180);
+// Arc du couchant, de 228 a 312 degres (l'ouest est a 270).
+const duskArc = (r: number) => {
+  const [x1, y1] = polar(312, r);
+  const [x2, y2] = polar(228, r);
+  return `M${x1} ${y1} A${r} ${r} 0 0 0 ${x2} ${y2}`;
+};
+const duskTop = polar(312, R)[1];
+const duskBottom = polar(228, R)[1];
+const [e60x, e60y] = polar(35, 90);
+---
+
+<div
+  class="scope"
+  data-scope
+  data-state="idle"
+  data-cards={JSON.stringify(cards)}
+  data-template={t.result}
+  data-label-scan={t.scan}
+  data-label-again={t.again}
+>
+  <div class="disc" role="group" aria-label={t.label}>
+    <svg class="sky" viewBox="0 0 600 600" data-sky aria-hidden="true">
+      <defs>
+        <radialGradient id="sky-fill" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#040b18"></stop>
+          <stop offset="62%" stop-color="#071a33"></stop>
+          <stop offset="100%" stop-color="#103866"></stop>
+        </radialGradient>
+        <!-- Dernieres lueurs du couchant sur l'horizon ouest, dans l'or Business Class -->
+        <linearGradient id="sky-dusk" gradientUnits="userSpaceOnUse" x1="0" y1={duskTop} x2="0" y2={duskBottom}>
+          <stop offset="0%" stop-color="#e6c56a" stop-opacity="0"></stop>
+          <stop offset="55%" stop-color="#e6c56a" stop-opacity="0.95"></stop>
+          <stop offset="100%" stop-color="#e6c56a" stop-opacity="0"></stop>
+        </linearGradient>
+        <linearGradient id="sky-trail" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.5"></stop>
+          <stop offset="100%" stop-color="#ffffff" stop-opacity="0"></stop>
+        </linearGradient>
+        <clipPath id="sky-clip"><circle cx={C} cy={C} r={R - 1}></circle></clipPath>
+
+        <!-- Silhouettes vues du dessous, nez en haut -->
+        <g id="sh-a320">
+          <path d="M47 42 L9 60 L9 64.5 L47 55.5 Z M53 42 L91 60 L91 64.5 L53 55.5 Z"></path>
+          <path d="M48 79 L35 88 L35 91.5 L48 87.5 Z M52 79 L65 88 L65 91.5 L52 87.5 Z"></path>
+          <rect x="29" y="44" width="5" height="11" rx="2.2"></rect>
+          <rect x="66" y="44" width="5" height="11" rx="2.2"></rect>
+          <rect x="46" y="9" width="8" height="80" rx="4"></rect>
+        </g>
+        <g id="sh-b744">
+          <path d="M46 37 L3 62 L3 66.5 L46 54 Z M54 37 L97 62 L97 66.5 L54 54 Z"></path>
+          <path d="M47 80 L31 90 L31 93.5 L47 88.5 Z M53 80 L69 90 L69 93.5 L53 88.5 Z"></path>
+          <rect x="17.5" y="48" width="5.5" height="11" rx="2.4"></rect>
+          <rect x="30.5" y="41" width="5.5" height="11" rx="2.4"></rect>
+          <rect x="64" y="41" width="5.5" height="11" rx="2.4"></rect>
+          <rect x="77" y="48" width="5.5" height="11" rx="2.4"></rect>
+          <rect x="44.5" y="5" width="11" height="86" rx="5.5"></rect>
+          <ellipse cx="50" cy="20" rx="6.2" ry="13"></ellipse>
+        </g>
+        <g id="sh-a306">
+          <path d="M46 41 L7 61 L7 65.5 L46 56.5 Z M54 41 L93 61 L93 65.5 L54 56.5 Z"></path>
+          <path d="M47 80 L33 89 L33 92.5 L47 87.5 Z M53 80 L67 89 L67 92.5 L53 87.5 Z"></path>
+          <rect x="27" y="44" width="6.5" height="12" rx="3"></rect>
+          <rect x="66.5" y="44" width="6.5" height="12" rx="3"></rect>
+          <rect x="44.5" y="8" width="11" height="83" rx="5.5"></rect>
+        </g>
+        <g id="sh-rfal">
+          <path d="M47.5 40 L12 79 L13.5 84 L47.5 82 Z M52.5 40 L88 79 L86.5 84 L52.5 82 Z"></path>
+          <path d="M47.5 29 L35 38.5 L36 41 L47.5 36 Z M52.5 29 L65 38.5 L64 41 L52.5 36 Z"></path>
+          <path d="M50 3 C53.2 9 54.4 19 54.4 29 L54.4 86 L45.6 86 L45.6 29 C45.6 19 46.8 9 50 3 Z"></path>
+          <rect x="46.2" y="85" width="3.2" height="5" rx="1"></rect>
+          <rect x="50.6" y="85" width="3.2" height="5" rx="1"></rect>
+        </g>
+        <g id="sh-as32">
+          <rect x="48.4" y="58" width="3.2" height="33" rx="1.6"></rect>
+          <rect x="41" y="85" width="18" height="3.4" rx="1.7"></rect>
+          <rect x="51.4" y="84" width="2" height="11" rx="1"></rect>
+          <ellipse cx="50" cy="45" rx="8.5" ry="19"></ellipse>
+          <g class="rotor">
+            <circle cx="50" cy="43" r="41" class="rotor-disc"></circle>
+            <rect x="48.4" y="2" width="3.2" height="82" rx="1.6"></rect>
+            <rect x="9" y="41.4" width="82" height="3.2" rx="1.6"></rect>
+          </g>
+        </g>
+      </defs>
+
+      <!-- Le ciel -->
+      <circle cx={C} cy={C} r={R} fill="url(#sky-fill)"></circle>
+
+      <!-- Instrument : cercles d'elevation, axes, graduations -->
+      <g class="grid">
+        <circle cx={C} cy={C} r="180" class="ring"></circle>
+        <circle cx={C} cy={C} r="90" class="ring"></circle>
+        <line x1={C} y1={C - R} x2={C} y2={C + R} class="axis"></line>
+        <line x1={C - R} y1={C} x2={C + R} y2={C} class="axis"></line>
+        <text x={e30x} y={e30y} class="elev">30°</text>
+        <text x={e60x} y={e60y} class="elev">60°</text>
+        {ticks.map((k) => <line x1={k.x1} y1={k.y1} x2={k.x2} y2={k.y2} class:list={['tick', { major: k.major }]} />)}
+        {cardinals.map((c) => <text x={c.x} y={c.y} class:list={['cardinal', { north: c.deg === 0 }]}>{c.label}</text>)}
+        {degrees.map((d) => <text x={d.x} y={d.y} class="deg">{String(d.deg).padStart(3, '0')}</text>)}
+      </g>
+
+      <g class="traffic" clip-path="url(#sky-clip)" data-traffic></g>
+
+      <circle cx={C} cy={C} r={R} class="rim"></circle>
+      <path d={duskArc(R - 7)} class="dusk-glow" stroke="url(#sky-dusk)"></path>
+      <path d={duskArc(R - 1)} class="dusk" stroke="url(#sky-dusk)"></path>
+      <circle cx={C} cy={C} r={R + 12} class="rim-outer"></circle>
+
+      <!-- Cadre de verrouillage, place sur l'avion vise -->
+      <g class="brackets" data-brackets transform="translate(300 300)">
+        <g class="br">
+          <path d="M-1 -0.55 V-1 H-0.55 M0.55 -1 H1 V-0.55 M1 0.55 V1 H0.55 M-0.55 1 H-1 V0.55"></path>
+        </g>
+      </g>
+
+      <!-- Viseur de l'app : suit la souris, revient au centre -->
+      <g class="reticle" data-reticle transform="translate(300 300)">
+        <circle r="22"></circle>
+        <path d="M0 -8 V8 M-8 0 H8"></path>
+      </g>
+    </svg>
+
+    <img class="overlay" data-overlay alt="" width="320" height="320" decoding="async" />
+    <div class="scrim" data-scrim></div>
+    <figure class="result" data-result aria-hidden="true">
+      <img data-card-img alt="" width="812" height="1108" decoding="async" />
+      <figcaption>
+        <span class="pill" data-card-rarity></span>
+        <span class="name" data-card-name></span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <button type="button" class="scan-btn" data-scan aria-label={t.scan}>
+    <span class="btn-face">
+      <img class="btn-logo" src="/img/scan/logo.webp" alt="" width="96" height="96" />
+      <img class="btn-load" data-btn-load alt="" width="96" height="96" />
+      <svg class="btn-again" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M20 11a8 8 0 1 0-2.3 5.7"></path>
+        <path d="M20 4v7h-7"></path>
+      </svg>
+    </span>
+  </button>
+  <p class="hint">{t.hint}</p>
+  <p class="caption">{t.caption}</p>
+  <p class="visually-hidden" aria-live="polite" data-live></p>
+</div>
+
+<script>
+  type Card = { key: string; img: string; aircraft: string; label: string; color: string };
+  type TypeKey = 'A320' | 'B744' | 'A306' | 'AS32' | 'RFAL';
+
+  const NS = 'http://www.w3.org/2000/svg';
+  const C = 300;
+  const R = 270;
+  const LOAD_URL = '/img/scan/load.webp';
+  const CAUGHT_URL = '/img/scan/caught.webp';
+  const LOCK_MS = 450;
+  const LOAD_MS = 1900;
+  const CAUGHT_MS = 1100;
+  const TRAFFIC = 4;
+
+  // Chaque silhouette correspond a une carte de la page (meme avion, meme rarete).
+  const TYPES: Record<
+    TypeKey,
+    { card: string; scale: number; speed: [number, number]; fl: [number, number]; trails: number[]; trailY: number; weight: number }
+  > = {
+    A320: { card: 'common', scale: 0.46, speed: [24, 32], fl: [340, 390], trails: [31.5, 68.5], trailY: 55, weight: 34 },
+    B744: { card: 'frequent', scale: 0.56, speed: [28, 36], fl: [350, 400], trails: [20.2, 33.2, 66.8, 79.8], trailY: 58, weight: 22 },
+    A306: { card: 'epic', scale: 0.52, speed: [24, 30], fl: [310, 350], trails: [30.2, 69.8], trailY: 56, weight: 18 },
+    AS32: { card: 'rare', scale: 0.46, speed: [11, 15], fl: [15, 25], trails: [], trailY: 0, weight: 16 },
+    RFAL: { card: 'legendary', scale: 0.38, speed: [62, 78], fl: [420, 480], trails: [47.8, 52.2], trailY: 90, weight: 10 },
+  };
+  const TYPE_KEYS = Object.keys(TYPES) as TypeKey[];
+
+  type Plane = {
+    type: TypeKey;
+    x: number;
+    y: number;
+    vx: number;
+    vy: number;
+    heading: number;
+    el: SVGGElement;
+    body: SVGGElement;
+    frozen: boolean;
+  };
+
+  const rand = (a: number, b: number) => a + Math.random() * (b - a);
+
+  function pickType(exclude?: TypeKey): TypeKey {
+    const pool = TYPE_KEYS.filter((k) => k !== exclude);
+    let r = Math.random() * pool.reduce((s, k) => s + TYPES[k].weight, 0);
+    for (const k of pool) {
+      r -= TYPES[k].weight;
+      if (r <= 0) return k;
+    }
+    return pool[0];
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-scope]').forEach((root) => {
+    const svg = root.querySelector<SVGSVGElement>('[data-sky]')!;
+    const traffic = root.querySelector<SVGGElement>('[data-traffic]')!;
+    const reticle = root.querySelector<SVGGElement>('[data-reticle]')!;
+    const brackets = root.querySelector<SVGGElement>('[data-brackets]')!;
+    const overlay = root.querySelector<HTMLImageElement>('[data-overlay]')!;
+    const result = root.querySelector<HTMLElement>('[data-result]')!;
+    const scrim = root.querySelector<HTMLElement>('[data-scrim]')!;
+    const btn = root.querySelector<HTMLButtonElement>('[data-scan]')!;
+    const btnLoad = root.querySelector<HTMLImageElement>('[data-btn-load]')!;
+    const cardImg = root.querySelector<HTMLImageElement>('[data-card-img]')!;
+    const cardRarity = root.querySelector<HTMLElement>('[data-card-rarity]')!;
+    const cardName = root.querySelector<HTMLElement>('[data-card-name]')!;
+    const live = root.querySelector<HTMLElement>('[data-live]')!;
+    const cards: Card[] = JSON.parse(root.dataset.cards || '[]');
+    const steps = Array.from(document.querySelectorAll<HTMLElement>('[data-demo-step]'));
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+    type State = 'idle' | 'lock' | 'scanning' | 'caught' | 'result';
+    let state: State = 'idle';
+    let planes: Plane[] = [];
+    let target: Plane | null = null;
+    let aimed: Plane | null = null;
+    let timers: number[] = [];
+
+    // Viseur : position actuelle et visee (souris), en unites du viewBox.
+    let rx = C;
+    let ry = C;
+    let px = C;
+    let py = C;
+    let pointerInside = false;
+
+    // Taille des textes de l'instrument constante a l'ecran, quelle que soit la largeur.
+    const ro = new ResizeObserver(() => {
+      const w = svg.clientWidth || 600;
+      svg.style.setProperty('--u', String(600 / w));
+    });
+    ro.observe(svg);
+
+    // ---- Animations de l'app (WebP animes, rejoues depuis la premiere image) ----
+    const blobs: Record<string, Blob | null> = {};
+    const blobUrls: string[] = [];
+    let assetsRequested = false;
+    function requestAssets() {
+      if (assetsRequested) return;
+      assetsRequested = true;
+      for (const url of [LOAD_URL, CAUGHT_URL]) {
+        fetch(url)
+          .then((r) => (r.ok ? r.blob() : null))
+          .then((b) => (blobs[url] = b))
+          .catch(() => (blobs[url] = null));
+      }
+    }
+    function freshUrl(url: string) {
+      const b = blobs[url];
+      if (!b) return url;
+      const u = URL.createObjectURL(b);
+      blobUrls.push(u);
+      while (blobUrls.length > 4) URL.revokeObjectURL(blobUrls.shift()!);
+      return u;
+    }
+    const whenIdle = (fn: () => void) =>
+      'requestIdleCallback' in window ? window.requestIdleCallback(fn, { timeout: 3000 }) : window.setTimeout(fn, 1500);
+    if (document.readyState === 'complete') whenIdle(requestAssets);
+    else window.addEventListener('load', () => whenIdle(requestAssets), { once: true });
+    for (const type of ['pointerenter', 'touchstart', 'focus']) {
+      root.addEventListener(type, requestAssets, { once: true, passive: true });
+    }
+
+    // ---- Avions ----
+    function makePlane(type: TypeKey): Plane {
+      const def = TYPES[type];
+      const el = document.createElementNS(NS, 'g');
+      el.setAttribute('class', `plane plane-${type.toLowerCase()}`);
+      const body = document.createElementNS(NS, 'g');
+      body.setAttribute('class', 'body');
+      for (const tx of def.trails) {
+        const trail = document.createElementNS(NS, 'rect');
+        trail.setAttribute('x', String(tx - 1.1));
+        trail.setAttribute('y', String(def.trailY));
+        trail.setAttribute('width', '2.2');
+        trail.setAttribute('height', '230');
+        trail.setAttribute('fill', 'url(#sky-trail)');
+        trail.setAttribute('class', 'trail');
+        body.appendChild(trail);
+      }
+      const shape = svg.querySelector(`#sh-${type.toLowerCase()}`)!.cloneNode(true) as SVGGElement;
+      shape.removeAttribute('id');
+      shape.setAttribute('class', 'shape');
+      body.appendChild(shape);
+      el.appendChild(body);
+
+      const tag = document.createElementNS(NS, 'g');
+      tag.setAttribute('class', 'tag');
+      const t1 = document.createElementNS(NS, 'text');
+      t1.setAttribute('class', 't1');
+      t1.textContent = type;
+      const t2 = document.createElementNS(NS, 'text');
+      t2.setAttribute('class', 't2');
+      t2.setAttribute('dy', '1.25em');
+      const fl = Math.round(rand(def.fl[0], def.fl[1]) / 10) * 10;
+      t2.textContent = `FL${String(fl).padStart(3, '0')}`;
+      tag.appendChild(t1);
+      tag.appendChild(t2);
+      el.appendChild(tag);
+      traffic.appendChild(el);
+      return { type, x: 0, y: 0, vx: 0, vy: 0, heading: 0, el, body, frozen: false };
+    }
+
+    // Un avion traverse le disque en ligne droite ; « near » le fait passer pres du centre.
+    function launch(p: Plane, progress: number, near: boolean) {
+      const def = TYPES[p.type];
+      const a = rand(0, Math.PI * 2);
+      const b = a + Math.PI + rand(-1, 1) * (near ? 0.35 : 1.1);
+      const sx = C + (R + 40) * Math.cos(a);
+      const sy = C + (R + 40) * Math.sin(a);
+      const ex = C + (R + 40) * Math.cos(b);
+      const ey = C + (R + 40) * Math.sin(b);
+      const len = Math.hypot(ex - sx, ey - sy);
+      const speed = reduce ? 0 : rand(def.speed[0], def.speed[1]);
+      p.vx = ((ex - sx) / len) * speed;
+      p.vy = ((ey - sy) / len) * speed;
+      p.x = sx + (ex - sx) * progress;
+      p.y = sy + (ey - sy) * progress;
+      p.heading = (Math.atan2(ey - sy, ex - sx) * 180) / Math.PI + 90;
+      p.body.setAttribute('transform', `rotate(${p.heading.toFixed(1)}) scale(${def.scale}) translate(-50 -50)`);
+      p.frozen = false;
+      p.el.style.opacity = '';
+      place(p);
+    }
+
+    function place(p: Plane) {
+      p.el.setAttribute('transform', `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)})`);
+      // Pres de l'horizon, l'etiquette s'efface au lieu d'etre coupee par le bord.
+      p.el.classList.toggle('edge', Math.hypot(p.x - C, p.y - C) > R - 34);
+    }
+
+    function spawn(progress: number, near: boolean, exclude?: TypeKey) {
+      const p = makePlane(pickType(exclude));
+      launch(p, progress, near);
+      planes.push(p);
+      return p;
+    }
+
+    function respawn(p: Plane) {
+      p.el.remove();
+      planes = planes.filter((q) => q !== p);
+      if (aimed === p) aimed = null;
+      const nearCount = planes.filter((q) => Math.hypot(q.x - C, q.y - C) < R * 0.55).length;
+      spawn(0, nearCount === 0 || Math.random() < 0.4);
+    }
+
+    // Ciel de depart : un A320 pres du centre, puis du trafic varie.
+    {
+      const first = makePlane('A320');
+      launch(first, 0.42, true);
+      planes.push(first);
+      const starts = reduce ? [0.3, 0.62, 0.7] : [0.22, 0.58, 0.75];
+      starts.forEach((s, i) => spawn(s, i === 1, i === 0 ? 'A320' : undefined));
+    }
+
+    // ---- Visee ----
+    function svgPoint(e: PointerEvent) {
+      const r = svg.getBoundingClientRect();
+      return [((e.clientX - r.left) / r.width) * 600, ((e.clientY - r.top) / r.height) * 600];
+    }
+    function nearest(x: number, y: number, max: number) {
+      let best: Plane | null = null;
+      let bestD = max;
+      for (const p of planes) {
+        if (p.frozen) continue;
+        if (Math.hypot(p.x - C, p.y - C) > R - 12) continue;
+        const d = Math.hypot(p.x - x, p.y - y);
+        if (d < bestD) {
+          bestD = d;
+          best = p;
+        }
+      }
+      return best;
+    }
+    function bracketsOn(p: Plane) {
+      const k = 34 * TYPES[p.type].scale + 6;
+      brackets.setAttribute('transform', `translate(${p.x.toFixed(1)} ${p.y.toFixed(1)}) scale(${k.toFixed(1)})`);
+    }
+
+    function setStep(n: number) {
+      steps.forEach((s) => s.classList.toggle('is-active', Number(s.dataset.demoStep) === n));
+    }
+    function setState(next: State) {
+      state = next;
+      root.dataset.state = next;
+    }
+
+    // ---- Sequence de scan ----
+    function scan(p: Plane | null) {
+      if (state !== 'idle') return;
+      if (!p) p = nearest(rx, ry, Infinity);
+      if (!p) return;
+      requestAssets();
+      root.classList.add('touched');
+      target = p;
+      aimed = null;
+      root.classList.remove('aiming');
+      p.frozen = true;
+      p.el.classList.add('is-target');
+      bracketsOn(p);
+      const card = cards.find((c) => c.key === TYPES[p.type].card) || cards[0];
+      cardImg.src = card.img;
+      cardImg.alt = `${card.label} : ${card.aircraft}`;
+      cardRarity.textContent = card.label;
+      cardRarity.style.setProperty('--c', card.color);
+      cardName.textContent = card.aircraft;
+      overlay.style.left = `${(p.x / 6).toFixed(2)}%`;
+      overlay.style.top = `${(p.y / 6).toFixed(2)}%`;
+      result.style.setProperty('--fx', `${(p.x / 6).toFixed(2)}%`);
+      result.style.setProperty('--fy', `${(p.y / 6).toFixed(2)}%`);
+      btn.disabled = true;
+      setStep(2);
+
+      if (reduce) {
+        setState('lock');
+        timers.push(window.setTimeout(() => showResult(card), 350));
+        return;
+      }
+      setState('lock');
+      timers.push(
+        window.setTimeout(() => {
+          const loadUrl = freshUrl(LOAD_URL);
+          overlay.src = loadUrl;
+          btnLoad.src = loadUrl;
+          setState('scanning');
+        }, LOCK_MS),
+      );
+      timers.push(
+        window.setTimeout(() => {
+          overlay.src = freshUrl(CAUGHT_URL);
+          setState('caught');
+        }, LOCK_MS + LOAD_MS),
+      );
+      timers.push(window.setTimeout(() => showResult(card), LOCK_MS + LOAD_MS + CAUGHT_MS));
+    }
+
+    function showResult(card: Card) {
+      setState('result');
+      setStep(3);
+      btn.disabled = false;
+      btn.setAttribute('aria-label', root.dataset.labelAgain || '');
+      live.textContent = (root.dataset.template || '').replace('{rarity}', card.label).replace('{aircraft}', card.aircraft);
+    }
+
+    function reset() {
+      timers.forEach((id) => clearTimeout(id));
+      timers = [];
+      if (target) respawn(target);
+      target = null;
+      setState('idle');
+      setStep(1);
+      btn.setAttribute('aria-label', root.dataset.labelScan || '');
+      live.textContent = '';
+      if (reduce) draw();
+    }
+
+    btn.addEventListener('click', () => {
+      if (state === 'idle') scan(aimed);
+      else if (state === 'result') reset();
+    });
+    scrim.addEventListener('click', () => state === 'result' && reset());
+    result.addEventListener('click', () => state === 'result' && reset());
+
+    // Souris : le viseur suit le pointeur et s'accroche a l'avion le plus proche.
+    svg.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      const [x, y] = svgPoint(e);
+      pointerInside = Math.hypot(x - C, y - C) < R;
+      px = x;
+      py = y;
+      if (reduce) draw();
+    });
+    svg.addEventListener('pointerleave', () => {
+      pointerInside = false;
+      if (reduce) draw();
+    });
+    // Clic ou toucher : scanne l'avion touche (tolerance plus large au doigt).
+    svg.addEventListener('click', (e) => {
+      if (state !== 'idle') return;
+      const pe = e as PointerEvent;
+      const [x, y] = svgPoint(pe);
+      const touch = pe.pointerType === 'touch' || !fine;
+      const p = aimed && !touch ? aimed : nearest(x, y, touch ? 56 : 44);
+      if (p) scan(p);
+    });
+
+    // ---- Boucle d'animation ----
+    function draw() {
+      // Viseur
+      const tx = pointerInside ? px : C;
+      const ty = pointerInside ? py : C;
+      aimed = state === 'idle' && fine ? nearest(tx, ty, 40) : null;
+      const gx = aimed ? aimed.x : tx;
+      const gy = aimed ? aimed.y : ty;
+      const k = reduce ? 1 : 0.22;
+      rx += (gx - rx) * k;
+      ry += (gy - ry) * k;
+      reticle.setAttribute('transform', `translate(${rx.toFixed(1)} ${ry.toFixed(1)})`);
+      root.classList.toggle('aiming', !!aimed);
+      if (aimed) bracketsOn(aimed);
+      else if (target && state !== 'idle') bracketsOn(target);
+      for (const p of planes) place(p);
+    }
+
+    let running = false;
+    let raf = 0;
+    let prev = 0;
+    function frame(now: number) {
+      if (!running) return;
+      const dt = Math.min((now - (prev || now)) / 1000, 0.05);
+      prev = now;
+      for (const p of [...planes]) {
+        if (p.frozen) continue;
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        const out = Math.hypot(p.x - C, p.y - C) > R + 60 && (p.x - C) * p.vx + (p.y - C) * p.vy > 0;
+        if (out) respawn(p);
+      }
+      draw();
+      raf = requestAnimationFrame(frame);
+    }
+    function start() {
+      if (running || reduce) return;
+      running = true;
+      prev = 0;
+      raf = requestAnimationFrame(frame);
+    }
+    function stop() {
+      running = false;
+      cancelAnimationFrame(raf);
+    }
+
+    draw();
+    setStep(1);
+    let onScreen = true;
+    const io = new IntersectionObserver((entries) => {
+      onScreen = entries.some((e) => e.isIntersecting);
+      if (onScreen && !document.hidden) start();
+      else stop();
+    });
+    io.observe(root);
+    document.addEventListener('visibilitychange', () => (document.hidden || !onScreen ? stop() : start()));
+  });
+</script>
+
+<style>
+  .scope {
+    --btn: 76px;
+    position: relative;
+    display: grid;
+    justify-items: center;
+    width: min(560px, 100%);
+    margin-inline: auto;
+  }
+
+  .disc {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+  }
+
+  /* Halo autour de l'instrument */
+  .disc::before {
+    content: '';
+    position: absolute;
+    inset: -6%;
+    z-index: -1;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(56, 182, 255, 0.16), transparent 72%);
+  }
+
+  .sky {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    cursor: crosshair;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    --u: 1;
+  }
+
+  .scope.aiming .sky {
+    cursor: pointer;
+  }
+
+  /* Instrument */
+  .ring {
+    fill: none;
+    stroke: rgba(143, 214, 255, 0.16);
+    stroke-width: 1;
+    stroke-dasharray: 2 6;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .axis {
+    stroke: rgba(143, 214, 255, 0.07);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .tick {
+    stroke: rgba(143, 214, 255, 0.32);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .tick.major {
+    stroke: rgba(143, 214, 255, 0.65);
+  }
+
+  .rim {
+    fill: none;
+    stroke: rgba(143, 214, 255, 0.45);
+    stroke-width: 1.2;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .dusk {
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .dusk-glow {
+    fill: none;
+    stroke-width: 14;
+    opacity: 0.2;
+  }
+
+  .rim-outer {
+    fill: none;
+    stroke: rgba(143, 214, 255, 0.1);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .cardinal,
+  .deg,
+  .elev {
+    font-family: var(--f-mono);
+    text-anchor: middle;
+    dominant-baseline: central;
+  }
+
+  .cardinal {
+    font-size: calc(13px * var(--u));
+    font-weight: 500;
+    fill: #8fd6ff;
+  }
+
+  .cardinal.north {
+    fill: var(--c-ink);
+  }
+
+  .deg {
+    font-size: calc(9.5px * var(--u));
+    fill: rgba(143, 214, 255, 0.5);
+  }
+
+  .elev {
+    font-size: calc(9.5px * var(--u));
+    fill: rgba(143, 214, 255, 0.42);
+  }
+
+  /* Avions (crees par le script : styles globaux sous .scope) */
+  .scope :global(.shape) {
+    fill: #eef5ff;
+  }
+
+  .scope :global(.trail) {
+    opacity: 0.55;
+  }
+
+  .scope :global(.rotor) {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: rotor 0.35s linear infinite;
+  }
+
+  .scope :global(.rotor rect) {
+    opacity: 0.8;
+  }
+
+  .scope :global(.rotor-disc) {
+    fill: rgba(238, 245, 255, 0.08);
+  }
+
+  .scope :global(.tag) {
+    transform: translate(calc(16px * var(--u)), calc(-14px * var(--u)));
+  }
+
+  .scope :global(.tag text) {
+    font-family: var(--f-mono);
+    font-size: calc(10.5px * var(--u));
+    paint-order: stroke;
+    stroke: rgba(4, 11, 24, 0.85);
+    stroke-width: calc(3px * var(--u));
+    stroke-linejoin: round;
+  }
+
+  .scope :global(.tag) {
+    transition: opacity 0.3s ease;
+  }
+
+  .scope :global(.edge .tag) {
+    opacity: 0;
+  }
+
+  .scope :global(.t1) {
+    fill: #e8f1fb;
+    font-weight: 500;
+  }
+
+  .scope :global(.t2) {
+    fill: rgba(143, 214, 255, 0.7);
+  }
+
+  .scope :global(.plane) {
+    transition: opacity 0.25s ease;
+  }
+
+  /* Viseur et cadre */
+  .reticle circle {
+    fill: none;
+    stroke: rgba(143, 214, 255, 0.7);
+    stroke-width: 1.2;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .reticle path {
+    stroke: #8fd6ff;
+    stroke-width: 1.2;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .reticle {
+    transition: opacity 0.2s ease;
+  }
+
+  .scope.aiming .reticle,
+  .scope:not([data-state='idle']) .reticle {
+    opacity: 0;
+  }
+
+  .brackets {
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  .br {
+    transform-box: fill-box;
+    transform-origin: center;
+  }
+
+  .br path {
+    fill: none;
+    stroke: rgba(232, 241, 251, 0.85);
+    stroke-width: 2;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .scope.aiming .brackets,
+  .scope[data-state='lock'] .brackets,
+  .scope[data-state='scanning'] .brackets {
+    opacity: 1;
+  }
+
+  .scope[data-state='lock'] .br,
+  .scope[data-state='scanning'] .br {
+    animation: lock 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  }
+
+  .scope[data-state='lock'] .br path,
+  .scope[data-state='scanning'] .br path {
+    stroke: var(--c-brand);
+  }
+
+  /* L'avion capture laisse place a l'animation de l'app */
+  .scope:is([data-state='caught'], [data-state='result']) :global(.plane.is-target) {
+    opacity: 0;
+  }
+
+  /* Animations de l'app sur l'avion */
+  .overlay {
+    position: absolute;
+    width: 26%;
+    height: 26%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+  }
+
+  .scope:is([data-state='scanning'], [data-state='caught']) .overlay {
+    opacity: 1;
+  }
+
+  /* Carte obtenue : sort du point ou etait l'avion */
+  .scrim {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, rgba(4, 9, 19, 0.82), rgba(4, 9, 19, 0.6));
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+
+  .scope[data-state='result'] .scrim {
+    opacity: 1;
+    pointer-events: auto;
+    cursor: pointer;
+  }
+
+  .result {
+    position: absolute;
+    left: var(--fx, 50%);
+    top: var(--fy, 50%);
+    width: 40%;
+    margin: 0;
+    display: grid;
+    justify-items: center;
+    gap: 8px;
+    opacity: 0;
+    transform: translate(-50%, -50%) perspective(900px) rotateY(-110deg) scale(0.12);
+    pointer-events: none;
+  }
+
+  .scope[data-state='result'] .result {
+    left: 50%;
+    top: 49%;
+    opacity: 1;
+    transform: translate(-50%, -50%) perspective(900px) rotateY(0deg) scale(1);
+    pointer-events: auto;
+    cursor: pointer;
+    transition:
+      left 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      top 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.25s ease;
+  }
+
+  .result img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    filter: drop-shadow(0 18px 36px rgba(0, 0, 0, 0.6));
+  }
+
+  .result figcaption {
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+    text-align: center;
+  }
+
+  .pill {
+    padding: 3px 10px;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--c, var(--c-brand));
+    color: var(--c, var(--c-brand));
+    background: rgba(5, 10, 21, 0.75);
+    font-family: var(--f-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .name {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(12px, 2.6vw, 15px);
+    color: var(--c-ink);
+    white-space: nowrap;
+  }
+
+  /* Bouton Scan de l'app, pose a cheval sur le bord du ciel */
+  .scan-btn {
+    position: relative;
+    z-index: 2;
+    width: var(--btn);
+    height: var(--btn);
+    margin-top: calc(var(--btn) / -2);
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .scan-btn:disabled {
+    cursor: progress;
+  }
+
+  .scan-btn:focus-visible {
+    outline-offset: 4px;
+    border-radius: 50%;
+  }
+
+  .btn-face {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #14213d;
+    border: 2.5px solid #9fb9e8;
+    box-shadow:
+      0 8px 24px rgba(0, 0, 0, 0.45),
+      0 2px 4px rgba(0, 0, 0, 0.28);
+    transition: transform 0.12s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  .scan-btn:active:not(:disabled) .btn-face {
+    transform: scale(0.96);
+  }
+
+  .scope:not(.touched) .btn-face::after {
+    content: '';
+    position: absolute;
+    inset: -2.5px;
+    border-radius: 50%;
+    border: 2px solid rgba(56, 182, 255, 0.6);
+    animation: ring 2.4s ease-out infinite;
+  }
+
+  .btn-face > * {
+    position: absolute;
+    inset: 9%;
+    width: 82%;
+    height: 82%;
+    transition: opacity 0.09s ease;
+  }
+
+  .btn-load {
+    inset: 3%;
+    width: 94%;
+    height: 94%;
+  }
+
+  .btn-load,
+  .btn-again {
+    opacity: 0;
+  }
+
+  .btn-again {
+    inset: 26%;
+    width: 48%;
+    height: 48%;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .scope:is([data-state='lock'], [data-state='scanning'], [data-state='caught']) .btn-logo,
+  .scope[data-state='result'] .btn-logo {
+    opacity: 0;
+  }
+
+  .scope:is([data-state='scanning'], [data-state='caught']) .btn-load,
+  .scope[data-state='result'] .btn-again {
+    opacity: 1;
+  }
+
+  .hint {
+    margin: var(--s-3) 0 0;
+    font-size: 14px;
+    color: var(--c-ink);
+    transition: opacity 0.3s ease;
+  }
+
+  .scope.touched .hint {
+    opacity: 0.55;
+  }
+
+  .caption {
+    margin: var(--s-1) 0 0;
+    font-size: 12px;
+    color: var(--c-ink-faint);
+    text-align: center;
+  }
+
+  @keyframes rotor {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @keyframes lock {
+    from {
+      transform: scale(1.9);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scale(1.45);
+      opacity: 0;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .scope {
+      --btn: 68px;
+    }
+
+    .result {
+      width: 42%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scope :global(.rotor),
+    .btn-face::after {
+      animation: none !important;
+    }
+
+    .scope[data-state='result'] .result {
+      transition: opacity 0.2s ease;
+    }
+  }
+</style>

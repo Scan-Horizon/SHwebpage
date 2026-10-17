@@ -32,11 +32,14 @@ export const HOME = {
       rating: "5,0 sur l'App Store",
       counterLive: 'En direct',
       demo: {
-        label: "Démo du scanner : touche le bouton pour scanner l'avion qui passe dans le viseur.",
-        scan: "Scanner l'avion",
+        label:
+          "Démo du scanner : le ciel au-dessus de toi, avec les avions qui passent. Touche un avion, ou le bouton Scan, pour le scanner.",
+        scan: "Scanner l'avion le plus proche du viseur",
         again: 'Scanner un autre avion',
-        hint: 'Touche pour scanner',
+        hint: 'Vise un avion et touche-le',
         result: 'Carte {rarity} : {aircraft}',
+        caption: 'Démo : le ciel au-dessus de toi, tel que le scanner le voit.',
+        compass: { n: 'N', e: 'E', s: 'S', w: 'O' },
       },
     },
     steps: {
@@ -138,11 +141,13 @@ export const HOME = {
       rating: '5.0 on the App Store',
       counterLive: 'Live',
       demo: {
-        label: 'Scanner demo: tap the button to scan the aircraft crossing the viewfinder.',
-        scan: 'Scan the aircraft',
+        label: 'Scanner demo: the sky above you, with aircraft passing over. Tap an aircraft, or the Scan button, to scan it.',
+        scan: 'Scan the aircraft closest to the reticle',
         again: 'Scan another aircraft',
-        hint: 'Tap to scan',
+        hint: 'Aim at an aircraft and tap it',
         result: '{rarity} card: {aircraft}',
+        caption: 'Demo: the sky above you, as the scanner sees it.',
+        compass: { n: 'N', e: 'E', s: 'S', w: 'W' },
       },
     },
     steps: {
