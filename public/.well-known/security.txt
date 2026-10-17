@@ -1,0 +1,5 @@
+Contact: mailto:contact@scan-horizon.com
+Preferred-Languages: fr, en
+Expires: 2027-05-16T00:00:00.000Z
+Canonical: https://scan-horizon.com/.well-known/security.txt
+Policy: https://scan-horizon.com/en/privacy/

@@ -21,6 +21,7 @@ const REQUIRED = [
   'sitemap.xml',
   'llms.txt',
   '_headers',
+  '.well-known/security.txt',
   'fr/telecharger/index.html',
   'en/download/index.html',
 ];
