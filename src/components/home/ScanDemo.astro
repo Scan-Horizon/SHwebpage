@@ -1,0 +1,815 @@
+---
+// Demo interactive du scanner, en haut de l'accueil : un avion traverse le viseur,
+// le visiteur touche le bouton Scan (le meme que dans l'app), l'animation de
+// chargement de l'app tourne, puis une carte apparait.
+//
+// Elements repris de l'app (lib/screens/v1_quick_scan_page.dart) :
+// - bouton : cercle #14213D, bord #9FB9E8, logo blanc (assets/logos/logo_noir.png) ;
+// - chargement : assets/logos/load.webp (109 images de 28 ms), sur le bouton et au
+//   centre du viseur (60 % de la largeur), HUD masque pendant la sequence ;
+// - capture : assets/logos/caught.webp, affiche 1,4 s.
+// Les etapes Vise / Scanne / Collectionne de la page s'allument au fil de la demo
+// (elements [data-demo-step] du document).
+import { CARDS, HOME } from '../../data/home';
+import type { Lang } from '../../data/site';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = HOME[lang].hero;
+const rarities = HOME[lang].collection.rarities;
+const cards = CARDS.map((c) => ({ key: c.key, img: c.img, aircraft: c.aircraft, label: rarities[c.key], color: c.color }));
+---
+
+<div
+  class="demo"
+  data-scan-demo
+  data-cards={JSON.stringify(cards)}
+  data-template={t.demo.result}
+  data-label-scan={t.demo.scan}
+  data-label-again={t.demo.again}
+>
+  <div class="phone" role="group" aria-label={t.demo.label}>
+    <div class="screen" data-screen data-state="idle">
+      <div class="stars" aria-hidden="true"></div>
+      <div class="horizon" aria-hidden="true"></div>
+
+      <div class="hud" aria-hidden="true">
+        <div class="tape">
+          <div class="tape-track">
+            <span>045</span><span>060</span><span>075</span><span>090</span><span>105</span><span>120</span>
+          </div>
+          <span class="caret"></span>
+        </div>
+        <div class="crosshair"></div>
+      </div>
+
+      <div class="target" data-target aria-hidden="true">
+        <svg class="plane" viewBox="0 0 64 24">
+          <path
+            d="M2 13.2c0-1 .8-1.6 2-1.6h20.5L37 3.2c.6-.4 1.2-.6 1.9-.6h2.4l-6 9h16.8l4.9-5.4h3.1l-2.3 6.2c1.6.4 2.8 1 2.8 1.9s-1.2 1.5-2.8 1.9l2.3 6.2h-3.1l-4.9-5.4H35.3l6 9h-2.4c-.7 0-1.3-.2-1.9-.6L24.5 14.9H4c-1.2 0-2-.6-2-1.7z"
+          ></path>
+        </svg>
+        <span class="light red"></span>
+        <span class="light green"></span>
+        <span class="light strobe"></span>
+        <span class="box"><i></i><i></i><i></i><i></i></span>
+      </div>
+
+      <img class="overlay" data-overlay alt="" width="320" height="320" decoding="async" />
+
+      <figure class="result" data-result aria-hidden="true">
+        <img data-card-img alt="" width="812" height="1108" decoding="async" />
+        <figcaption>
+          <span class="pill" data-card-rarity></span>
+          <span class="name" data-card-name></span>
+        </figcaption>
+      </figure>
+
+      <p class="tap-hint" data-hint aria-hidden="true">{t.demo.hint}</p>
+
+      <button type="button" class="scan-btn" data-scan aria-label={t.demo.scan}>
+        <span class="btn-face">
+          <img class="btn-logo" src="/img/scan/logo.webp" alt="" width="96" height="96" />
+          <img class="btn-load" data-btn-load alt="" width="96" height="96" />
+          <svg class="btn-again" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 11a8 8 0 1 0-2.3 5.7"></path>
+            <path d="M20 4v7h-7"></path>
+          </svg>
+        </span>
+      </button>
+    </div>
+  </div>
+  <div class="glow" aria-hidden="true"></div>
+  <p class="visually-hidden" aria-live="polite" data-live></p>
+</div>
+
+<script>
+  type Card = { key: string; img: string; aircraft: string; label: string; color: string };
+
+  // Poids des raretes dans la demo (le Commun sort le plus souvent).
+  const WEIGHTS: Record<string, number> = { common: 34, frequent: 26, rare: 20, epic: 13, legendary: 7 };
+  const LOAD_URL = '/img/scan/load.webp';
+  const CAUGHT_URL = '/img/scan/caught.webp';
+  const LOAD_MS = 2200; // duree du chargement dans la demo
+  const CAUGHT_MS = 1400; // _caughtOverlayDuration de l'app
+
+  document.querySelectorAll<HTMLElement>('[data-scan-demo]').forEach((root) => {
+    const screen = root.querySelector<HTMLElement>('[data-screen]')!;
+    const target = root.querySelector<HTMLElement>('[data-target]')!;
+    const overlay = root.querySelector<HTMLImageElement>('[data-overlay]')!;
+    const btn = root.querySelector<HTMLButtonElement>('[data-scan]')!;
+    const btnLoad = root.querySelector<HTMLImageElement>('[data-btn-load]')!;
+    const cardImg = root.querySelector<HTMLImageElement>('[data-card-img]')!;
+    const cardRarity = root.querySelector<HTMLElement>('[data-card-rarity]')!;
+    const cardName = root.querySelector<HTMLElement>('[data-card-name]')!;
+    const live = root.querySelector<HTMLElement>('[data-live]')!;
+    const cards: Card[] = JSON.parse(root.dataset.cards || '[]');
+    const steps = Array.from(document.querySelectorAll<HTMLElement>('[data-demo-step]'));
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let state: 'idle' | 'scanning' | 'caught' | 'result' = 'idle';
+    let lastKey = '';
+    let timers: number[] = [];
+
+    // Les animations de l'app sont des WebP animes : pour qu'elles repartent de la
+    // premiere image a chaque scan, on les charge une fois puis on cree une adresse
+    // neuve (blob) a chaque lecture, sans nouveau telechargement.
+    const blobs: Record<string, Blob | null> = {};
+    const live_urls: string[] = [];
+    let assetsRequested = false;
+    function requestAssets() {
+      if (assetsRequested) return;
+      assetsRequested = true;
+      for (const url of [LOAD_URL, CAUGHT_URL]) {
+        fetch(url)
+          .then((r) => (r.ok ? r.blob() : null))
+          .then((b) => (blobs[url] = b))
+          .catch(() => (blobs[url] = null));
+      }
+    }
+    function freshUrl(url: string) {
+      const b = blobs[url];
+      if (!b) return url;
+      const u = URL.createObjectURL(b);
+      live_urls.push(u);
+      while (live_urls.length > 4) URL.revokeObjectURL(live_urls.shift()!);
+      return u;
+    }
+
+    // Les animations (environ 190 Ko) se chargent apres la page, quand le navigateur
+    // est libre et que la demo est a l'ecran ; tout de suite si on approche du bouton.
+    const whenIdle = (fn: () => void) =>
+      'requestIdleCallback' in window ? window.requestIdleCallback(fn, { timeout: 3000 }) : window.setTimeout(fn, 1500);
+    const afterLoad = (fn: () => void) =>
+      document.readyState === 'complete' ? fn() : window.addEventListener('load', fn, { once: true });
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          io.disconnect();
+          afterLoad(() => whenIdle(requestAssets));
+        }
+      });
+      io.observe(root);
+    } else {
+      afterLoad(() => whenIdle(requestAssets));
+    }
+    for (const type of ['pointerenter', 'touchstart', 'focus']) {
+      btn.addEventListener(type, requestAssets, { once: true, passive: true });
+    }
+
+    function setStep(n: number) {
+      steps.forEach((s) => s.classList.toggle('is-active', Number(s.dataset.demoStep) === n));
+    }
+
+    function setState(next: typeof state) {
+      state = next;
+      screen.dataset.state = next;
+    }
+
+    function clearTimers() {
+      timers.forEach((id) => clearTimeout(id));
+      timers = [];
+    }
+
+    function pick(): Card {
+      const pool = cards.filter((c) => c.key !== lastKey);
+      const total = pool.reduce((sum, c) => sum + (WEIGHTS[c.key] ?? 1), 0);
+      let r = Math.random() * total;
+      for (const c of pool) {
+        r -= WEIGHTS[c.key] ?? 1;
+        if (r <= 0) return c;
+      }
+      return pool[pool.length - 1];
+    }
+
+    // Le viseur « accroche » l'avion : il quitte sa trajectoire et vient au centre.
+    function centerPlane() {
+      const current = getComputedStyle(target).transform;
+      target.style.animation = 'none';
+      target.style.transform = current === 'none' ? '' : current;
+      void target.offsetWidth;
+      target.style.transition = reduce ? 'none' : 'transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1)';
+      target.style.transform = 'translateX(41cqw)';
+    }
+
+    function releasePlane() {
+      target.style.transition = '';
+      target.style.transform = '';
+      target.style.animation = '';
+    }
+
+    function scan() {
+      requestAssets();
+      root.classList.add('touched');
+      const card = pick();
+      lastKey = card.key;
+      // La carte se telecharge pendant l'animation de chargement.
+      cardImg.src = card.img;
+      cardImg.alt = `${card.label} : ${card.aircraft}`;
+      cardRarity.textContent = card.label;
+      cardRarity.style.setProperty('--c', card.color);
+      cardName.textContent = card.aircraft;
+
+      centerPlane();
+      btn.disabled = true;
+      setStep(2);
+
+      if (reduce) {
+        timers.push(window.setTimeout(() => showResult(card), 400));
+        setState('scanning');
+        return;
+      }
+
+      const loadUrl = freshUrl(LOAD_URL);
+      btnLoad.src = loadUrl;
+      overlay.src = loadUrl;
+      setState('scanning');
+
+      timers.push(
+        window.setTimeout(() => {
+          overlay.src = freshUrl(CAUGHT_URL);
+          setState('caught');
+        }, LOAD_MS),
+      );
+      timers.push(window.setTimeout(() => showResult(card), LOAD_MS + CAUGHT_MS));
+    }
+
+    function showResult(card: Card) {
+      setState('result');
+      setStep(3);
+      btn.disabled = false;
+      btn.setAttribute('aria-label', root.dataset.labelAgain || '');
+      live.textContent = (root.dataset.template || '')
+        .replace('{rarity}', card.label)
+        .replace('{aircraft}', card.aircraft);
+    }
+
+    function reset() {
+      clearTimers();
+      setState('idle');
+      setStep(1);
+      releasePlane();
+      btn.setAttribute('aria-label', root.dataset.labelScan || '');
+      live.textContent = '';
+    }
+
+    btn.addEventListener('click', () => {
+      if (state === 'idle') scan();
+      else if (state === 'result') reset();
+    });
+
+    setStep(1);
+  });
+</script>
+
+<style>
+  .demo {
+    position: relative;
+    display: grid;
+    place-items: center;
+  }
+
+  .glow {
+    position: absolute;
+    inset: 8% -10% 0;
+    z-index: -1;
+    background: radial-gradient(closest-side, rgba(56, 182, 255, 0.22), transparent 70%);
+    filter: blur(10px);
+  }
+
+  .phone {
+    /* Le telephone tient en entier dans l'ecran, meme sur un ordinateur portable. */
+    width: min(310px, 72vw, calc((100svh - 150px) * 0.4737));
+    aspect-ratio: 9 / 19;
+    padding: 10px;
+    border-radius: 46px;
+    background: linear-gradient(160deg, #1a2333, #070b14 60%);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow:
+      0 40px 80px rgba(0, 0, 0, 0.55),
+      inset 0 0 0 1px rgba(0, 0, 0, 0.6);
+  }
+
+  .screen {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 36px;
+    background: linear-gradient(180deg, #01030a 0%, #04112a 46%, #0b2550 80%, #173b6b 100%);
+    container-type: inline-size;
+  }
+
+  /* Ciel */
+  .stars {
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 12% 18%, #fff 60%, transparent),
+      radial-gradient(1px 1px at 28% 9%, #cfe6ff 60%, transparent),
+      radial-gradient(1.4px 1.4px at 71% 14%, #fff 60%, transparent),
+      radial-gradient(1px 1px at 86% 31%, #cfe6ff 60%, transparent),
+      radial-gradient(1px 1px at 44% 27%, #fff 60%, transparent),
+      radial-gradient(1px 1px at 58% 6%, #fff 60%, transparent),
+      radial-gradient(1px 1px at 9% 41%, #cfe6ff 60%, transparent),
+      radial-gradient(1.2px 1.2px at 92% 52%, #fff 60%, transparent),
+      radial-gradient(1px 1px at 35% 58%, #9fc4ee 60%, transparent),
+      radial-gradient(1px 1px at 66% 47%, #9fc4ee 60%, transparent);
+    opacity: 0.85;
+  }
+
+  .horizon {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 9%;
+    background:
+      radial-gradient(2px 2px at 8% 40%, #ffd28a 60%, transparent),
+      radial-gradient(2px 2px at 19% 55%, #ffe3b0 60%, transparent),
+      radial-gradient(2px 2px at 33% 35%, #ffd28a 60%, transparent),
+      radial-gradient(2px 2px at 47% 60%, #fff1d6 60%, transparent),
+      radial-gradient(2px 2px at 61% 42%, #ffd28a 60%, transparent),
+      radial-gradient(2px 2px at 78% 58%, #ffe3b0 60%, transparent),
+      radial-gradient(2px 2px at 90% 38%, #ffd28a 60%, transparent),
+      linear-gradient(180deg, #050b17, #02050c);
+  }
+
+  /* HUD : bande de cap et reticule, masques pendant la sequence comme dans l'app */
+  .hud {
+    transition: opacity 0.25s ease;
+  }
+
+  .screen:is([data-state='scanning'], [data-state='caught'], [data-state='result']) .hud {
+    opacity: 0;
+  }
+
+  .tape {
+    position: absolute;
+    top: 7%;
+    left: 10%;
+    right: 10%;
+    height: 34px;
+    overflow: hidden;
+    border-bottom: 1px solid rgba(143, 214, 255, 0.35);
+    mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  }
+
+  .tape-track {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    width: 160%;
+    height: 100%;
+    background: repeating-linear-gradient(90deg, rgba(143, 214, 255, 0.55) 0 1px, transparent 1px 10cqw);
+    background-size: 100% 6px;
+    background-repeat: repeat-x;
+    background-position: bottom;
+    animation: tape 24s linear infinite alternate;
+  }
+
+  .tape-track span {
+    flex: 1;
+    padding-top: 4px;
+    font-family: var(--f-mono);
+    font-size: 10px;
+    color: #8fd6ff;
+  }
+
+  .caret {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    margin-left: -5px;
+    border: 5px solid transparent;
+    border-bottom-color: #8fd6ff;
+  }
+
+  .crosshair {
+    position: absolute;
+    left: 50%;
+    top: 44%;
+    width: 46px;
+    height: 46px;
+    margin: -23px 0 0 -23px;
+    background:
+      linear-gradient(#8fd6ff, #8fd6ff) center / 1px 12px no-repeat,
+      linear-gradient(#8fd6ff, #8fd6ff) center / 12px 1px no-repeat;
+    border: 1px solid rgba(143, 214, 255, 0.28);
+    border-radius: 50%;
+    opacity: 0.7;
+  }
+
+  /* Avion : traverse le ciel en boucle tant qu'on n'a pas scanne */
+  .target {
+    position: absolute;
+    top: 44%;
+    left: 0;
+    width: 18cqw;
+    aspect-ratio: 64 / 24;
+    margin-top: -3.4cqw;
+    animation: cross 16s linear infinite;
+    transition: opacity 0.3s ease;
+  }
+
+  /* A la capture, l'animation de l'app montre l'avion : on efface celui du ciel. */
+  .screen:is([data-state='caught'], [data-state='result']) .target {
+    opacity: 0;
+  }
+
+  .plane {
+    width: 100%;
+    height: 100%;
+    fill: #5d7ea8;
+    filter: drop-shadow(0 0 5px rgba(143, 214, 255, 0.35));
+    /* Le dessin a le nez a gauche : on le retourne pour qu'il vole vers la droite. */
+    transform: scaleX(-1);
+  }
+
+  .light {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+  }
+
+  .light.red {
+    left: 36%;
+    top: 4%;
+    background: #ff4d5e;
+    box-shadow: 0 0 6px #ff4d5e;
+    animation: blink 1.2s steps(2, jump-none) infinite;
+  }
+
+  .light.green {
+    left: 36%;
+    bottom: 4%;
+    background: #3dffa0;
+    box-shadow: 0 0 6px #3dffa0;
+    animation: blink 1.2s steps(2, jump-none) infinite 0.6s;
+  }
+
+  .light.strobe {
+    left: -2px;
+    top: 50%;
+    background: #fff;
+    box-shadow: 0 0 10px 2px #fff;
+    animation: strobe 1.6s linear infinite;
+  }
+
+  /* Cadre de verrouillage : apparait au scan, se resserre puis passe au bleu */
+  .box {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 64px;
+    height: 64px;
+    margin: -32px 0 0 -32px;
+    color: rgba(232, 241, 251, 0.75);
+    opacity: 0;
+    transform: scale(2.2);
+  }
+
+  .box i {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-color: currentColor;
+    border-style: solid;
+  }
+
+  .box i:nth-child(1) {
+    left: 0;
+    top: 0;
+    border-width: 2px 0 0 2px;
+  }
+
+  .box i:nth-child(2) {
+    right: 0;
+    top: 0;
+    border-width: 2px 2px 0 0;
+  }
+
+  .box i:nth-child(3) {
+    left: 0;
+    bottom: 0;
+    border-width: 0 0 2px 2px;
+  }
+
+  .box i:nth-child(4) {
+    right: 0;
+    bottom: 0;
+    border-width: 0 2px 2px 0;
+  }
+
+  .screen[data-state='scanning'] .box {
+    animation: lock 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  }
+
+  /* Animations de l'app au centre du viseur */
+  .overlay {
+    position: absolute;
+    left: 50%;
+    top: 44%;
+    width: 62cqw;
+    height: 62cqw;
+    margin: -31cqw 0 0 -31cqw;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+  }
+
+  .screen:is([data-state='scanning'], [data-state='caught']) .overlay {
+    opacity: 1;
+  }
+
+  /* Carte obtenue */
+  .result {
+    position: absolute;
+    left: 18%;
+    right: 18%;
+    top: 14%;
+    margin: 0;
+    display: grid;
+    justify-items: center;
+    gap: 3cqw;
+    opacity: 0;
+    transform: perspective(900px) translateY(18%) rotateY(-80deg) scale(0.9);
+    pointer-events: none;
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease;
+  }
+
+  .screen[data-state='result'] .result {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 0.4s ease,
+      transform 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .result img {
+    width: 100%;
+    height: auto;
+    border-radius: 3cqw;
+    filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.6));
+  }
+
+  .result figcaption {
+    display: grid;
+    justify-items: center;
+    gap: 1.5cqw;
+    text-align: center;
+  }
+
+  .pill {
+    padding: 1cqw 3cqw;
+    border-radius: var(--r-pill);
+    border: 1px solid var(--c, var(--c-brand));
+    color: var(--c, var(--c-brand));
+    background: rgba(5, 10, 21, 0.7);
+    font-family: var(--f-mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .name {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(12px, 4.6cqw, 15px);
+    color: var(--c-ink);
+  }
+
+  /* Invitation a toucher, avant le premier scan */
+  .tap-hint {
+    position: absolute;
+    left: 50%;
+    bottom: calc(6% + 21cqw + 14px);
+    transform: translateX(-50%);
+    margin: 0;
+    padding: 6px 12px;
+    border-radius: var(--r-pill);
+    background: rgba(5, 10, 21, 0.72);
+    border: 1px solid rgba(143, 214, 255, 0.35);
+    color: var(--c-ink);
+    font-size: 12px;
+    white-space: nowrap;
+    animation: hint 2.4s ease-in-out infinite;
+    transition: opacity 0.3s ease;
+  }
+
+  .demo.touched .tap-hint,
+  .screen:not([data-state='idle']) .tap-hint {
+    opacity: 0;
+    animation: none;
+  }
+
+  /* Bouton Scan : meme dessin que dans l'app (cercle #14213D, bord #9FB9E8) */
+  .scan-btn {
+    position: absolute;
+    left: 50%;
+    bottom: 6%;
+    width: 21cqw;
+    height: 21cqw;
+    margin-left: -10.5cqw;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .scan-btn:disabled {
+    cursor: progress;
+  }
+
+  .scan-btn:focus-visible {
+    outline-offset: 4px;
+    border-radius: 50%;
+  }
+
+  .btn-face {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #14213d;
+    border: 2.5px solid #9fb9e8;
+    box-shadow:
+      0 8px 24px rgba(0, 0, 0, 0.45),
+      0 2px 4px rgba(0, 0, 0, 0.28);
+    transition: transform 0.12s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  .scan-btn:active:not(:disabled) .btn-face {
+    transform: scale(0.96);
+  }
+
+  .demo:not(.touched) .btn-face::after {
+    content: '';
+    position: absolute;
+    inset: -2.5px;
+    border-radius: 50%;
+    border: 2px solid rgba(56, 182, 255, 0.6);
+    animation: ring 2.4s ease-out infinite;
+  }
+
+  .btn-face > * {
+    position: absolute;
+    inset: 9%;
+    width: 82%;
+    height: 82%;
+    transition: opacity 0.09s ease;
+  }
+
+  .btn-load {
+    inset: 3%;
+    width: 94%;
+    height: 94%;
+  }
+
+  .btn-load,
+  .btn-again {
+    opacity: 0;
+  }
+
+  .btn-again {
+    inset: 26%;
+    width: 48%;
+    height: 48%;
+    fill: none;
+    stroke: #fff;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .screen:is([data-state='scanning'], [data-state='caught']) .btn-logo {
+    opacity: 0;
+  }
+
+  .screen:is([data-state='scanning'], [data-state='caught']) .btn-load {
+    opacity: 1;
+  }
+
+  .screen[data-state='result'] .btn-logo {
+    opacity: 0;
+  }
+
+  .screen[data-state='result'] .btn-again {
+    opacity: 1;
+  }
+
+  @keyframes cross {
+    from {
+      transform: translateX(-22cqw);
+    }
+    to {
+      transform: translateX(104cqw);
+    }
+  }
+
+  @keyframes tape {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-25%);
+    }
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0.15;
+    }
+  }
+
+  @keyframes strobe {
+    0%,
+    8% {
+      opacity: 1;
+    }
+    12%,
+    100% {
+      opacity: 0;
+    }
+  }
+
+  @keyframes lock {
+    0% {
+      opacity: 0;
+      transform: scale(2.2);
+    }
+    30% {
+      opacity: 1;
+    }
+    80% {
+      transform: scale(1);
+      color: rgba(232, 241, 251, 0.75);
+    }
+    100% {
+      opacity: 1;
+      transform: scale(1);
+      color: var(--c-brand);
+    }
+  }
+
+  @keyframes ring {
+    0% {
+      transform: scale(1);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scale(1.45);
+      opacity: 0;
+    }
+  }
+
+  @keyframes hint {
+    0%,
+    100% {
+      transform: translate(-50%, 0);
+    }
+    50% {
+      transform: translate(-50%, -3px);
+    }
+  }
+
+  /* Moins d'animations : avion immobile au centre, pas de sequence animee. */
+  @media (prefers-reduced-motion: reduce) {
+    .target,
+    .tape-track,
+    .light,
+    .tap-hint,
+    .btn-face::after {
+      animation: none !important;
+    }
+
+    .target {
+      transform: translateX(41cqw);
+    }
+
+    .screen[data-state='scanning'] .box {
+      animation: none;
+      opacity: 1;
+      transform: scale(1);
+      color: var(--c-brand);
+    }
+
+    .result,
+    .screen[data-state='result'] .result {
+      transform: none;
+      transition: opacity 0.2s ease;
+    }
+  }
+</style>

@@ -30,10 +30,14 @@ export const HOME = {
       lead: "Pointe ton téléphone vers un avion, en vol ou au sol. ScanHorizon croise ta position, ta boussole et le trafic aérien en direct pour l'identifier, puis range sa carte dans ton hangar.",
       counterLabel: 'avions scannés par les joueurs',
       rating: "5,0 sur l'App Store",
-      viewfinderLabel:
-        "Illustration : le viseur de l'app suit un avion dans le ciel de nuit, le verrouille, puis affiche sa carte Airbus A320.",
-      locked: 'Verrouillé',
-      identified: 'Airbus A320',
+      counterLive: 'En direct',
+      demo: {
+        label: "Démo du scanner : touche le bouton pour scanner l'avion qui passe dans le viseur.",
+        scan: "Scanner l'avion",
+        again: 'Scanner un autre avion',
+        hint: 'Touche pour scanner',
+        result: 'Carte {rarity} : {aircraft}',
+      },
     },
     steps: {
       h2: 'Comment ça marche',
@@ -42,7 +46,6 @@ export const HOME = {
         { title: 'Scanne', text: "L'app compare ta position, ton cap et les vols en cours, et trouve l'appareil que tu regardes." },
         { title: 'Collectionne', text: "Sa carte rejoint ton Hangar. Scanne-le encore pour la faire monter en grade." },
       ],
-      gallery: "L'app en images",
     },
     collection: {
       h2: 'Cinq raretés, du Commun au Légendaire.',
@@ -75,7 +78,8 @@ export const HOME = {
     clans: {
       h2: 'Ton aéroport a son clan.',
       text: "Rejoins le clan de l'aéroport le plus proche, discute avec ses membres dans le chat du clan et fais-le grimper au classement. Sur le globe, chaque aéroport a sa pastille.",
-      globeLabel: 'Illustration : un globe parsemé de pastilles d’aéroports, reliées par des trajectoires.',
+      globeLabel: "Globe des aéroports, comme dans l'app : des pastilles d'aéroports et des avions sur leurs routes. Flèches gauche et droite pour le faire tourner.",
+      globeHint: 'Fais tourner le globe.',
     },
     features: {
       h2: 'Et aussi',
@@ -107,6 +111,14 @@ export const HOME = {
         'Avatar exclusif et récompenses de série premium',
       ],
       note: "Prix affiché dans l'app, selon ton pays.",
+      card: {
+        flip: 'Carte Business Class : touche-la pour la retourner',
+        memberLabel: 'NOM MEMBRE',
+        memberName: 'TON PSEUDO',
+        statusLabel: 'STATUT',
+        benefitsTitle: 'AVANTAGES BUSINESS CLASS',
+        hint: 'Touche la carte pour la retourner.',
+      },
     },
     cta: {
       h2: 'Lève les yeux.',
@@ -124,10 +136,14 @@ export const HOME = {
       lead: 'Point your phone at an aircraft, in the air or on the ground. ScanHorizon matches your position, your compass and live air traffic to identify it, then files its card in your hangar.',
       counterLabel: 'aircraft scanned by players',
       rating: '5.0 on the App Store',
-      viewfinderLabel:
-        "Illustration: the app's viewfinder follows an aircraft in the night sky, locks on, then shows its Airbus A320 card.",
-      locked: 'Locked',
-      identified: 'Airbus A320',
+      counterLive: 'Live',
+      demo: {
+        label: 'Scanner demo: tap the button to scan the aircraft crossing the viewfinder.',
+        scan: 'Scan the aircraft',
+        again: 'Scan another aircraft',
+        hint: 'Tap to scan',
+        result: '{rarity} card: {aircraft}',
+      },
     },
     steps: {
       h2: 'How it works',
@@ -136,7 +152,6 @@ export const HOME = {
         { title: 'Scan', text: 'The app compares your position, your heading and current flights, and finds the aircraft you are looking at.' },
         { title: 'Collect', text: 'Its card joins your Hangar. Scan it again to level the card up.' },
       ],
-      gallery: 'The app in pictures',
     },
     collection: {
       h2: 'Five rarities, from Common to Legendary.',
@@ -169,7 +184,8 @@ export const HOME = {
     clans: {
       h2: 'Your airport has a clan.',
       text: 'Join the clan of the airport nearest to you, talk with its members in the clan chat and push it up the leaderboard. On the globe, every airport has its pin.',
-      globeLabel: 'Illustration: a globe dotted with airport pins, linked by flight paths.',
+      globeLabel: 'Airport globe, as in the app: airport pins and aircraft on their routes. Left and right arrows to spin it.',
+      globeHint: 'Spin the globe.',
     },
     features: {
       h2: 'Also in the app',
@@ -201,6 +217,14 @@ export const HOME = {
         'Exclusive avatar and premium streak rewards',
       ],
       note: 'Price shown in the app, depending on your country.',
+      card: {
+        flip: 'Business Class card: tap it to flip it',
+        memberLabel: 'MEMBER NAME',
+        memberName: 'YOUR NAME',
+        statusLabel: 'STATUS',
+        benefitsTitle: 'BUSINESS CLASS BENEFITS',
+        hint: 'Tap the card to flip it.',
+      },
     },
     cta: {
       h2: 'Look up.',

@@ -5,15 +5,18 @@
 // Paulin aura confirme que scan-horizon.com est autorise (CORS_ALLOWED_ORIGINS).
 interface Props {
   label: string;
+  /** Petite mention « En direct » sous le chiffre. */
+  live: string;
   lang: 'fr' | 'en';
 }
 
-const { label, lang } = Astro.props;
+const { label, live, lang } = Astro.props;
 ---
 
 <p class="counter" data-live-counter data-lang={lang}>
   <span class="value" data-value aria-live="polite">&nbsp;</span>
   <span class="label">{label}</span>
+  <span class="live"><span class="dot" aria-hidden="true"></span>{live}</span>
 </p>
 
 <script>
@@ -117,24 +120,61 @@ const { label, lang } = Astro.props;
 <style>
   .counter {
     margin: 0;
-    display: flex;
-    align-items: baseline;
-    gap: var(--s-2);
-    flex-wrap: wrap;
+    display: grid;
+    justify-items: center;
+    gap: var(--s-3);
+    text-align: center;
   }
 
   .value {
     font-family: var(--f-display);
     font-weight: 800;
-    font-size: 28px;
-    letter-spacing: -0.01em;
+    font-size: clamp(72px, 15vw, 176px);
+    line-height: 0.9;
+    letter-spacing: -0.04em;
     color: var(--c-ink);
     font-variant-numeric: tabular-nums;
     min-width: 4ch;
+    background: linear-gradient(180deg, #ffffff 30%, #8fd6ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .label {
-    color: var(--c-ink-dim);
-    font-size: 15px;
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(18px, 2.4vw, 26px);
+    color: var(--c-ink);
+  }
+
+  .live {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-family: var(--f-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-ink-faint);
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #3dffa0;
+    box-shadow: 0 0 0 0 rgba(61, 255, 160, 0.6);
+    animation: pulse 2s ease-out infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(61, 255, 160, 0.55);
+    }
+    100% {
+      box-shadow: 0 0 0 10px rgba(61, 255, 160, 0);
+    }
   }
 </style>

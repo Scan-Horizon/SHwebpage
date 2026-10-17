@@ -1,12 +1,14 @@
 ---
-// Accueil (FR et EN). Une seule piece forte, le viseur du heros ; le carrousel
-// 3D en second moment ; le reste reste sobre.
+// Accueil (FR et EN). Piece forte : la demo du scanner en haut (on scanne pour de
+// vrai). Ensuite le compteur, le carrousel 3D, le globe des clans et la carte
+// Business Class, reprise de l'app ; le reste reste sobre.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StoreBadges from '../StoreBadges.astro';
 import LiveCounter from './LiveCounter.astro';
-import Viewfinder from './Viewfinder.astro';
+import ScanDemo from './ScanDemo.astro';
 import CardCarousel from './CardCarousel.astro';
 import Globe from './Globe.astro';
+import BusinessCard from './BusinessCard.astro';
 import { HOME } from '../../data/home';
 import { LEGAL_ORDER, LEGAL_PAGES, homePath, type Lang } from '../../data/site';
 
@@ -17,7 +19,6 @@ interface Props {
 const { lang } = Astro.props;
 const t = HOME[lang];
 const other: Lang = lang === 'fr' ? 'en' : 'fr';
-const frames = [1, 2, 3, 4, 5, 6];
 
 // Anciens liens de l'app et des e-mails (#privacy, #terms, #legal, #delete).
 const legalRedirects = Object.fromEntries(
@@ -49,48 +50,38 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </Fragment>
 
-  <!-- Heros -->
+  <!-- Heros : la demo du scanner, avec les trois gestes qui s'allument au fil du scan -->
   <section class="hero">
     <div class="wrap hero-grid">
       <div class="hero-copy">
         <h1>{t.hero.h1}</h1>
         <p class="lead">{t.hero.lead}</p>
         <StoreBadges />
-        <div class="proof">
-          <LiveCounter label={t.hero.counterLabel} lang={lang} />
-          <p class="rating"><span class="stars" aria-hidden="true">★★★★★</span> {t.hero.rating}</p>
-        </div>
       </div>
-      <Viewfinder label={t.hero.viewfinderLabel} locked={t.hero.locked} identified={t.hero.identified} />
-    </div>
-  </section>
-
-  <!-- Comment ca marche : une vraie sequence en trois gestes -->
-  <section class="steps" aria-labelledby="steps-title">
-    <div class="wrap">
-      <h2 id="steps-title">{t.steps.h2}</h2>
-      <ol class="step-list">
+      <div class="hero-demo">
+        <ScanDemo lang={lang} />
+      </div>
+      <ol class="hero-steps" aria-label={t.steps.h2}>
         {
           t.steps.items.map((s, i) => (
-            <li>
+            <li data-demo-step={i + 1} class:list={[{ 'is-active': i === 0 }]}>
               <span class="step-num" aria-hidden="true">{i + 1}</span>
-              <h3>{s.title}</h3>
-              <p>{s.text}</p>
+              <span class="step-body">
+                <strong>{s.title}</strong>
+                <span>{s.text}</span>
+              </span>
             </li>
           ))
         }
       </ol>
     </div>
-    <div class="gallery" role="region" aria-label={t.steps.gallery} tabindex="0">
-      <ul>
-        {
-          frames.map((n) => (
-            <li>
-              <img src={`/frame-${n}.webp`} alt="" width="800" height="1422" loading="lazy" decoding="async" />
-            </li>
-          ))
-        }
-      </ul>
+  </section>
+
+  <!-- Le compteur, en grand -->
+  <section class="count-band" aria-label={t.hero.counterLabel}>
+    <div class="wrap">
+      <LiveCounter label={t.hero.counterLabel} live={t.hero.counterLive} lang={lang} />
+      <p class="rating"><span class="stars" aria-hidden="true">★★★★★</span> {t.hero.rating}</p>
     </div>
   </section>
 
@@ -139,7 +130,7 @@ const jsonLd = {
         <h2 id="clans-title">{t.clans.h2}</h2>
         <p>{t.clans.text}</p>
       </div>
-      <Globe label={t.clans.globeLabel} />
+      <Globe label={t.clans.globeLabel} hint={t.clans.globeHint} />
     </div>
   </section>
 
@@ -184,14 +175,19 @@ const jsonLd = {
   <!-- Business Class -->
   <section id="business" class="business" aria-labelledby="business-title">
     <div class="wrap business-inner">
-      <div>
+      <div class="business-copy">
         <h2 id="business-title">{t.business.h2}</h2>
         <p class="business-lead">{t.business.lead}</p>
+      </div>
+      <div class="business-card">
+        <BusinessCard lang={lang} />
+      </div>
+      <div class="business-perks">
+        <ul class="perks">
+          {t.business.items.map((item) => <li>{item}</li>)}
+        </ul>
         <p class="business-note">{t.business.note}</p>
       </div>
-      <ul class="perks">
-        {t.business.items.map((item) => <li>{item}</li>)}
-      </ul>
     </div>
   </section>
 
@@ -267,38 +263,135 @@ const jsonLd = {
   }
 
   .hero .wrap {
-    padding-block: clamp(40px, 7vw, 96px) clamp(48px, 7vw, 96px);
+    padding-block: clamp(32px, 4vw, 56px) clamp(48px, 6vw, 80px);
   }
 
   .hero-grid {
     display: grid;
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
-    gap: clamp(32px, 5vw, 64px);
-    align-items: center;
+    grid-template-areas:
+      'copy demo'
+      'steps demo';
+    grid-template-rows: auto 1fr;
+    column-gap: clamp(32px, 5vw, 64px);
+    row-gap: var(--s-8);
+    align-items: start;
+  }
+
+  .hero-copy {
+    grid-area: copy;
+    align-self: end;
+  }
+
+  .hero-demo {
+    grid-area: demo;
+    align-self: start;
+  }
+
+  /* Les trois gestes : celui en cours s'allume pendant la demo */
+  .hero-steps {
+    grid-area: steps;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--s-2);
+    max-width: 34rem;
+  }
+
+  .hero-steps li {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: var(--s-3);
+    align-items: start;
+    padding: var(--s-2) var(--s-3);
+    border-radius: var(--r-md);
+    border: 1px solid transparent;
+    transition:
+      background-color 0.3s ease,
+      border-color 0.3s ease;
+  }
+
+  .hero-steps li.is-active {
+    background: rgba(56, 182, 255, 0.08);
+    border-color: var(--c-line-strong);
+  }
+
+  .step-num {
+    display: inline-grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--c-line-strong);
+    color: var(--c-ink-dim);
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
+
+  .is-active .step-num {
+    border-color: var(--c-brand);
+    background: var(--c-brand);
+    color: var(--c-night);
+  }
+
+  .step-body {
+    display: grid;
+    gap: 2px;
+  }
+
+  .step-body strong {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--c-ink-dim);
+    transition: color 0.3s ease;
+  }
+
+  .is-active .step-body strong {
+    color: var(--c-ink);
+  }
+
+  .step-body span {
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--c-ink-faint);
+  }
+
+  .is-active .step-body span {
+    color: var(--c-ink-dim);
   }
 
   h1 {
     margin: 0 0 var(--s-6);
     font-family: var(--f-display);
     font-weight: 800;
-    font-size: clamp(42px, 6.4vw, 80px);
+    font-size: clamp(40px, min(6.4vw, 9.5svh), 72px);
     line-height: 1;
     letter-spacing: -0.025em;
     text-wrap: balance;
   }
 
   .lead {
-    margin: 0 0 var(--s-8);
+    margin: 0 0 var(--s-6);
     max-width: 34rem;
     font-size: clamp(17px, 1.5vw, 20px);
   }
 
-  .proof {
-    margin-top: var(--s-8);
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: var(--s-3) var(--s-8);
+  /* Compteur en grand */
+  .count-band {
+    border-bottom: 1px solid var(--c-line);
+    background: radial-gradient(60% 120% at 50% 0%, rgba(56, 182, 255, 0.1), transparent 70%);
+  }
+
+  .count-band > .wrap {
+    padding-block: clamp(48px, 7vw, 88px);
+    display: grid;
+    justify-items: center;
+    gap: var(--s-6);
+    text-align: center;
   }
 
   .rating {
@@ -311,83 +404,6 @@ const jsonLd = {
     color: #ffd166;
     letter-spacing: 2px;
     margin-right: 4px;
-  }
-
-  /* Etapes */
-  .steps > .wrap {
-    padding-bottom: var(--s-8);
-  }
-
-  .step-list {
-    list-style: none;
-    margin: var(--s-8) 0 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--s-8);
-    counter-reset: none;
-  }
-
-  .step-list li {
-    border-top: 1px solid var(--c-line-strong);
-    padding-top: var(--s-4);
-  }
-
-  .step-num {
-    display: inline-grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    border: 1px solid var(--c-brand);
-    color: var(--c-brand);
-    font-family: var(--f-display);
-    font-weight: 700;
-    font-size: 15px;
-  }
-
-  .step-list h3 {
-    margin: var(--s-3) 0 var(--s-2);
-    font-family: var(--f-display);
-    font-weight: 700;
-    font-size: 24px;
-  }
-
-  .step-list p {
-    margin: 0;
-    font-size: 16px;
-  }
-
-  .gallery {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding-bottom: clamp(48px, 7vw, 96px);
-    scrollbar-width: thin;
-  }
-
-  .gallery:focus-visible {
-    outline-offset: -4px;
-  }
-
-  .gallery ul {
-    list-style: none;
-    margin: 0;
-    padding: 0 max(16px, calc((100vw - var(--w-page)) / 2 + 16px));
-    display: flex;
-    gap: var(--s-4);
-    width: max-content;
-  }
-
-  .gallery li {
-    scroll-snap-align: center;
-  }
-
-  .gallery img {
-    display: block;
-    width: clamp(180px, 22vw, 250px);
-    height: auto;
-    border-radius: var(--r-lg);
-    border: 1px solid var(--c-line);
   }
 
   /* Collection */
@@ -523,9 +539,28 @@ const jsonLd = {
 
   .business-inner {
     display: grid;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    gap: clamp(32px, 5vw, 72px);
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    grid-template-areas:
+      'copy card'
+      'perks card';
+    grid-template-rows: auto 1fr;
+    column-gap: clamp(32px, 6vw, 96px);
+    row-gap: var(--s-6);
     align-items: start;
+  }
+
+  .business-copy {
+    grid-area: copy;
+  }
+
+  .business-card {
+    grid-area: card;
+    align-self: center;
+    display: grid;
+  }
+
+  .business-perks {
+    grid-area: perks;
   }
 
   .business h2 {
@@ -533,12 +568,12 @@ const jsonLd = {
   }
 
   .business-lead {
-    margin: 0 0 var(--s-4);
+    margin: 0;
     color: var(--c-ink);
   }
 
   .business-note {
-    margin: 0;
+    margin: var(--s-4) 0 0;
     font-size: 15px;
     color: var(--c-ink-faint);
   }
@@ -610,12 +645,30 @@ const jsonLd = {
   }
 
   @media (max-width: 960px) {
-    .hero-grid,
+    .hero-grid {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        'copy'
+        'demo'
+        'steps';
+      grid-template-rows: auto;
+      row-gap: var(--s-8);
+    }
+
     .split,
     .split.reverse,
-    .business-inner,
     .cta-inner {
       grid-template-columns: minmax(0, 1fr);
+    }
+
+    .business-inner {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas:
+        'copy'
+        'card'
+        'perks';
+      grid-template-rows: auto;
+      row-gap: var(--s-8);
     }
 
     .split.reverse .split-copy {
@@ -632,7 +685,6 @@ const jsonLd = {
   }
 
   @media (max-width: 720px) {
-    .step-list,
     .quotes {
       grid-template-columns: minmax(0, 1fr);
     }
