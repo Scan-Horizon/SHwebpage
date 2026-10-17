@@ -1,0 +1,3 @@
+# Dossier genere par npm run build (publie par Cloudflare Pages)
+dist/
+node_modules/
