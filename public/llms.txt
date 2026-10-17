@@ -23,6 +23,12 @@ ScanHorizon transforme le repérage d'avions en jeu ("le Pokémon GO des avions"
 - https://scan-horizon.com/fr/
 - https://scan-horizon.com/en/
 
+## Textes légaux
+- Confidentialité : https://scan-horizon.com/fr/confidentialite/ (EN : https://scan-horizon.com/en/privacy/)
+- CGU / CGV : https://scan-horizon.com/fr/cgu/ (EN : https://scan-horizon.com/en/terms/)
+- Mentions légales : https://scan-horizon.com/fr/mentions-legales/ (EN : https://scan-horizon.com/en/legal-notice/)
+- Suppression de compte : https://scan-horizon.com/fr/supprimer-mes-donnees/ (EN : https://scan-horizon.com/en/delete-my-data/)
+
 ## Liens officiels des stores
 - iOS : https://apps.apple.com/fr/app/scanhorizon/id6761936970
 - Android : https://play.google.com/store/apps/details?id=com.app.flighttracktest
