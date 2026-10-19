@@ -2,8 +2,10 @@
 // Carrousel de cartes en 3D (idee de Melen, prototype du 17 octobre 2026).
 // Meme perspective que le Hangar de l'app : setEntry(3, 2, 0.001) puis rotateY,
 // soit une perspective CSS de 1000 px. Glisser = pivoter, toucher = retourner.
-// Le verso ne montre aucune compagnie inventee : il explique ce que l'app y affiche.
+// Le verso reprend la grille « Operateurs » du Hangar de l'app, avec des compagnies
+// inventees pour le site (src/data/operators.ts).
 import { CARDS } from '../../data/home';
+import { CARD_OPERATORS, OPERATORS } from '../../data/operators';
 import { HOME } from '../../data/home';
 import type { Lang } from '../../data/site';
 
@@ -14,8 +16,13 @@ interface Props {
 const { lang } = Astro.props;
 const t = HOME[lang].collection;
 const items = [
-  ...CARDS.map((c) => ({ ...c, label: t.rarities[c.key], event: false })),
-  { key: 'event', img: '', aircraft: '', color: 'var(--c-rarity-event)', label: t.rarities.event, event: true },
+  ...CARDS.map((c) => ({
+    ...c,
+    label: t.rarities[c.key],
+    event: false,
+    operators: (CARD_OPERATORS[c.key] || []).map((k) => OPERATORS[k]),
+  })),
+  { key: 'event', img: '', aircraft: '', color: 'var(--c-rarity-event)', label: t.rarities.event, event: true, operators: [] },
 ];
 const startIndex = 2;
 ---
@@ -48,7 +55,10 @@ const startIndex = 2;
               </div>
               <div class="face back" aria-hidden="true">
                 {item.event ? (
-                  <p class="event-back">{t.eventBack}</p>
+                  <div class="event-back">
+                    <span class="event-mark" aria-hidden="true">?</span>
+                    <span class="event-name">{t.eventBack}</span>
+                  </div>
                 ) : (
                   <>
                     <div class="back-head">
@@ -56,13 +66,16 @@ const startIndex = 2;
                         <path fill="currentColor" d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5z" />
                       </svg>
                       <span class="back-title">{t.backTitle}</span>
-                      <span class="back-sub">{item.aircraft}</span>
                     </div>
-                    <div class="slots">
-                      {Array.from({ length: 8 }, () => <span />)}
+                    <div class="ops">
+                      {item.operators.map((op) => (
+                        <span class="op" data-name={op.name}>
+                          <svg viewBox="0 0 40 40" set:html={op.svg} />
+                        </span>
+                      ))}
                     </div>
-                    <p class="back-text">{t.backText}</p>
-                    <div class="goldbar" />
+                    <span class="op-name" data-op-name />
+                    <div class="backbar" />
                   </>
                 )}
                 <div class="dim" />
@@ -144,6 +157,7 @@ const startIndex = 2;
         else tr = `translate3d(${Math.sign(o) * cw * 1.4}px,0,-520px) rotateY(${-Math.sign(o) * 60}deg)`;
         card.style.transform = tr;
         if (o !== 0) {
+          card.classList.remove('show-back');
           spins[i].classList.add('settle');
           spins[i].style.transform = 'translateZ(0px) rotateX(0deg) rotateY(0deg)';
         }
@@ -188,6 +202,9 @@ const startIndex = 2;
       card.style.setProperty('--gx', `${gx.toFixed(1)}%`);
       card.style.setProperty('--gy', `${(fine && !dragging ? glareY : 28).toFixed(1)}%`);
       card.style.setProperty('--hx', `${(50 + (rot + tiltY) * 0.8).toFixed(1)}%`);
+      // Face visible decidee ici plutot que par backface-visibility seul : Safari
+      // affichait parfois le recto en miroir a la place du verso.
+      card.classList.toggle('show-back', Math.cos(((rot + tiltY) * Math.PI) / 180) < 0);
       const side = Math.abs(Math.cos((rot * Math.PI) / 180));
       floor.style.setProperty('--fs', (0.55 + 0.45 * side).toFixed(3));
       floor.style.setProperty('--fo', (1 - lift / 140).toFixed(3));
@@ -256,7 +273,9 @@ const startIndex = 2;
       if (fine && !reduce) {
         const r = cards[index].getBoundingClientRect();
         const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
-        if (inside) {
+        // Pas d'inclinaison sur le verso : la carte reste immobile sous la souris pour
+        // qu'on puisse survoler les logos des compagnies.
+        if (inside && !cards[index].classList.contains('show-back')) {
           const px = (e.clientX - r.left) / r.width;
           const py = (e.clientY - r.top) / r.height;
           tiltTY = (px - 0.5) * 16;
@@ -323,6 +342,23 @@ const startIndex = 2;
         e.preventDefault();
         flip();
       }
+    });
+
+    // Nom de la compagnie au survol d'un logo, comme la pastille doree de l'app.
+    cards.forEach((card) => {
+      const pill = card.querySelector<HTMLElement>('[data-op-name]');
+      if (!pill) return;
+      card.querySelectorAll<HTMLElement>('.op').forEach((op) => {
+        op.addEventListener('pointerenter', () => {
+          pill.textContent = op.dataset.name || '';
+          pill.classList.add('on');
+          card.querySelectorAll('.op').forEach((o) => o.classList.toggle('sel', o === op));
+        });
+        op.addEventListener('pointerleave', () => {
+          pill.classList.remove('on');
+          op.classList.remove('sel');
+        });
+      });
     });
 
     root.querySelector('[data-prev]')!.addEventListener('click', () => goTo(index - 1));
@@ -523,79 +559,109 @@ const startIndex = 2;
     color: #cbd2de;
   }
 
-  /* Verso : plaque sombre et lisere or, comme le dos des cartes du Hangar */
+  /* Verso : la grille « Operateurs » du Hangar (plaque 1C1C1E vers 2C2C2E, tuiles blanches) */
   .back {
-    transform: rotateY(180deg);
+    transform: rotateY(180deg) translateZ(1px);
     display: flex;
     flex-direction: column;
-    padding: calc(var(--cw) * 0.1) calc(var(--cw) * 0.08) 0;
+    align-items: center;
+    padding: calc(var(--cw) * 0.1) calc(var(--cw) * 0.07) 0;
     background: linear-gradient(135deg, #1c1c1e, #2c2c2e);
     border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .front {
+    transform: translateZ(1px);
+  }
+
+  .card.show-back .front,
+  .card:not(.show-back) .back {
+    visibility: hidden;
   }
 
   .back-head {
     display: grid;
     justify-items: center;
-    gap: 6px;
-    text-align: center;
+    gap: calc(var(--cw) * 0.025);
   }
 
   .back-head svg {
-    width: calc(var(--cw) * 0.08);
-    height: calc(var(--cw) * 0.08);
-    color: #d4af37;
+    width: calc(var(--cw) * 0.085);
+    height: calc(var(--cw) * 0.085);
+    color: rgba(255, 255, 255, 0.3);
   }
 
   .back-title {
-    font-family: var(--f-display);
-    font-weight: 700;
-    font-size: calc(var(--cw) * 0.045);
-    letter-spacing: 0.18em;
+    font-weight: 600;
+    font-size: calc(var(--cw) * 0.043);
+    letter-spacing: 0.17em;
     text-transform: uppercase;
-    color: #d4af37;
+    color: rgba(255, 255, 255, 0.9);
   }
 
-  .back-sub {
-    font-size: calc(var(--cw) * 0.042);
-    color: rgba(255, 255, 255, 0.6);
-  }
-
-  .slots {
+  .ops {
+    width: 100%;
     margin-top: calc(var(--cw) * 0.08);
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: calc(var(--cw) * 0.035);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: calc(var(--cw) * 0.04);
   }
 
-  .slots span {
+  .op {
     aspect-ratio: 1;
-    border: 1px dashed rgba(212, 175, 55, 0.35);
-    border-radius: calc(var(--cw) * 0.035);
+    padding: calc(var(--cw) * 0.022);
+    border-radius: calc(var(--cw) * 0.045);
+    background: #fff;
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0);
+    transition: box-shadow 0.2s ease;
   }
 
-  .back-text {
-    margin: calc(var(--cw) * 0.07) 0 0;
-    text-align: center;
-    font-size: calc(var(--cw) * 0.045);
-    line-height: 1.45;
-    color: rgba(255, 255, 255, 0.62);
+  .op.sel {
+    box-shadow:
+      0 0 0 2px #d4af37,
+      0 0 12px 2px rgba(212, 175, 55, 0.4);
   }
 
-  .goldbar {
+  .op svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .op-name {
     margin-top: auto;
-    margin-bottom: calc(var(--cw) * 0.06);
-    height: 3px;
+    padding: calc(var(--cw) * 0.025) calc(var(--cw) * 0.05);
+    border-radius: var(--r-pill);
     background: #d4af37;
+    color: #000;
+    font-weight: 800;
+    font-size: calc(var(--cw) * 0.042);
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+
+  .op-name.on {
+    opacity: 1;
+  }
+
+  .backbar {
+    width: 40px;
+    height: 3px;
+    margin: calc(var(--cw) * 0.05) 0 calc(var(--cw) * 0.06);
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.1);
   }
 
   .event-back {
-    margin: auto 0;
-    text-align: center;
-    font-family: var(--f-display);
-    font-weight: 700;
-    font-size: calc(var(--cw) * 0.07);
-    line-height: 1.3;
-    color: var(--c-rarity-event);
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    gap: var(--s-4);
   }
 
   .floor {
