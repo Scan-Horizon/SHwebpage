@@ -14,19 +14,22 @@ const { label, hint } = Astro.props;
 <figure class="globe" data-globe>
   <canvas role="img" aria-label={label} aria-describedby="globe-hint" tabindex="0" width="480" height="480"></canvas>
   <figcaption id="globe-hint">{hint}</figcaption>
+  <p class="visually-hidden" aria-live="polite" data-globe-live></p>
 </figure>
 
 <script>
   document.querySelectorAll<HTMLElement>('[data-globe]').forEach((root) => {
     const canvas = root.querySelector('canvas')!;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const live = root.querySelector<HTMLElement>('[data-globe-live]')!;
+    const lang = document.documentElement.lang === 'en' ? 'en' : 'fr';
     let mounted = false;
     const mount = () => {
       if (mounted) return;
       mounted = true;
       import('../../scripts/globe-runtime')
         .then(({ mountGlobe }) => {
-          mountGlobe(canvas, { reduce });
+          mountGlobe(canvas, { reduce, lang, onSelect: (label) => (live.textContent = label || '') });
           root.classList.add('ready');
         })
         .catch(() => root.classList.add('failed'));
@@ -74,6 +77,10 @@ const { label, hint } = Astro.props;
 
   .ready canvas {
     background: none;
+  }
+
+  canvas:global(.on-pin) {
+    cursor: pointer;
   }
 
   canvas:global(.grabbing) {
