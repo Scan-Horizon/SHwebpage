@@ -2,8 +2,9 @@
 // Demo du scanner en haut de l'accueil : le ciel au-dessus du visiteur, vu comme
 // un instrument (rose des vents, cercles d'elevation a 30 et 60 degres). Des avions
 // le traversent, vus du dessous, avec leurs trainees. On vise un avion (le viseur
-// suit la souris), on le touche : les vraies animations de l'app se jouent
-// (assets/logos/load.webp puis caught.webp) et la carte de CET avion apparait.
+// suit la souris), on le touche : l'interieur de l'instrument s'efface, les vraies
+// animations de l'app tournent au centre (assets/logos/load.webp puis caught.webp)
+// et la carte de CET avion apparait.
 //
 // Les silhouettes sont dessinees pour le site (vue de dessous, nez en haut) dans un
 // carre de 100 x 100 ; le script les copie pour chaque avion.
@@ -138,12 +139,14 @@ const [e60x, e60y] = polar(35, 90);
 
       <!-- Instrument : cercles d'elevation, axes, graduations -->
       <g class="grid">
-        <circle cx={C} cy={C} r="180" class="ring"></circle>
-        <circle cx={C} cy={C} r="90" class="ring"></circle>
-        <line x1={C} y1={C - R} x2={C} y2={C + R} class="axis"></line>
-        <line x1={C - R} y1={C} x2={C + R} y2={C} class="axis"></line>
-        <text x={e30x} y={e30y} class="elev">30°</text>
-        <text x={e60x} y={e60y} class="elev">60°</text>
+        <g class="grid-inner">
+          <circle cx={C} cy={C} r="180" class="ring"></circle>
+          <circle cx={C} cy={C} r="90" class="ring"></circle>
+          <line x1={C} y1={C - R} x2={C} y2={C + R} class="axis"></line>
+          <line x1={C - R} y1={C} x2={C + R} y2={C} class="axis"></line>
+          <text x={e30x} y={e30y} class="elev">30°</text>
+          <text x={e60x} y={e60y} class="elev">60°</text>
+        </g>
         {ticks.map((k) => <line x1={k.x1} y1={k.y1} x2={k.x2} y2={k.y2} class:list={['tick', { major: k.major }]} />)}
         {cardinals.map((c) => <text x={c.x} y={c.y} class:list={['cardinal', { north: c.deg === 0 }]}>{c.label}</text>)}
         {degrees.map((d) => <text x={d.x} y={d.y} class="deg">{String(d.deg).padStart(3, '0')}</text>)}
@@ -460,10 +463,6 @@ const [e60x, e60y] = polar(35, 90);
       cardRarity.textContent = card.label;
       cardRarity.style.setProperty('--c', card.color);
       cardName.textContent = card.aircraft;
-      overlay.style.left = `${(p.x / 6).toFixed(2)}%`;
-      overlay.style.top = `${(p.y / 6).toFixed(2)}%`;
-      result.style.setProperty('--fx', `${(p.x / 6).toFixed(2)}%`);
-      result.style.setProperty('--fy', `${(p.y / 6).toFixed(2)}%`);
       btn.disabled = true;
       setStep(2);
 
@@ -819,42 +818,47 @@ const [e60x, e60y] = polar(35, 90);
   }
 
   .scope.aiming .brackets,
-  .scope[data-state='lock'] .brackets,
-  .scope[data-state='scanning'] .brackets {
+  .scope[data-state='lock'] .brackets {
     opacity: 1;
   }
 
-  .scope[data-state='lock'] .br,
-  .scope[data-state='scanning'] .br {
+  .scope[data-state='lock'] .br {
     animation: lock 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
   }
 
-  .scope[data-state='lock'] .br path,
-  .scope[data-state='scanning'] .br path {
+  .scope[data-state='lock'] .br path {
     stroke: var(--c-brand);
   }
 
-  /* L'avion capture laisse place a l'animation de l'app */
-  .scope:is([data-state='caught'], [data-state='result']) :global(.plane.is-target) {
+  /* Pendant le scan, l'interieur de l'instrument s'efface (avions, cercles,
+     axes) : seule l'animation de l'app tourne au centre, comme dans le scanner. */
+  .grid-inner,
+  .traffic {
+    transition: opacity 0.35s ease;
+  }
+
+  .scope:is([data-state='scanning'], [data-state='caught'], [data-state='result']) :is(.grid-inner, .traffic) {
     opacity: 0;
   }
 
-  /* Animations de l'app sur l'avion */
+  /* Animations de l'app, au centre de l'instrument */
   .overlay {
     position: absolute;
-    width: 26%;
-    height: 26%;
+    left: 50%;
+    top: 50%;
+    width: 44%;
+    height: 44%;
     transform: translate(-50%, -50%);
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.15s ease;
+    transition: opacity 0.25s ease;
   }
 
   .scope:is([data-state='scanning'], [data-state='caught']) .overlay {
     opacity: 1;
   }
 
-  /* Carte obtenue : sort du point ou etait l'avion */
+  /* Carte obtenue : apparait au centre, la ou tournait l'animation */
   .scrim {
     position: absolute;
     inset: 0;
