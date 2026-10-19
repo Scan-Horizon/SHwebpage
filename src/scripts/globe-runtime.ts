@@ -30,43 +30,46 @@ const C = {
 type LonLat = [number, number];
 
 // Aeroports affiches (illustration : pas de donnees en direct sur le site).
-const AIRPORTS: LonLat[] = [
-  [2.55, 49.01], // CDG
-  [-0.45, 51.47], // LHR
-  [8.56, 50.04], // FRA
-  [4.76, 52.31], // AMS
-  [-3.57, 40.5], // MAD
-  [2.08, 41.3], // BCN
-  [-9.13, 38.77], // LIS
-  [7.22, 43.66], // NCE
-  [5.08, 45.73], // LYS
-  [1.36, 43.63], // TLS
-  [6.11, 46.24], // GVA
-  [28.75, 41.28], // IST
-  [55.37, 25.25], // DXB
-  [51.61, 25.27], // DOH
-  [31.41, 30.12], // CAI
-  [36.93, -1.32], // NBO
-  [28.24, -26.13], // JNB
-  [77.1, 28.56], // DEL
-  [103.99, 1.36], // SIN
-  [113.92, 22.31], // HKG
-  [139.78, 35.55], // HND
-  [126.44, 37.46], // ICN
-  [151.18, -33.94], // SYD
-  [174.79, -37.01], // AKL
-  [-73.78, 40.64], // JFK
-  [-87.91, 41.97], // ORD
-  [-118.41, 33.94], // LAX
-  [-122.38, 37.62], // SFO
-  [-80.29, 25.8], // MIA
-  [-73.74, 45.47], // YUL
-  [-123.18, 49.2], // YVR
-  [-99.07, 19.44], // MEX
-  [-74.15, 4.7], // BOG
-  [-46.47, -23.44], // GRU
-  [-70.79, -33.39], // SCL
+// Nom en francais et, s'il differe, en anglais ; code IATA.
+type Airport = { p: LonLat; code: string; fr: string; en?: string };
+const AIRPORT_LIST: Airport[] = [
+  { p: [2.55, 49.01], code: 'CDG', fr: 'Paris-Charles de Gaulle' },
+  { p: [-0.45, 51.47], code: 'LHR', fr: 'Londres-Heathrow', en: 'London Heathrow' },
+  { p: [8.56, 50.04], code: 'FRA', fr: 'Francfort', en: 'Frankfurt' },
+  { p: [4.76, 52.31], code: 'AMS', fr: 'Amsterdam-Schiphol', en: 'Amsterdam Schiphol' },
+  { p: [-3.57, 40.5], code: 'MAD', fr: 'Madrid-Barajas', en: 'Madrid Barajas' },
+  { p: [2.08, 41.3], code: 'BCN', fr: 'Barcelone', en: 'Barcelona' },
+  { p: [-9.13, 38.77], code: 'LIS', fr: 'Lisbonne', en: 'Lisbon' },
+  { p: [7.22, 43.66], code: 'NCE', fr: "Nice-Côte d'Azur", en: "Nice Côte d'Azur" },
+  { p: [5.08, 45.73], code: 'LYS', fr: 'Lyon-Saint-Exupéry', en: 'Lyon Saint-Exupéry' },
+  { p: [1.36, 43.63], code: 'TLS', fr: 'Toulouse-Blagnac', en: 'Toulouse Blagnac' },
+  { p: [6.11, 46.24], code: 'GVA', fr: 'Genève', en: 'Geneva' },
+  { p: [28.75, 41.28], code: 'IST', fr: 'Istanbul' },
+  { p: [55.37, 25.25], code: 'DXB', fr: 'Dubaï', en: 'Dubai' },
+  { p: [51.61, 25.27], code: 'DOH', fr: 'Doha' },
+  { p: [31.41, 30.12], code: 'CAI', fr: 'Le Caire', en: 'Cairo' },
+  { p: [36.93, -1.32], code: 'NBO', fr: 'Nairobi' },
+  { p: [28.24, -26.13], code: 'JNB', fr: 'Johannesburg' },
+  { p: [77.1, 28.56], code: 'DEL', fr: 'Delhi' },
+  { p: [103.99, 1.36], code: 'SIN', fr: 'Singapour', en: 'Singapore' },
+  { p: [113.92, 22.31], code: 'HKG', fr: 'Hong Kong' },
+  { p: [139.78, 35.55], code: 'HND', fr: 'Tokyo-Haneda', en: 'Tokyo Haneda' },
+  { p: [126.44, 37.46], code: 'ICN', fr: 'Séoul-Incheon', en: 'Seoul Incheon' },
+  { p: [151.18, -33.94], code: 'SYD', fr: 'Sydney' },
+  { p: [174.79, -37.01], code: 'AKL', fr: 'Auckland' },
+  { p: [-73.78, 40.64], code: 'JFK', fr: 'New York-JFK', en: 'New York JFK' },
+  { p: [-87.91, 41.97], code: 'ORD', fr: "Chicago-O'Hare", en: "Chicago O'Hare" },
+  { p: [-118.41, 33.94], code: 'LAX', fr: 'Los Angeles' },
+  { p: [-122.38, 37.62], code: 'SFO', fr: 'San Francisco' },
+  { p: [-80.29, 25.8], code: 'MIA', fr: 'Miami' },
+  { p: [-73.74, 45.47], code: 'YUL', fr: 'Montréal-Trudeau', en: 'Montréal Trudeau' },
+  { p: [-123.18, 49.2], code: 'YVR', fr: 'Vancouver' },
+  { p: [-99.07, 19.44], code: 'MEX', fr: 'Mexico', en: 'Mexico City' },
+  { p: [-74.15, 4.7], code: 'BOG', fr: 'Bogota', en: 'Bogotá' },
+  { p: [-46.47, -23.44], code: 'GRU', fr: 'São Paulo-Guarulhos', en: 'São Paulo Guarulhos' },
+  { p: [-70.79, -33.39], code: 'SCL', fr: 'Santiago' },
 ];
+const AIRPORTS: LonLat[] = AIRPORT_LIST.map((a) => a.p);
 const ME: LonLat = AIRPORTS[0];
 
 // Routes de decor (indices dans AIRPORTS) parcourues par les avions.
@@ -79,7 +82,10 @@ const PLANE = new Path2D(
   'M5.6 0L1.6 -1.1 0.8 -4.4 -0.2 -4.4 0 -1 -2.6 -0.6 -3.5 -1.7 -4.1 -1.7 -3.6 0 -4.1 1.7 -3.5 1.7 -2.6 0.6 0 1 -0.2 4.4 0.8 4.4 1.6 1.1Z',
 );
 
-export function mountGlobe(canvas: HTMLCanvasElement, { reduce }: { reduce: boolean }) {
+export function mountGlobe(
+  canvas: HTMLCanvasElement,
+  { reduce, lang = 'fr', onSelect }: { reduce: boolean; lang?: string; onSelect?: (label: string | null) => void },
+) {
   const ctx = canvas.getContext('2d');
   if (!ctx) return () => {};
 
@@ -99,6 +105,9 @@ export function mountGlobe(canvas: HTMLCanvasElement, { reduce }: { reduce: bool
   let velocity = 0;
   let dragging = false;
   let lastInteraction = -Infinity;
+  // Aeroport touche : le globe tourne vers lui et affiche son nom.
+  let selected: Airport | null = null;
+  let tween: { from: [number, number]; to: [number, number]; t0: number } | null = null;
   let size = 0;
   let dpr = 1;
   let stars: [number, number, number][] = [];
@@ -289,13 +298,100 @@ export function mountGlobe(canvas: HTMLCanvasElement, { reduce }: { reduce: bool
     for (const f of flights) drawFlight(f);
     for (const a of AIRPORTS) if (a !== ME) drawPin(a, false);
     drawPin(ME, true);
+    if (selected) drawLabel(selected);
+  }
+
+  // Etiquette de l'aeroport touche : nom, puis code IATA.
+  function drawLabel(a: Airport) {
+    if (!visible(a.p)) return;
+    const xy = projection(a.p);
+    if (!xy) return;
+    const [x, y] = xy;
+    const c = ctx!;
+    c.strokeStyle = 'rgba(232, 241, 251, 0.9)';
+    c.lineWidth = 1.4;
+    c.beginPath();
+    c.arc(x, y, 9, 0, Math.PI * 2);
+    c.stroke();
+    const name = (lang === 'en' && a.en) || a.fr;
+    c.font = '600 13px "IBM Plex Sans", system-ui, sans-serif';
+    const wName = c.measureText(name).width;
+    c.font = '500 11px "IBM Plex Mono", ui-monospace, monospace';
+    const wCode = c.measureText(a.code).width;
+    const w = Math.max(wName, wCode) + 20;
+    const h = 44;
+    let bx = x + 14;
+    if (bx + w > size - 4) bx = x - 14 - w;
+    const by = Math.max(4, Math.min(size - h - 4, y - h / 2));
+    c.fillStyle = 'rgba(5, 10, 21, 0.9)';
+    c.strokeStyle = 'rgba(56, 182, 255, 0.6)';
+    c.lineWidth = 1;
+    c.beginPath();
+    if (c.roundRect) c.roundRect(bx, by, w, h, 8);
+    else c.rect(bx, by, w, h);
+    c.fill();
+    c.stroke();
+    c.textBaseline = 'alphabetic';
+    c.fillStyle = '#e8f1fb';
+    c.font = '600 13px "IBM Plex Sans", system-ui, sans-serif';
+    c.fillText(name, bx + 10, by + 19);
+    c.fillStyle = '#8fd6ff';
+    c.font = '500 11px "IBM Plex Mono", ui-monospace, monospace';
+    c.fillText(a.code, bx + 10, by + 35);
+  }
+
+  function pinAt(px: number, py: number) {
+    let best: Airport | null = null;
+    let bestD = 16;
+    for (const a of AIRPORT_LIST) {
+      if (!visible(a.p)) continue;
+      const xy = projection(a.p);
+      if (!xy) continue;
+      const d = Math.hypot(xy[0] - px, xy[1] - py);
+      if (d < bestD) {
+        bestD = d;
+        best = a;
+      }
+    }
+    return best;
+  }
+
+  function select(a: Airport | null) {
+    selected = a;
+    onSelect?.(a ? `${(lang === 'en' && a.en) || a.fr}, ${a.code}` : null);
+    if (!a) {
+      draw();
+      return;
+    }
+    velocity = 0;
+    const to: [number, number] = [-a.p[0], Math.max(-60, Math.min(60, -a.p[1]))];
+    // Plus court chemin en longitude.
+    let from0 = lambda;
+    while (to[0] - from0 > 180) from0 += 360;
+    while (to[0] - from0 < -180) from0 -= 360;
+    lambda = from0;
+    if (reduce) {
+      lambda = to[0];
+      phi = to[1];
+      draw();
+      return;
+    }
+    tween = { from: [lambda, phi], to, t0: performance.now() };
+    start();
   }
 
   // Rotation a la souris ou au doigt, avec un peu d'elan ; rotation lente au repos.
   let lastX = 0;
   let lastY = 0;
   let lastT = 0;
+  let downX = 0;
+  let downY = 0;
+  let downT = 0;
   function onDown(e: PointerEvent) {
+    downX = e.clientX;
+    downY = e.clientY;
+    downT = performance.now();
+    tween = null;
     dragging = true;
     velocity = 0;
     lastX = e.clientX;
@@ -305,7 +401,13 @@ export function mountGlobe(canvas: HTMLCanvasElement, { reduce }: { reduce: bool
     canvas.classList.add('grabbing');
   }
   function onMove(e: PointerEvent) {
-    if (!dragging) return;
+    if (!dragging) {
+      if (e.pointerType === 'mouse') {
+        const r = canvas.getBoundingClientRect();
+        canvas.classList.toggle('on-pin', !!pinAt(e.clientX - r.left, e.clientY - r.top));
+      }
+      return;
+    }
     const k = 180 / (size * 0.4 * Math.PI);
     const dx = e.clientX - lastX;
     const dy = e.clientY - lastY;
@@ -320,6 +422,12 @@ export function mountGlobe(canvas: HTMLCanvasElement, { reduce }: { reduce: bool
     if (reduce) draw();
   }
   function onUp(e: PointerEvent) {
+    // Un toucher bref sans glisser = choisir un aeroport (ou fermer l'etiquette).
+    if (dragging && Math.hypot(e.clientX - downX, e.clientY - downY) < 6 && performance.now() - downT < 450) {
+      const r = canvas.getBoundingClientRect();
+      const a = pinAt(e.clientX - r.left, e.clientY - r.top);
+      select(a && a !== selected ? a : null);
+    }
     dragging = false;
     lastInteraction = performance.now();
     canvas.classList.remove('grabbing');
@@ -351,7 +459,13 @@ export function mountGlobe(canvas: HTMLCanvasElement, { reduce }: { reduce: bool
     if (!running) return;
     const dt = Math.min(now - (prevFrame || now), 50);
     prevFrame = now;
-    if (!dragging) {
+    if (tween) {
+      const k = Math.min((now - tween.t0) / 900, 1);
+      const e = 1 - Math.pow(1 - k, 3);
+      lambda = tween.from[0] + (tween.to[0] - tween.from[0]) * e;
+      phi = tween.from[1] + (tween.to[1] - tween.from[1]) * e;
+      if (k >= 1) tween = null;
+    } else if (!dragging && !selected) {
       if (Math.abs(velocity) > 0.0005) {
         lambda += velocity * dt;
         velocity *= Math.pow(0.94, dt / 16);
