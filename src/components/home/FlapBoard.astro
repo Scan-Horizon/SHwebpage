@@ -1,0 +1,415 @@
+---
+// Compteur « avions scannes », affiche comme un tableau d'aeroport a palettes.
+// Donnee : service Railway `diffusion` (/api/stats/scans-count, cache serveur de
+// 5 min). Appel direct d'abord, relais tiers seulement en secours, en attendant
+// que Paulin autorise scan-horizon.com dans CORS_ALLOWED_ORIGINS.
+//
+// Deroule : le tableau s'allume vide, ses palettes tombent sur le dernier chiffre
+// connu (cache du navigateur, ou valeur lue au moment de la mise en ligne), puis
+// seules les palettes qui changent retombent quand le chiffre en direct arrive.
+// Releve toutes les 5 minutes tant que la page est visible. Aucun chiffre invente :
+// sans reponse, le tableau garde le dernier releve et « En direct » ne s'affiche pas.
+interface Props {
+  lang: 'fr' | 'en';
+  label: string;
+  /** Phrase lue par les lecteurs d'ecran : « 12 345 avions scannes par les joueurs ». */
+  srLabel: string;
+  live: string;
+}
+
+const { lang, label, srLabel, live } = Astro.props;
+
+const SCANS_URL = 'https://diffusion-api-production.up.railway.app/api/stats/scans-count';
+const FALLBACK = 4589;
+const TILES = 7;
+
+// Valeur lue au moment de la construction du site (Cloudflare Pages a acces au
+// reseau pendant le build). En cas d'echec, on garde la valeur de secours.
+let buildValue = FALLBACK;
+try {
+  const res = await fetch(SCANS_URL, { signal: AbortSignal.timeout(4000) });
+  if (res.ok) {
+    const n = Number((await res.json())?.total_scans_in_db);
+    if (Number.isFinite(n) && n > 0) buildValue = n;
+  }
+} catch {
+  /* reseau indisponible pendant le build : valeur de secours */
+}
+
+const locale = lang === 'en' ? 'en-US' : 'fr-FR';
+const tiles = Math.max(TILES, String(buildValue).length);
+---
+
+<div
+  class="board"
+  data-flap-board
+  data-lang={lang}
+  data-known={buildValue}
+  data-tiles={tiles}
+>
+  <div class="board-head">
+    <span class="board-label">{label}</span>
+    <span class="status">
+      <span class="lamp" aria-hidden="true"></span>
+      {live}
+    </span>
+  </div>
+  <div class="flaps" aria-hidden="true" data-flaps>
+    {
+      Array.from({ length: tiles }, (_, i) => (
+        <span class:list={['flap', { group: i > 0 && (tiles - i) % 3 === 0 }]}>
+          <span class="half top">
+            <b> </b>
+          </span>
+          <span class="half bottom">
+            <b> </b>
+          </span>
+          <span class="half top leaf leaf-top">
+            <b> </b>
+          </span>
+          <span class="half bottom leaf leaf-bottom">
+            <b> </b>
+          </span>
+        </span>
+      ))
+    }
+  </div>
+  <p class="visually-hidden" aria-live="polite" data-sr data-template={srLabel}>
+    {buildValue.toLocaleString(locale)} {srLabel}
+  </p>
+</div>
+
+<script>
+  const SCANS_URL = 'https://diffusion-api-production.up.railway.app/api/stats/scans-count';
+  const CACHE_KEY = 'scan_horizon_scans_cache';
+  const REFRESH_MS = 5 * 60 * 1000;
+  // Ordre des caracteres sur le tambour d'une palette : un blanc, puis 0 a 9.
+  const DRUM = [' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+  const STEP_MS = 104;
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function readCache(): number | null {
+    try {
+      const v = Number(localStorage.getItem(CACHE_KEY));
+      return Number.isFinite(v) && v > 0 ? v : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function writeCache(v: number) {
+    try {
+      localStorage.setItem(CACHE_KEY, String(v));
+    } catch {
+      /* stockage indisponible : sans consequence */
+    }
+  }
+
+  async function fetchWithTimeout(url: string, ms: number) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), ms);
+    try {
+      return await fetch(url, { signal: controller.signal, cache: 'no-store', mode: 'cors' });
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  function firstJson(text: string) {
+    const m = text.match(/\{[\s\S]*?\}/);
+    if (!m) throw new Error('no json');
+    return JSON.parse(m[0]);
+  }
+
+  async function readCount(url: string, ms: number): Promise<number> {
+    const res = await fetchWithTimeout(url, ms);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const type = (res.headers.get('content-type') || '').toLowerCase();
+    let data: any = type.includes('application/json') ? await res.json() : firstJson(await res.text());
+    if (data && typeof data.contents === 'string') data = firstJson(data.contents);
+    const n = Number(data?.total_scans_in_db);
+    if (!Number.isFinite(n) || n <= 0) throw new Error('bad payload');
+    return n;
+  }
+
+  async function loadCount(): Promise<number> {
+    const direct = `${SCANS_URL}?cb=${Date.now()}`;
+    try {
+      return await readCount(direct, 2500);
+    } catch {
+      const relays = [
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(direct)}`,
+        `https://api.allorigins.win/get?url=${encodeURIComponent(direct)}`,
+        `https://r.jina.ai/http://${direct.replace(/^https?:\/\//, '')}`,
+      ];
+      return await Promise.any(relays.map((u) => readCount(u, 2200)));
+    }
+  }
+
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+  /** Une palette : quatre moities (deux fixes, deux qui basculent). */
+  class Flap {
+    char = ' ';
+    private top: HTMLElement;
+    private bottom: HTMLElement;
+    private leafTop: HTMLElement;
+    private leafBottom: HTMLElement;
+    private target = ' ';
+    private running = false;
+
+    constructor(el: HTMLElement) {
+      const b = el.querySelectorAll<HTMLElement>('b');
+      [this.top, this.bottom, this.leafTop, this.leafBottom] = Array.from(b);
+      this.leafTop.parentElement!.style.visibility = 'hidden';
+      this.leafBottom.parentElement!.style.visibility = 'hidden';
+    }
+
+    private paint(el: HTMLElement, c: string) {
+      el.textContent = c;
+    }
+
+    set(c: string) {
+      this.char = c;
+      this.target = c;
+      [this.top, this.bottom, this.leafTop, this.leafBottom].forEach((el) => this.paint(el, c));
+    }
+
+    /** Fait defiler le tambour jusqu'au caractere voulu, une palette a la fois. */
+    async go(c: string, delay: number) {
+      this.target = c;
+      if (this.running) return;
+      this.running = true;
+      await sleep(delay);
+      const lt = this.leafTop.parentElement!;
+      const lb = this.leafBottom.parentElement!;
+      while (this.char !== this.target) {
+        const next = DRUM[(DRUM.indexOf(this.char) + 1) % DRUM.length];
+        this.paint(this.top, next);
+        this.paint(this.leafTop, this.char);
+        this.paint(this.leafBottom, next);
+        lt.style.visibility = 'visible';
+        lb.style.visibility = 'visible';
+        const half = STEP_MS / 2;
+        await lt.animate(
+          [
+            { transform: 'rotateX(0deg)', filter: 'brightness(1)' },
+            { transform: 'rotateX(-90deg)', filter: 'brightness(0.55)' },
+          ],
+          { duration: half, easing: 'ease-in', fill: 'forwards' },
+        ).finished;
+        lt.style.visibility = 'hidden';
+        await lb.animate(
+          [
+            { transform: 'rotateX(90deg)', filter: 'brightness(1.5)' },
+            { transform: 'rotateX(0deg)', filter: 'brightness(1)' },
+          ],
+          { duration: half, easing: 'ease-out', fill: 'forwards' },
+        ).finished;
+        this.paint(this.bottom, next);
+        lb.style.visibility = 'hidden';
+        this.char = next;
+      }
+      this.running = false;
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-flap-board]').forEach((board) => {
+    const locale = board.dataset.lang === 'en' ? 'en-US' : 'fr-FR';
+    const flaps = Array.from(board.querySelectorAll<HTMLElement>('.flap')).map((el) => new Flap(el));
+    const sr = board.querySelector<HTMLElement>('[data-sr]')!;
+    let current = 0;
+
+    const charsFor = (value: number) => String(value).padStart(flaps.length, ' ').slice(-flaps.length).split('');
+
+    function show(value: number, animate: boolean) {
+      current = value;
+      sr.textContent = `${value.toLocaleString(locale)} ${sr.dataset.template}`;
+      const chars = charsFor(value);
+      flaps.forEach((f, i) => {
+        if (!animate || reduce) f.set(chars[i]);
+        else if (f.char !== chars[i]) void f.go(chars[i], Math.round(Math.random() * 140));
+      });
+    }
+
+    const setLive = (on: boolean) => board.classList.toggle('is-live', on);
+
+    // Allumage : palettes blanches, puis chute sur le dernier chiffre connu.
+    const known = readCache() ?? Number(board.dataset.known);
+    flaps.forEach((f) => f.set(' '));
+    show(known, true);
+
+    async function refresh() {
+      try {
+        const n = await loadCount();
+        writeCache(n);
+        setLive(true);
+        if (n !== current) show(n, true);
+      } catch {
+        setLive(false);
+      }
+    }
+
+    void refresh();
+    window.setInterval(() => {
+      if (document.visibilityState === 'visible') void refresh();
+    }, REFRESH_MS);
+  });
+</script>
+
+<style>
+  .board {
+    --flap: clamp(40px, 4.4vw, 58px);
+    display: inline-grid;
+    gap: var(--s-3);
+    padding: var(--s-3) var(--s-4) var(--s-4);
+    border-radius: 14px;
+    background: linear-gradient(180deg, #0b1526, #070e1b);
+    border: 1px solid var(--c-line);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      0 18px 40px -24px rgba(0, 0, 0, 0.9);
+  }
+
+  .board-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s-4);
+    font-family: var(--f-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .board-label {
+    color: var(--c-ink);
+  }
+
+  /* « En direct » n'apparait qu'une fois le chiffre du serveur recu. */
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    color: var(--c-ink-dim);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .is-live .status {
+    opacity: 1;
+  }
+
+  .lamp {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #3dffa0;
+    box-shadow: 0 0 8px rgba(61, 255, 160, 0.7);
+  }
+
+  .flaps {
+    display: flex;
+    gap: 4px;
+  }
+
+  .flap {
+    position: relative;
+    width: calc(var(--flap) * 0.72);
+    height: calc(var(--flap) * 1.2);
+    perspective: calc(var(--flap) * 6);
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: var(--flap);
+    font-variant-numeric: tabular-nums;
+    color: #f3f0e6;
+  }
+
+  /* Ecart entre les milliers, comme une colonne vide sur un vrai tableau */
+  .flap.group {
+    margin-left: calc(var(--flap) * 0.22);
+  }
+
+  .half {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: calc(50% - 0.5px);
+    overflow: hidden;
+    background: #172235;
+    backface-visibility: hidden;
+  }
+
+  .half.top {
+    top: 0;
+    border-radius: 5px 5px 2px 2px;
+    background: linear-gradient(180deg, #1c2a40, #162133);
+    transform-origin: 50% 100%;
+  }
+
+  .half.bottom {
+    bottom: 0;
+    border-radius: 2px 2px 5px 5px;
+    background: linear-gradient(180deg, #121c2c, #0f1826);
+    transform-origin: 50% 0%;
+  }
+
+  .half b {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: calc(var(--flap) * 1.2);
+    display: grid;
+    place-items: center;
+    line-height: 1;
+    font-weight: inherit;
+    white-space: pre;
+  }
+
+  .half.top b {
+    top: 0;
+  }
+
+  .half.bottom b {
+    bottom: 0;
+  }
+
+  /* Axes des palettes, de chaque cote de la fente */
+  .flap::before,
+  .flap::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 3px;
+    height: 9px;
+    margin-top: -4.5px;
+    border-radius: 1px;
+    background: #050a13;
+    z-index: 3;
+  }
+
+  .flap::before {
+    left: 0;
+  }
+
+  .flap::after {
+    right: 0;
+  }
+
+  .leaf {
+    z-index: 2;
+  }
+
+  /* Sur telephone, le tableau prend toute la largeur et ses palettes grandissent. */
+  @media (max-width: 960px) {
+    .board {
+      --flap: clamp(36px, calc((100vw - 88px) / 5.5), 56px);
+      display: grid;
+      width: 100%;
+      max-width: 26rem;
+    }
+  }
+</style>
