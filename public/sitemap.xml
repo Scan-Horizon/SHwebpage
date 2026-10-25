@@ -4,15 +4,29 @@
     <loc>https://scan-horizon.com/fr/</loc>
     <xhtml:link rel="alternate" hreflang="fr" href="https://scan-horizon.com/fr/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://scan-horizon.com/en/"/>
-    <lastmod>2026-10-17</lastmod>
+    <lastmod>2026-10-25</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://scan-horizon.com/en/</loc>
     <xhtml:link rel="alternate" hreflang="fr" href="https://scan-horizon.com/fr/"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://scan-horizon.com/en/"/>
-    <lastmod>2026-10-17</lastmod>
+    <lastmod>2026-10-25</lastmod>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://scan-horizon.com/fr/aide/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://scan-horizon.com/fr/aide/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://scan-horizon.com/en/help/"/>
+    <lastmod>2026-10-25</lastmod>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://scan-horizon.com/en/help/</loc>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://scan-horizon.com/fr/aide/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://scan-horizon.com/en/help/"/>
+    <lastmod>2026-10-25</lastmod>
+    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://scan-horizon.com/fr/confidentialite/</loc>

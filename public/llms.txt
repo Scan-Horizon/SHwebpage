@@ -4,7 +4,7 @@
 
 ## Métriques clés
 - Téléchargements : +3 000
-- Note globale : 5/5 étoiles (+70 avis vérifiés)
+- Note globale : 4,9/5 sur l’App Store (+70 avis vérifiés)
 - Plateformes : iOS, Android
 
 ## Concept
@@ -22,6 +22,9 @@ ScanHorizon transforme le repérage d'avions en jeu ("le Pokémon GO des avions"
 - https://scan-horizon.com/
 - https://scan-horizon.com/fr/
 - https://scan-horizon.com/en/
+
+## Aide
+- Viser, calibrer la boussole, avions absents, calcul de la rareté, compte : https://scan-horizon.com/fr/aide/ (EN : https://scan-horizon.com/en/help/)
 
 ## Textes légaux
 - Confidentialité : https://scan-horizon.com/fr/confidentialite/ (EN : https://scan-horizon.com/en/privacy/)

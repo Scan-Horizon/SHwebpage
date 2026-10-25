@@ -1,10 +1,11 @@
 ---
-// Accueil (FR et EN). Piece forte : la demo du scanner en haut (on scanne pour de
-// vrai). Ensuite le compteur, le carrousel 3D, le globe des clans et la carte
-// Business Class, reprise de l'app ; le reste reste sobre.
+// Accueil (FR et EN). Tout en haut, le compteur en tableau d'aeroport a palettes,
+// sur toute la largeur ; puis la demo du scanner (on scanne pour de vrai). Ensuite
+// le carrousel 3D, le globe des clans et la carte Business Class, reprise de l'app ;
+// le reste reste sobre.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StoreBadges from '../StoreBadges.astro';
-import LiveCounter from './LiveCounter.astro';
+import FlapBoard from './FlapBoard.astro';
 import SkyScope from './SkyScope.astro';
 import CardCarousel from './CardCarousel.astro';
 import Globe from './Globe.astro';
@@ -50,6 +51,13 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </Fragment>
 
+  <!-- Le compteur, en tableau d'aeroport sur toute la largeur -->
+  <section class="board-band" aria-label={t.hero.counterLabel}>
+    <div class="wrap">
+      <FlapBoard lang={lang} label={t.hero.counterLabel} live={t.hero.board.live} />
+    </div>
+  </section>
+
   <!-- Heros : la demo du scanner, avec les trois gestes qui s'allument au fil du scan -->
   <section class="hero">
     <div class="wrap hero-grid">
@@ -57,6 +65,12 @@ const jsonLd = {
         <h1>{t.hero.h1}</h1>
         <p class="lead">{t.hero.lead}</p>
         <StoreBadges />
+        <p class="rating">
+          <span class="stars" aria-hidden="true"
+            ><span class="stars-fill" style="width: 98%">★★★★★</span>★★★★★</span
+          >
+          {t.hero.rating}
+        </p>
       </div>
       <div class="hero-demo">
         <SkyScope lang={lang} />
@@ -74,14 +88,6 @@ const jsonLd = {
           ))
         }
       </ol>
-    </div>
-  </section>
-
-  <!-- Le compteur, en grand -->
-  <section class="count-band" aria-label={t.hero.counterLabel}>
-    <div class="wrap">
-      <LiveCounter label={t.hero.counterLabel} live={t.hero.counterLive} lang={lang} />
-      <p class="rating"><span class="stars" aria-hidden="true">★★★★★</span> {t.hero.rating}</p>
     </div>
   </section>
 
@@ -271,32 +277,33 @@ const jsonLd = {
     grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
     grid-template-areas:
       'copy demo'
-      'steps demo';
-    grid-template-rows: auto 1fr;
+      'steps steps';
     column-gap: clamp(32px, 5vw, 64px);
     row-gap: var(--s-8);
-    align-items: start;
+    align-items: center;
   }
 
+  /* Le texte part du haut (et non du centre de la demo) : titre et boutons restent au
+     premier ecran meme sur un portable peu haut, sous le tableau. */
   .hero-copy {
     grid-area: copy;
-    align-self: end;
+    align-self: start;
+    padding-top: clamp(0px, 2.5vw, 40px);
   }
 
   .hero-demo {
     grid-area: demo;
-    align-self: start;
   }
 
-  /* Les trois gestes : celui en cours s'allume pendant la demo */
+  /* Les trois gestes, en bandeau sous le heros : celui en cours s'allume pendant la demo */
   .hero-steps {
     grid-area: steps;
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: var(--s-2);
-    max-width: 34rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--s-3);
   }
 
   .hero-steps li {
@@ -380,30 +387,37 @@ const jsonLd = {
     font-size: clamp(17px, 1.5vw, 20px);
   }
 
-  /* Compteur en grand */
-  .count-band {
+  /* Le tableau a palettes, en bandeau sous le menu */
+  .board-band {
+    background: linear-gradient(180deg, #0b1526, #070e1b);
     border-bottom: 1px solid var(--c-line);
-    background: radial-gradient(60% 120% at 50% 0%, rgba(56, 182, 255, 0.1), transparent 70%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
   }
 
-  .count-band > .wrap {
-    padding-block: clamp(48px, 7vw, 88px);
-    display: grid;
-    justify-items: center;
-    gap: var(--s-6);
-    text-align: center;
+  .board-band > .wrap {
+    padding-block: clamp(16px, 2.2vw, 28px);
   }
 
   .rating {
-    margin: 0;
+    margin: var(--s-4) 0 0;
     font-size: 15px;
     color: var(--c-ink-dim);
   }
 
   .stars {
-    color: #ffd166;
+    position: relative;
+    display: inline-block;
+    color: rgba(255, 209, 102, 0.28);
     letter-spacing: 2px;
-    margin-right: 4px;
+    margin-right: 6px;
+  }
+
+  .stars-fill {
+    position: absolute;
+    inset: 0 auto 0 0;
+    overflow: hidden;
+    white-space: nowrap;
+    color: #ffd166;
   }
 
   /* Collection */
@@ -651,8 +665,13 @@ const jsonLd = {
         'copy'
         'demo'
         'steps';
-      grid-template-rows: auto;
       row-gap: var(--s-8);
+    }
+
+    .hero-steps {
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--s-2);
+      max-width: 34rem;
     }
 
     .split,

@@ -1,35 +1,271 @@
 ---
 // Page affichee par Cloudflare Pages pour toute adresse inconnue (dist/404.html).
-// Bilingue : on ne connait pas la langue du visiteur.
+// Un tableau des departs : le vol SH404 (la page demandee) est annule, et les
+// « prochains departs » menent vers l'accueil, l'aide et le telechargement.
+// La langue du visiteur n'est pas connue au moment de la construction : le script
+// en tete choisit l'anglais pour une adresse en /en/ (ou un navigateur non
+// francophone hors /fr/), avant l'affichage, pour eviter un changement visible.
 import BaseLayout from '../layouts/BaseLayout.astro';
+import FlapTile from '../components/FlapTile.astro';
+
+const ROW = {
+  flight: 'SH404',
+  fr: { dest: 'PAGE INCONNUE', status: 'ANNULÉ' },
+  en: { dest: 'UNKNOWN PAGE', status: 'CANCELLED' },
+};
+const TILES = { flight: 5, dest: 13, status: 9 };
+
+const NEXT = [
+  {
+    flight: 'SH001',
+    fr: { label: 'Accueil', href: '/fr/', status: "À l'heure" },
+    en: { label: 'Home', href: '/en/', status: 'On time' },
+  },
+  {
+    flight: 'SH002',
+    fr: { label: 'Aide', href: '/fr/aide/', status: "À l'heure" },
+    en: { label: 'Help', href: '/en/help/', status: 'On time' },
+  },
+  {
+    flight: 'SH003',
+    fr: { label: "Télécharger l'app", href: '/fr/telecharger/', status: 'Embarquement' },
+    en: { label: 'Download the app', href: '/en/download/', status: 'Boarding' },
+  },
+];
+
+const tiles = (n: number) => Array.from({ length: n });
 ---
 
-<BaseLayout
-  lang="fr"
-  title="Page introuvable"
-  description="Cette page n'existe pas ou a changé d'adresse."
-  noindex
->
+<BaseLayout lang="fr" title="Page introuvable" description="Cette page n'existe pas ou a changé d'adresse." noindex>
+  <Fragment slot="head">
+    <script is:inline>
+      (function () {
+        var p = window.location.pathname;
+        var en =
+          /^\/en(\/|$)/.test(p) || (!/^\/fr(\/|$)/.test(p) && !/^fr/i.test(navigator.language || ''));
+        if (en) {
+          document.documentElement.lang = 'en';
+          document.documentElement.classList.add('lang-en');
+          document.title = 'Page not found | ScanHorizon';
+        }
+      })();
+    </script>
+  </Fragment>
+
   <section class="wrap lost">
-    <p class="eyebrow">Erreur 404 · Signal perdu</p>
-    <h1>Cet avion a quitté le radar.</h1>
-    <p class="lead">
-      La page demandée n'existe pas ou a changé d'adresse.<br />
-      <span lang="en">This page has left the radar.</span>
-    </p>
-    <nav class="links" aria-label="Retour / Back">
-      <a href="/fr/" hreflang="fr">Retour à l'accueil</a>
-      <a href="/en/" hreflang="en" lang="en">Back to home</a>
+    <div class="fids" data-fids data-row={JSON.stringify(ROW)}>
+      <div class="fids-head">
+        <span class="fids-title">
+          <span class="tile" aria-hidden="true">
+            <!-- Pictogramme « decollage » (Material Icons, licence Apache 2.0) -->
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M2.5 19h19v2h-19v-2zm19.57-9.36c-.21-.8-1.04-1.28-1.84-1.06L14.92 10l-6.9-6.43-1.93.51 4.14 7.17-4.97 1.33-1.97-1.54-1.45.39 2.59 4.49L21 11.49c.81-.23 1.28-1.05 1.07-1.85z"
+              ></path>
+            </svg>
+          </span>
+          <span data-l="fr">Départs</span><span data-l="en">Departures</span>
+        </span>
+        <span class="clock" aria-hidden="true" data-clock>
+          <FlapTile /><FlapTile /><span class="colon">:</span><FlapTile /><FlapTile />
+        </span>
+      </div>
+
+      <div class="fids-cols" aria-hidden="true">
+        <span><span data-l="fr">Vol</span><span data-l="en">Flight</span></span>
+        <span>Destination</span>
+        <span><span data-l="fr">Statut</span><span data-l="en">Status</span></span>
+      </div>
+
+      <div class="fids-row" aria-hidden="true">
+        <span class="cell flight" data-cell="flight">{tiles(TILES.flight).map(() => <FlapTile />)}</span>
+        <span class="cell dest" data-cell="dest">{tiles(TILES.dest).map(() => <FlapTile />)}</span>
+        <span class="cell status" data-cell="status">{tiles(TILES.status).map(() => <FlapTile />)}</span>
+      </div>
+    </div>
+
+    <div class="copy">
+      <h1>
+        <span data-l="fr">Ce vol a été annulé.</span><span data-l="en">This flight has been cancelled.</span>
+      </h1>
+      <p class="lead">
+        <span data-l="fr">La page que tu cherches n'existe pas ou a changé d'adresse.</span>
+        <span data-l="en">The page you are looking for does not exist or has moved.</span>
+      </p>
+    </div>
+
+    <nav class="next" aria-labelledby="next-title">
+      <h2 id="next-title">
+        <span data-l="fr">Prochains départs</span><span data-l="en">Next departures</span>
+      </h2>
+      {
+        (['fr', 'en'] as const).map((l) => (
+          <ul data-l={l}>
+            {NEXT.map((n) => (
+              <li>
+                <a href={n[l].href} hreflang={l}>
+                  <span class="n-flight">{n.flight}</span>
+                  <span class="n-dest">{n[l].label}</span>
+                  <span class:list={['n-status', { boarding: n.flight === 'SH003' }]}>{n[l].status}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        ))
+      }
     </nav>
   </section>
 </BaseLayout>
 
+<script>
+  import { DIGITS, Flap, LETTERS, flipRow, prefersReducedMotion } from '../scripts/split-flap';
+
+  const fids = document.querySelector<HTMLElement>('[data-fids]');
+  if (fids) {
+    const lang = document.documentElement.classList.contains('lang-en') ? 'en' : 'fr';
+    const row = JSON.parse(fids.dataset.row || '{}');
+    const cell = (name: string, drum: string) =>
+      Array.from(fids.querySelectorAll<HTMLElement>(`[data-cell="${name}"] [data-flap]`)).map(
+        (el) => new Flap(el, { drum, stepMs: 96, maxSteps: 8 }),
+      );
+
+    const flight = cell('flight', LETTERS);
+    const dest = cell('dest', LETTERS);
+    const status = cell('status', LETTERS);
+    const animate = !prefersReducedMotion();
+
+    // Le vol s'affiche d'abord, puis la destination, puis le statut tombe sur « annule ».
+    flipRow(flight, row.flight, animate);
+    window.setTimeout(() => flipRow(dest, row[lang].dest, animate, 260), animate ? 250 : 0);
+    window.setTimeout(() => flipRow(status, row[lang].status, animate, 200), animate ? 900 : 0);
+
+    // Horloge du tableau : l'heure du visiteur, mise a jour a chaque minute.
+    const clock = Array.from(fids.querySelectorAll<HTMLElement>('[data-clock] [data-flap]')).map(
+      (el) => new Flap(el, { drum: DIGITS, stepMs: 96 }),
+    );
+    let shown = '';
+    const tick = () => {
+      const now = new Date();
+      const hhmm = `${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
+      if (hhmm === shown) return;
+      shown = hhmm;
+      flipRow(clock, hhmm, animate, 120);
+    };
+    tick();
+    window.setInterval(tick, 10_000);
+  }
+</script>
+
 <style>
+  /* Une seule langue visible (voir le script en tete) */
+  :global(html:not(.lang-en)) [data-l='en'],
+  :global(html.lang-en) [data-l='fr'] {
+    display: none;
+  }
+
   .lost {
-    padding-block: var(--s-16);
+    padding-block: clamp(40px, 6vw, 80px) var(--s-16);
     display: grid;
+    gap: clamp(32px, 4vw, 48px);
     justify-items: center;
+  }
+
+  /* Le tableau des departs */
+  .fids {
+    --flap: clamp(22px, 3.1vw, 44px);
+    --flap-w: 0.8;
+    --flap-glyph: 0.84;
+    width: fit-content;
+    max-width: 100%;
+    padding: var(--s-4) clamp(16px, 2vw, 28px) clamp(20px, 2.4vw, 28px);
+    border-radius: 14px;
+    background: linear-gradient(180deg, #0b1526, #070e1b);
+    border: 1px solid var(--c-line);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.04),
+      0 24px 60px -30px rgba(0, 0, 0, 0.9);
+  }
+
+  .fids-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     gap: var(--s-4);
+    padding-bottom: var(--s-3);
+    margin-bottom: var(--s-3);
+    border-bottom: 1px solid var(--c-line);
+  }
+
+  .fids-title {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-3);
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(18px, 2vw, 24px);
+  }
+
+  .tile {
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    background: var(--c-brand);
+    color: var(--c-night);
+  }
+
+  .tile svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+  }
+
+  .clock {
+    --flap: clamp(18px, 2vw, 26px);
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .colon {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: var(--flap);
+    color: #f3f0e6;
+    padding-inline: 2px;
+  }
+
+  .fids-cols,
+  .fids-row {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    column-gap: clamp(16px, 2vw, 28px);
+  }
+
+  .fids-cols {
+    margin-bottom: var(--s-2);
+    font-family: var(--f-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-ink-faint);
+  }
+
+  .cell {
+    display: flex;
+    gap: 3px;
+  }
+
+  .status {
+    --flap-ink: #ffb347;
+  }
+
+  /* Texte */
+  .copy {
+    display: grid;
+    gap: var(--s-3);
     text-align: center;
   }
 
@@ -37,7 +273,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin: 0;
     font-family: var(--f-display);
     font-weight: 800;
-    font-size: clamp(30px, 6vw, 52px);
+    font-size: clamp(30px, 5vw, 52px);
     line-height: 1.08;
     text-wrap: balance;
   }
@@ -46,27 +282,121 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin: 0;
     max-width: 48ch;
     color: var(--c-ink-dim);
+    font-size: 18px;
   }
 
-  .links {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: var(--s-3);
-    margin-top: var(--s-4);
+  /* Prochains departs : des liens poses comme les lignes d'un tableau */
+  .next {
+    width: min(640px, 100%);
   }
 
-  .links a {
-    color: var(--c-brand);
+  h2 {
+    margin: 0 0 var(--s-3);
+    font-family: var(--f-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-ink-faint);
+  }
+
+  .next ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-radius: 12px;
+    border: 1px solid var(--c-line);
+    background: linear-gradient(180deg, #0b1526, #070e1b);
+    overflow: hidden;
+  }
+
+  .next li + li {
+    border-top: 1px solid var(--c-line);
+  }
+
+  .next a {
+    display: grid;
+    grid-template-columns: 4.5rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--s-4);
+    padding: var(--s-4) var(--s-4);
+    color: var(--c-ink);
     text-decoration: none;
+    transition: background-color 0.2s ease;
+  }
+
+  .next a:hover {
+    background: rgba(56, 182, 255, 0.08);
+    color: var(--c-ink);
+  }
+
+  .n-flight {
     font-family: var(--f-mono);
     font-weight: 500;
-    border: 1px solid var(--c-line-strong);
-    border-radius: var(--r-pill);
-    padding: 10px 18px;
+    font-size: 14px;
+    letter-spacing: 0.08em;
+    color: var(--c-ink-dim);
   }
 
-  .links a:hover {
-    background: rgba(56, 182, 255, 0.12);
+  .n-dest {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .n-status {
+    font-family: var(--f-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #3dffa0;
+    white-space: nowrap;
+  }
+
+  .n-status.boarding {
+    color: var(--c-brand);
+  }
+
+  /* Telephone : le vol et le statut sur une ligne, la destination dessous */
+  @media (max-width: 720px) {
+    .fids {
+      --flap: clamp(18px, calc((100vw - 120px) / 11.3), 40px);
+      width: 100%;
+    }
+
+    .fids-cols {
+      display: none;
+    }
+
+    .fids-row {
+      grid-template-columns: auto auto;
+      justify-content: space-between;
+      row-gap: var(--s-2);
+    }
+
+    .flight {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .status {
+      grid-column: 2;
+      grid-row: 1;
+    }
+
+    .dest {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+
+    .next a {
+      grid-template-columns: 3.75rem minmax(0, 1fr) auto;
+      gap: var(--s-3);
+    }
+
+    .n-dest {
+      font-size: 16px;
+    }
   }
 </style>

@@ -1,0 +1,290 @@
+---
+// Compteur « avions scannes », affiche comme un tableau d'aeroport a palettes, sur
+// toute la largeur en haut de l'accueil. Les chiffres gardent la police et le degrade
+// de l'ancien grand compteur du site (Montserrat 800, du blanc au bleu clair).
+// Donnee : service Railway `diffusion` (/api/stats/scans-count, cache serveur de
+// 5 min). Appel direct d'abord, relais tiers seulement en secours, en attendant
+// que Paulin autorise scan-horizon.com dans CORS_ALLOWED_ORIGINS.
+//
+// Deroule : le tableau s'allume vide, ses palettes tombent sur le dernier chiffre
+// connu (cache du navigateur, ou valeur lue au moment de la mise en ligne), puis
+// seules les palettes qui changent retombent quand le chiffre en direct arrive.
+// Releve toutes les 5 minutes tant que la page est visible. Aucun chiffre invente :
+// sans reponse, le tableau garde le dernier releve et « En direct » ne s'affiche pas.
+import FlapTile from '../FlapTile.astro';
+
+interface Props {
+  lang: 'fr' | 'en';
+  /** Libelle a cote du nombre, ex. « avions scannes par les joueurs » (lu aussi par les lecteurs d'ecran). */
+  label: string;
+  live: string;
+}
+
+const { lang, label, live } = Astro.props;
+
+const SCANS_URL = 'https://diffusion-api-production.up.railway.app/api/stats/scans-count';
+// Valeur de secours : celle affichee par le site le 25/10/2026.
+const FALLBACK = 947907;
+// 7 palettes : de quoi afficher le million. Les palettes de tete inutiles sont masquees
+// et reapparaissent quand le nombre grandit.
+const TILES = 7;
+
+// Valeur lue au moment de la construction du site (Cloudflare Pages a acces au
+// reseau pendant le build). En cas d'echec, on garde la valeur de secours.
+let buildValue = FALLBACK;
+try {
+  const res = await fetch(SCANS_URL, { signal: AbortSignal.timeout(4000) });
+  if (res.ok) {
+    const n = Number((await res.json())?.total_scans_in_db);
+    if (Number.isFinite(n) && n > 0) buildValue = n;
+  }
+} catch {
+  /* reseau indisponible pendant le build : valeur de secours */
+}
+
+const locale = lang === 'en' ? 'en-US' : 'fr-FR';
+const tiles = Math.max(TILES, String(buildValue).length);
+const hiddenLead = tiles - String(buildValue).length;
+---
+
+<div class="board" data-flap-board data-lang={lang} data-known={buildValue}>
+  <div class="flaps" aria-hidden="true">
+    {
+      Array.from({ length: tiles }, (_, i) => (
+        <FlapTile class={i > 0 && (tiles - i) % 3 === 0 ? 'group' : undefined} hidden={i < hiddenLead} />
+      ))
+    }
+  </div>
+  <div class="board-label">
+    <p class="l1" aria-hidden="true">{label}</p>
+    <span class="status">
+      <span class="lamp" aria-hidden="true"></span>
+      {live}
+    </span>
+  </div>
+  <p class="visually-hidden" aria-live="polite" data-sr data-template={label}>
+    {buildValue.toLocaleString(locale)} {label}
+  </p>
+</div>
+
+<script>
+  import { DIGITS, Flap, prefersReducedMotion } from '../../scripts/split-flap';
+
+  const SCANS_URL = 'https://diffusion-api-production.up.railway.app/api/stats/scans-count';
+  const CACHE_KEY = 'scan_horizon_scans_cache';
+  const REFRESH_MS = 5 * 60 * 1000;
+
+  function readCache(): number | null {
+    try {
+      const v = Number(localStorage.getItem(CACHE_KEY));
+      return Number.isFinite(v) && v > 0 ? v : null;
+    } catch {
+      return null;
+    }
+  }
+
+  function writeCache(v: number) {
+    try {
+      localStorage.setItem(CACHE_KEY, String(v));
+    } catch {
+      /* stockage indisponible : sans consequence */
+    }
+  }
+
+  async function fetchWithTimeout(url: string, ms: number) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), ms);
+    try {
+      return await fetch(url, { signal: controller.signal, cache: 'no-store', mode: 'cors' });
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  function firstJson(text: string) {
+    const m = text.match(/\{[\s\S]*?\}/);
+    if (!m) throw new Error('no json');
+    return JSON.parse(m[0]);
+  }
+
+  async function readCount(url: string, ms: number): Promise<number> {
+    const res = await fetchWithTimeout(url, ms);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const type = (res.headers.get('content-type') || '').toLowerCase();
+    let data: any = type.includes('application/json') ? await res.json() : firstJson(await res.text());
+    if (data && typeof data.contents === 'string') data = firstJson(data.contents);
+    const n = Number(data?.total_scans_in_db);
+    if (!Number.isFinite(n) || n <= 0) throw new Error('bad payload');
+    return n;
+  }
+
+  async function loadCount(): Promise<number> {
+    const direct = `${SCANS_URL}?cb=${Date.now()}`;
+    try {
+      return await readCount(direct, 2500);
+    } catch {
+      const relays = [
+        `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(direct)}`,
+        `https://api.allorigins.win/get?url=${encodeURIComponent(direct)}`,
+        `https://r.jina.ai/http://${direct.replace(/^https?:\/\//, '')}`,
+      ];
+      return await Promise.any(relays.map((u) => readCount(u, 2200)));
+    }
+  }
+
+  document.querySelectorAll<HTMLElement>('[data-flap-board]').forEach((board) => {
+    const locale = board.dataset.lang === 'en' ? 'en-US' : 'fr-FR';
+    const tileEls = Array.from(board.querySelectorAll<HTMLElement>('[data-flap]'));
+    const flaps = tileEls.map((el) => new Flap(el, { drum: DIGITS }));
+    const sr = board.querySelector<HTMLElement>('[data-sr]')!;
+    let current = 0;
+
+    const charsFor = (value: number) => String(value).padStart(flaps.length, ' ').slice(-flaps.length).split('');
+
+    function show(value: number, animate: boolean) {
+      current = value;
+      sr.textContent = `${value.toLocaleString(locale)} ${sr.dataset.template}`;
+      const chars = charsFor(value);
+      // Seules les palettes utiles sont visibles (la 7e apparaitra au million).
+      const lead = Math.max(0, flaps.length - String(value).length);
+      tileEls.forEach((el, i) => (el.hidden = i < lead));
+      flaps.forEach((f, i) => {
+        if (!animate || prefersReducedMotion()) f.set(chars[i]);
+        else if (f.char !== chars[i]) void f.go(chars[i], Math.round(Math.random() * 140));
+      });
+    }
+
+    const setLive = (on: boolean) => board.classList.toggle('is-live', on);
+
+    // Allumage : palettes blanches, puis chute sur le dernier chiffre connu.
+    const known = readCache() ?? Number(board.dataset.known);
+    flaps.forEach((f) => f.set(' '));
+    show(known, true);
+
+    async function refresh() {
+      try {
+        const n = await loadCount();
+        writeCache(n);
+        setLive(true);
+        if (n !== current) show(n, true);
+      } catch {
+        setLive(false);
+      }
+    }
+
+    void refresh();
+    window.setInterval(() => {
+      if (document.visibilityState === 'visible') void refresh();
+    }, REFRESH_MS);
+  });
+</script>
+
+<style>
+  /* Le nombre puis son libelle, centres ensemble : « 947 907 avions scannes par les joueurs ».
+     Plus petit sur un ecran peu haut, pour laisser le titre et les boutons au premier ecran. */
+  .board {
+    --flap: clamp(52px, min(8.5vw, 12svh), 124px);
+    --flap-w: 0.8;
+    --flap-weight: 800;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--s-3) clamp(24px, 3vw, 40px);
+  }
+
+  .flaps {
+    display: flex;
+    gap: 4px;
+  }
+
+  /* Ecart entre les milliers, comme une colonne vide sur un vrai tableau */
+  .flaps :global(.sf.group) {
+    margin-left: calc(var(--flap) * 0.22);
+  }
+
+  .flaps :global(.sf[hidden]) {
+    display: none;
+  }
+
+  .flaps :global(.sf[hidden] + .sf.group) {
+    margin-left: 0;
+  }
+
+  /* Chiffres : le degrade de l'ancien compteur (blanc puis bleu clair). Les moities qui
+     basculent restent en couleur unie : un degrade decoupe sur du texte en rotation 3D
+     s'affiche mal dans Safari, et elles ne sont visibles que 50 ms. */
+  .flaps :global(.sf-half:not(.sf-leaf) b) {
+    background: linear-gradient(180deg, #ffffff 36%, #8fd6ff 80%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .flaps :global(.sf-leaf b) {
+    color: #dff1ff;
+  }
+
+  .board-label {
+    display: grid;
+    justify-items: start;
+    gap: var(--s-2);
+  }
+
+  .l1 {
+    margin: 0;
+    max-width: 14ch;
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(20px, 2.2vw, 28px);
+    line-height: 1.15;
+    color: var(--c-ink);
+    text-wrap: balance;
+  }
+
+  /* « En direct » n'apparait qu'une fois le chiffre du serveur recu. */
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s-2);
+    font-family: var(--f-mono);
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-ink-dim);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .is-live .status {
+    opacity: 1;
+  }
+
+  .lamp {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #3dffa0;
+    box-shadow: 0 0 8px rgba(61, 255, 160, 0.7);
+  }
+
+  /* Telephone et tablette : le nombre, puis le libelle centre dessous (comme l'ancien
+     compteur). La taille laisse la place a 7 palettes, pour le million. */
+  @media (max-width: 860px) {
+    .board {
+      --flap: clamp(36px, calc((100vw - 64px) / 6.1), 72px);
+      flex-direction: column;
+    }
+
+    .board-label {
+      justify-items: center;
+      text-align: center;
+    }
+
+    .l1 {
+      max-width: none;
+    }
+  }
+</style>

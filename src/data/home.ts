@@ -24,13 +24,13 @@ export const HOME = {
     title: 'Scanne le ciel, capture chaque avion',
     description:
       "ScanHorizon identifie les avions que tu vises avec ton téléphone grâce aux données de vol en direct, puis ajoute leur carte à ton hangar. Gratuit sur iPhone et Android.",
-    nav: { collection: 'Collection', clans: 'Clans', business: 'Business Class', download: 'Télécharger' },
+    nav: { collection: 'Collection', clans: 'Clans', business: 'Business Class', help: 'Aide', download: 'Télécharger' },
     hero: {
       h1: 'Scanne le ciel, capture chaque avion.',
       lead: "Vise un avion avec ton téléphone, en vol ou au sol. L'app le reconnaît grâce à ta position, ta boussole et le trafic aérien en direct, puis ajoute sa carte à ton Hangar.",
       counterLabel: 'avions scannés par les joueurs',
-      rating: "5,0 sur l'App Store",
-      counterLive: 'En direct',
+      board: { live: 'En direct' },
+      rating: "4,9 sur l'App Store",
       demo: {
         label:
           "Démo du scanner : le ciel au-dessus de toi, avec les avions qui passent. Touche un avion, ou le bouton Scan, pour le scanner.",
@@ -47,7 +47,7 @@ export const HOME = {
       items: [
         { title: 'Vise', text: "Lève ton téléphone vers l'avion : le viseur s'affiche sur l'image de la caméra." },
         { title: 'Scanne', text: "L'app compare ta position, ton cap et les vols autour de toi pour trouver l'avion que tu vises." },
-        { title: 'Collectionne', text: 'Sa carte arrive dans ton Hangar. Chaque nouveau scan du même modèle la fait monter de niveau.' },
+        { title: 'Collectionne', text: 'Sa carte arrive dans ton Hangar. Chaque nouveau scan du même modèle la fait progresser.' },
       ],
     },
     collection: {
@@ -132,13 +132,13 @@ export const HOME = {
     title: 'Scan the sky, unlock every aircraft',
     description:
       'ScanHorizon identifies the aircraft you point your phone at using live flight data, then adds its card to your hangar. Free on iPhone and Android.',
-    nav: { collection: 'Collection', clans: 'Clans', business: 'Business Class', download: 'Download' },
+    nav: { collection: 'Collection', clans: 'Clans', business: 'Business Class', help: 'Help', download: 'Download' },
     hero: {
       h1: 'Scan the sky, unlock every aircraft.',
       lead: 'Aim your phone at an aircraft, in the air or on the ground. The app recognises it from your position, your compass and live air traffic, then adds its card to your Hangar.',
       counterLabel: 'aircraft scanned by players',
-      rating: '5.0 on the App Store',
-      counterLive: 'Live',
+      board: { live: 'Live' },
+      rating: '4.9 on the App Store',
       demo: {
         label: 'Scanner demo: the sky above you, with aircraft passing over. Tap an aircraft, or the Scan button, to scan it.',
         scan: 'Scan the aircraft closest to the reticle',
@@ -154,7 +154,7 @@ export const HOME = {
       items: [
         { title: 'Aim', text: 'Raise your phone towards the aircraft: the viewfinder appears over the camera image.' },
         { title: 'Scan', text: 'The app compares your position, your heading and the flights around you to find the aircraft you are aiming at.' },
-        { title: 'Collect', text: 'Its card lands in your Hangar. Every new scan of the same model levels it up.' },
+        { title: 'Collect', text: 'Its card lands in your Hangar. Every new scan of the same model moves it towards the next level.' },
       ],
     },
     collection: {

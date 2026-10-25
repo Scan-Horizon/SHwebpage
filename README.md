@@ -6,13 +6,14 @@ Site vitrine de l'application ScanHorizon (SAS SCAN HORIZON), construit avec [As
 
 | Dossier | Contenu |
 | --- | --- |
-| `src/pages/` | Pages construites par Astro : accueil FR/EN (`fr/index.astro`, `en/index.astro`), pages Télécharger (`fr/telecharger.astro`, `en/download.astro`), les 8 pages légales (`[lang]/[slug].astro`) et la page 404. |
+| `src/pages/` | Pages construites par Astro : accueil FR/EN (`fr/index.astro`, `en/index.astro`), pages Télécharger (`fr/telecharger.astro`, `en/download.astro`), pages Aide (`fr/aide.astro`, `en/help.astro`), les 8 pages légales (`[lang]/[slug].astro`) et la page 404. |
 | `src/legal/fr/`, `src/legal/en/` | Textes légaux v2.1, **copiés mot pour mot** de la version validée. Ne pas les modifier sans accord : ce sont des textes opposables. |
-| `src/layouts/`, `src/components/` | Gabarit commun, en-tête (avec le bouton vision nocturne), pied de page, badges des stores, page Télécharger. |
-| `src/components/home/` | Blocs de l'accueil : démo du scanner (`SkyScope`), compteur en direct, carrousel 3D des cartes, globe des clans, carte Business Class. |
+| `src/layouts/`, `src/components/` | Gabarit commun, en-tête (avec le bouton vision nocturne), pied de page, badges des stores, pages Télécharger et Aide. |
+| `src/components/home/` | Blocs de l'accueil : démo du scanner (`SkyScope`), compteur en tableau à palettes (`FlapBoard`), carrousel 3D des cartes, globe des clans, carte Business Class. |
 | `src/scripts/globe-runtime.ts`, `src/data/globe-110m.json` | Dessin du globe et carte du monde (côtes et frontières Natural Earth, reprises de l'app par `scripts/gen-globe-data.mjs`). |
 | `public/img/scan/` | Bouton et animations du scan, repris de l'app (`assets/logos/`), réduits pour le web. |
 | `src/data/home.ts` | Textes de l'accueil FR/EN et liste des cartes du carrousel. |
+| `src/data/help.ts`, `src/components/HelpPage.astro` | Page Aide FR/EN. Chaque réponse est vérifiée dans le code de l'app ou du backend (sources en tête de `help.ts`) : la mettre à jour si le comportement de l'app change. |
 | `src/styles/tokens.css` | Couleurs, polices, rayons et espacements, repris de l'app (`lib/theme/app_colors.dart`). |
 | `src/data/site.ts` | Adresses des pages légales, liens des stores, libellés FR/EN. |
 | `public/` | Fichiers publiés tels quels : page d'aiguillage `index.html` (envoie vers `/fr/` ou `/en/`), images, QR codes (`img/`), `app-ads.txt`, `robots.txt`, `sitemap.xml`, `llms.txt`, `_headers`. |
