@@ -1,7 +1,7 @@
 ---
-// Accueil (FR et EN). Piece forte : la demo du scanner en haut (on scanne pour de
-// vrai), avec a cote le compteur en tableau d'aeroport a palettes. Ensuite le
-// carrousel 3D, le globe des clans et la carte Business Class, reprise de l'app ;
+// Accueil (FR et EN). Tout en haut, le compteur en tableau d'aeroport a palettes,
+// sur toute la largeur ; puis la demo du scanner (on scanne pour de vrai). Ensuite
+// le carrousel 3D, le globe des clans et la carte Business Class, reprise de l'app ;
 // le reste reste sobre.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import StoreBadges from '../StoreBadges.astro';
@@ -51,6 +51,19 @@ const jsonLd = {
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </Fragment>
 
+  <!-- Le compteur, en tableau d'aeroport sur toute la largeur -->
+  <section class="board-band" aria-label={t.hero.counterLabel}>
+    <div class="wrap">
+      <FlapBoard
+        lang={lang}
+        label={t.hero.board.label}
+        sub={t.hero.board.sub}
+        srLabel={t.hero.counterLabel}
+        live={t.hero.board.live}
+      />
+    </div>
+  </section>
+
   <!-- Heros : la demo du scanner, avec les trois gestes qui s'allument au fil du scan -->
   <section class="hero">
     <div class="wrap hero-grid">
@@ -58,20 +71,12 @@ const jsonLd = {
         <h1>{t.hero.h1}</h1>
         <p class="lead">{t.hero.lead}</p>
         <StoreBadges />
-        <div class="proof">
-          <FlapBoard
-            lang={lang}
-            label={t.hero.board.label}
-            srLabel={t.hero.counterLabel}
-            live={t.hero.board.live}
-          />
-          <p class="rating">
-            <span class="stars" aria-hidden="true"
-              ><span class="stars-fill" style="width: 98%">★★★★★</span>★★★★★</span
-            >
-            {t.hero.rating}
-          </p>
-        </div>
+        <p class="rating">
+          <span class="stars" aria-hidden="true"
+            ><span class="stars-fill" style="width: 98%">★★★★★</span>★★★★★</span
+          >
+          {t.hero.rating}
+        </p>
       </div>
       <div class="hero-demo">
         <SkyScope lang={lang} />
@@ -284,8 +289,12 @@ const jsonLd = {
     align-items: center;
   }
 
+  /* Le texte part du haut (et non du centre de la demo) : titre et boutons restent au
+     premier ecran meme sur un portable peu haut, sous le tableau. */
   .hero-copy {
     grid-area: copy;
+    align-self: start;
+    padding-top: clamp(0px, 2.5vw, 40px);
   }
 
   .hero-demo {
@@ -384,16 +393,19 @@ const jsonLd = {
     font-size: clamp(17px, 1.5vw, 20px);
   }
 
-  /* Preuve : le tableau a palettes et la note, sous les boutons des stores */
-  .proof {
-    margin-top: var(--s-6);
-    display: grid;
-    justify-items: start;
-    gap: var(--s-3);
+  /* Le tableau a palettes, en bandeau sous le menu */
+  .board-band {
+    background: linear-gradient(180deg, #0b1526, #070e1b);
+    border-bottom: 1px solid var(--c-line);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  }
+
+  .board-band > .wrap {
+    padding-block: clamp(16px, 2.2vw, 28px);
   }
 
   .rating {
-    margin: 0;
+    margin: var(--s-4) 0 0;
     font-size: 15px;
     color: var(--c-ink-dim);
   }

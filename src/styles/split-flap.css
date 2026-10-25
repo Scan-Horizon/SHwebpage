@@ -1,0 +1,90 @@
+/*
+ * Palettes de tableau d'aeroport (compteur de l'accueil, page 404).
+ * Une palette = deux moities fixes + deux moities qui basculent pendant l'animation
+ * (src/scripts/split-flap.ts). Taille : --flap (taille du caractere) ; largeur :
+ * --flap-w (part de --flap) ; reduction du caractere : --flap-glyph ; couleur : --flap-ink.
+ */
+.sf {
+  position: relative;
+  flex: none;
+  width: calc(var(--flap, 48px) * var(--flap-w, 0.72));
+  height: calc(var(--flap, 48px) * 1.2);
+  perspective: calc(var(--flap, 48px) * 6);
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: var(--flap, 48px);
+  font-variant-numeric: tabular-nums;
+  color: var(--flap-ink, #f3f0e6);
+}
+
+.sf-half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: calc(50% - 0.5px);
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+
+.sf-top {
+  top: 0;
+  border-radius: 5px 5px 2px 2px;
+  background: linear-gradient(180deg, #1c2a40, #162133);
+  transform-origin: 50% 100%;
+}
+
+.sf-bottom {
+  bottom: 0;
+  border-radius: 2px 2px 5px 5px;
+  background: linear-gradient(180deg, #121c2c, #0f1826);
+  transform-origin: 50% 0%;
+}
+
+.sf-half b {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: calc(var(--flap, 48px) * 1.2);
+  display: grid;
+  place-items: center;
+  line-height: 1;
+  font-weight: inherit;
+  /* Les lettres sont plus larges que les chiffres : --flap-glyph les reduit un peu. */
+  font-size: calc(1em * var(--flap-glyph, 1));
+  white-space: pre;
+}
+
+.sf-top b {
+  top: 0;
+}
+
+.sf-bottom b {
+  bottom: 0;
+}
+
+/* Axes des palettes, de chaque cote de la fente */
+.sf::before,
+.sf::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: max(2px, calc(var(--flap, 48px) * 0.05));
+  height: calc(var(--flap, 48px) * 0.16);
+  transform: translateY(-50%);
+  border-radius: 1px;
+  background: #050a13;
+  z-index: 3;
+}
+
+.sf::before {
+  left: 0;
+}
+
+.sf::after {
+  right: 0;
+}
+
+.sf-leaf {
+  z-index: 2;
+  visibility: hidden;
+}

@@ -1,0 +1,19 @@
+---
+// Une palette de tableau d'aeroport. Styles : src/styles/split-flap.css ;
+// animation : src/scripts/split-flap.ts (classe Flap).
+import '../styles/split-flap.css';
+
+interface Props {
+  char?: string;
+  class?: string;
+}
+
+const { char = ' ', class: extra } = Astro.props;
+---
+
+<span class:list={['sf', extra]} data-flap>
+  <span class="sf-half sf-top"><b>{char}</b></span>
+  <span class="sf-half sf-bottom"><b>{char}</b></span>
+  <span class="sf-half sf-top sf-leaf"><b>{char}</b></span>
+  <span class="sf-half sf-bottom sf-leaf"><b>{char}</b></span>
+</span>
