@@ -1,6 +1,7 @@
 ---
 // Compteur « avions scannes », affiche comme un tableau d'aeroport a palettes, sur
-// toute la largeur en haut de l'accueil.
+// toute la largeur en haut de l'accueil. Les chiffres gardent la police et le degrade
+// de l'ancien grand compteur du site (Montserrat 800, du blanc au bleu clair).
 // Donnee : service Railway `diffusion` (/api/stats/scans-count, cache serveur de
 // 5 min). Appel direct d'abord, relais tiers seulement en secours, en attendant
 // que Paulin autorise scan-horizon.com dans CORS_ALLOWED_ORIGINS.
@@ -14,18 +15,18 @@ import FlapTile from '../FlapTile.astro';
 
 interface Props {
   lang: 'fr' | 'en';
+  /** Libelle a cote du nombre, ex. « avions scannes par les joueurs » (lu aussi par les lecteurs d'ecran). */
   label: string;
-  /** Precision sous le libelle, ex. « par les joueurs de ScanHorizon ». */
-  sub: string;
-  /** Phrase lue par les lecteurs d'ecran : « 12 345 avions scannes par les joueurs ». */
-  srLabel: string;
   live: string;
 }
 
-const { lang, label, sub, srLabel, live } = Astro.props;
+const { lang, label, live } = Astro.props;
 
 const SCANS_URL = 'https://diffusion-api-production.up.railway.app/api/stats/scans-count';
-const FALLBACK = 4589;
+// Valeur de secours : celle affichee par le site le 25/10/2026.
+const FALLBACK = 947907;
+// 7 palettes : de quoi afficher le million. Les palettes de tete inutiles sont masquees
+// et reapparaissent quand le nombre grandit.
 const TILES = 7;
 
 // Valeur lue au moment de la construction du site (Cloudflare Pages a acces au
@@ -43,22 +44,26 @@ try {
 
 const locale = lang === 'en' ? 'en-US' : 'fr-FR';
 const tiles = Math.max(TILES, String(buildValue).length);
+const hiddenLead = tiles - String(buildValue).length;
 ---
 
 <div class="board" data-flap-board data-lang={lang} data-known={buildValue}>
-  <p class="board-label">
-    <span class="l1">{label}</span>
-    <span class="l2">{sub}</span>
-  </p>
   <div class="flaps" aria-hidden="true">
-    {Array.from({ length: tiles }, (_, i) => <FlapTile class={i > 0 && (tiles - i) % 3 === 0 ? 'group' : undefined} />)}
+    {
+      Array.from({ length: tiles }, (_, i) => (
+        <FlapTile class={i > 0 && (tiles - i) % 3 === 0 ? 'group' : undefined} hidden={i < hiddenLead} />
+      ))
+    }
   </div>
-  <span class="status">
-    <span class="lamp" aria-hidden="true"></span>
-    {live}
-  </span>
-  <p class="visually-hidden" aria-live="polite" data-sr data-template={srLabel}>
-    {buildValue.toLocaleString(locale)} {srLabel}
+  <div class="board-label">
+    <p class="l1" aria-hidden="true">{label}</p>
+    <span class="status">
+      <span class="lamp" aria-hidden="true"></span>
+      {live}
+    </span>
+  </div>
+  <p class="visually-hidden" aria-live="polite" data-sr data-template={label}>
+    {buildValue.toLocaleString(locale)} {label}
   </p>
 </div>
 
@@ -129,9 +134,8 @@ const tiles = Math.max(TILES, String(buildValue).length);
 
   document.querySelectorAll<HTMLElement>('[data-flap-board]').forEach((board) => {
     const locale = board.dataset.lang === 'en' ? 'en-US' : 'fr-FR';
-    const flaps = Array.from(board.querySelectorAll<HTMLElement>('[data-flap]')).map(
-      (el) => new Flap(el, { drum: DIGITS }),
-    );
+    const tileEls = Array.from(board.querySelectorAll<HTMLElement>('[data-flap]'));
+    const flaps = tileEls.map((el) => new Flap(el, { drum: DIGITS }));
     const sr = board.querySelector<HTMLElement>('[data-sr]')!;
     let current = 0;
 
@@ -141,6 +145,9 @@ const tiles = Math.max(TILES, String(buildValue).length);
       current = value;
       sr.textContent = `${value.toLocaleString(locale)} ${sr.dataset.template}`;
       const chars = charsFor(value);
+      // Seules les palettes utiles sont visibles (la 7e apparaitra au million).
+      const lead = Math.max(0, flaps.length - String(value).length);
+      tileEls.forEach((el, i) => (el.hidden = i < lead));
       flaps.forEach((f, i) => {
         if (!animate || prefersReducedMotion()) f.set(chars[i]);
         else if (f.char !== chars[i]) void f.go(chars[i], Math.round(Math.random() * 140));
@@ -173,34 +180,17 @@ const tiles = Math.max(TILES, String(buildValue).length);
 </script>
 
 <style>
-  /* Une rangee de tableau : libelle a gauche, palettes au centre, voyant a droite. */
+  /* Le nombre puis son libelle, centres ensemble : « 947 907 avions scannes par les joueurs ».
+     Plus petit sur un ecran peu haut, pour laisser le titre et les boutons au premier ecran. */
   .board {
-    /* Plus petit sur un ecran peu haut, pour laisser le titre et les boutons au premier ecran. */
-    --flap: clamp(48px, min(6.2vw, 9svh), 88px);
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    --flap: clamp(52px, min(8.5vw, 12svh), 124px);
+    --flap-w: 0.8;
+    --flap-weight: 800;
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: var(--s-6);
-  }
-
-  .board-label {
-    margin: 0;
-    display: grid;
-    gap: 4px;
-  }
-
-  .l1 {
-    font-family: var(--f-mono);
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--c-ink);
-  }
-
-  .l2 {
-    font-size: 15px;
-    color: var(--c-ink-dim);
+    justify-content: center;
+    gap: var(--s-3) clamp(24px, 3vw, 40px);
   }
 
   .flaps {
@@ -213,9 +203,47 @@ const tiles = Math.max(TILES, String(buildValue).length);
     margin-left: calc(var(--flap) * 0.22);
   }
 
+  .flaps :global(.sf[hidden]) {
+    display: none;
+  }
+
+  .flaps :global(.sf[hidden] + .sf.group) {
+    margin-left: 0;
+  }
+
+  /* Chiffres : le degrade de l'ancien compteur (blanc puis bleu clair). Les moities qui
+     basculent restent en couleur unie : un degrade decoupe sur du texte en rotation 3D
+     s'affiche mal dans Safari, et elles ne sont visibles que 50 ms. */
+  .flaps :global(.sf-half:not(.sf-leaf) b) {
+    background: linear-gradient(180deg, #ffffff 36%, #8fd6ff 80%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .flaps :global(.sf-leaf b) {
+    color: #dff1ff;
+  }
+
+  .board-label {
+    display: grid;
+    justify-items: start;
+    gap: var(--s-2);
+  }
+
+  .l1 {
+    margin: 0;
+    max-width: 14ch;
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: clamp(20px, 2.2vw, 28px);
+    line-height: 1.15;
+    color: var(--c-ink);
+    text-wrap: balance;
+  }
+
   /* « En direct » n'apparait qu'une fois le chiffre du serveur recu. */
   .status {
-    justify-self: end;
     display: inline-flex;
     align-items: center;
     gap: var(--s-2);
@@ -242,22 +270,21 @@ const tiles = Math.max(TILES, String(buildValue).length);
     box-shadow: 0 0 8px rgba(61, 255, 160, 0.7);
   }
 
-  /* Telephone et tablette : libelle et voyant au-dessus, palettes sur toute la largeur. */
+  /* Telephone et tablette : le nombre, puis le libelle centre dessous (comme l'ancien
+     compteur). La taille laisse la place a 7 palettes, pour le million. */
   @media (max-width: 860px) {
     .board {
-      --flap: clamp(36px, calc((100vw - 72px) / 5.5), 64px);
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: var(--s-3) var(--s-4);
+      --flap: clamp(36px, calc((100vw - 64px) / 6.1), 72px);
+      flex-direction: column;
     }
 
-    .flaps {
-      grid-column: 1 / -1;
-      grid-row: 2;
-      justify-content: center;
+    .board-label {
+      justify-items: center;
+      text-align: center;
     }
 
-    .l2 {
-      font-size: 14px;
+    .l1 {
+      max-width: none;
     }
   }
 </style>

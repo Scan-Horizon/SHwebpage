@@ -29,7 +29,7 @@ export const HOME = {
       h1: 'Scanne le ciel, capture chaque avion.',
       lead: "Vise un avion avec ton téléphone, en vol ou au sol. L'app le reconnaît grâce à ta position, ta boussole et le trafic aérien en direct, puis ajoute sa carte à ton Hangar.",
       counterLabel: 'avions scannés par les joueurs',
-      board: { label: 'Avions scannés', sub: 'par les joueurs de ScanHorizon', live: 'En direct' },
+      board: { live: 'En direct' },
       rating: "4,9 sur l'App Store",
       demo: {
         label:
@@ -137,7 +137,7 @@ export const HOME = {
       h1: 'Scan the sky, unlock every aircraft.',
       lead: 'Aim your phone at an aircraft, in the air or on the ground. The app recognises it from your position, your compass and live air traffic, then adds its card to your Hangar.',
       counterLabel: 'aircraft scanned by players',
-      board: { label: 'Aircraft scanned', sub: 'by ScanHorizon players', live: 'Live' },
+      board: { live: 'Live' },
       rating: '4.9 on the App Store',
       demo: {
         label: 'Scanner demo: the sky above you, with aircraft passing over. Tap an aircraft, or the Scan button, to scan it.',

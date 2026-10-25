@@ -6,12 +6,13 @@ import '../styles/split-flap.css';
 interface Props {
   char?: string;
   class?: string;
+  hidden?: boolean;
 }
 
-const { char = ' ', class: extra } = Astro.props;
+const { char = ' ', class: extra, hidden = false } = Astro.props;
 ---
 
-<span class:list={['sf', extra]} data-flap>
+<span class:list={['sf', extra]} data-flap hidden={hidden}>
   <span class="sf-half sf-top"><b>{char}</b></span>
   <span class="sf-half sf-bottom"><b>{char}</b></span>
   <span class="sf-half sf-top sf-leaf"><b>{char}</b></span>

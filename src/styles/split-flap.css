@@ -2,7 +2,8 @@
  * Palettes de tableau d'aeroport (compteur de l'accueil, page 404).
  * Une palette = deux moities fixes + deux moities qui basculent pendant l'animation
  * (src/scripts/split-flap.ts). Taille : --flap (taille du caractere) ; largeur :
- * --flap-w (part de --flap) ; reduction du caractere : --flap-glyph ; couleur : --flap-ink.
+ * --flap-w (part de --flap) ; reduction du caractere : --flap-glyph ; graisse :
+ * --flap-weight ; couleur : --flap-ink.
  */
 .sf {
   position: relative;
@@ -11,7 +12,7 @@
   height: calc(var(--flap, 48px) * 1.2);
   perspective: calc(var(--flap, 48px) * 6);
   font-family: var(--f-display);
-  font-weight: 700;
+  font-weight: var(--flap-weight, 700);
   font-size: var(--flap, 48px);
   font-variant-numeric: tabular-nums;
   color: var(--flap-ink, #f3f0e6);
