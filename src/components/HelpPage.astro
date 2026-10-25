@@ -1,0 +1,447 @@
+---
+// Page Aide (FR /fr/aide/, EN /en/help/). Direction « aeroport » : les rubriques
+// sont annoncees par des panneaux d'information (pictogramme sur carre bleu, comme la
+// signaletique d'un terminal), regroupes en haut de page sur un portique.
+// Contenu : src/data/help.ts (sources dans son en-tete).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { CONTACT_EMAIL, type Lang } from '../data/site';
+import { HELP, helpPath, type HelpIcon } from '../data/help';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = HELP[lang];
+const other: Lang = lang === 'fr' ? 'en' : 'fr';
+
+// Typographie : espaces insecables avant ? : ! ; et a l'interieur des guillemets
+// en francais ; apostrophes droites partout, comme sur le reste du site.
+const fix = (s: string) => {
+  const plain = s.replace(/’/g, "'");
+  return lang === 'fr' ? plain.replace(/ ([?:!;»])/g, ' $1').replace(/« /g, '« ') : plain;
+};
+
+const ICONS: Record<HelpIcon | 'info', string> = {
+  info: '<circle cx="12" cy="6.2" r="1.7" fill="currentColor" stroke="none"/><path d="M12 10.5v9"/>',
+  aim: '<circle cx="12" cy="12" r="6.5"/><path d="M12 2.5v5M12 16.5v5M2.5 12h5M16.5 12h5"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/>',
+  compass: '<circle cx="12" cy="12" r="9"/><path d="M15.6 8.4l-2.2 5-5 2.2 2.2-5z" fill="currentColor" stroke-linejoin="round"/>',
+  missing:
+    '<path d="M12 3c.8 0 1.3.7 1.3 1.6V9l7 4v2l-7-2v4.2l2 1.5V20l-3.3-1-3.3 1v-1.3l2-1.5V13l-7 2v-2l7-4V4.6C10.7 3.7 11.2 3 12 3z" fill="currentColor" stroke="none"/><path d="M3.5 3.5l17 17" class="cut"/><path d="M3.5 3.5l17 17"/>',
+  rarity: '<path d="M7 4h10l4 5-9 11L3 9z" stroke-linejoin="round"/><path d="M3 9h18M12 20 8.6 9 10 4M12 20l3.4-11L14 4" stroke-linejoin="round"/>',
+  account: '<circle cx="12" cy="8" r="4"/><path d="M4.5 21c0-4.2 3.4-6.8 7.5-6.8s7.5 2.6 7.5 6.8"/>',
+};
+
+const RARITY_COLOR: Record<string, string> = {
+  common: 'var(--c-rarity-common)',
+  frequent: 'var(--c-rarity-frequent)',
+  rare: 'var(--c-rarity-rare)',
+  epic: 'var(--c-rarity-epic)',
+  legendary: 'var(--c-rarity-legendary)',
+};
+---
+
+<BaseLayout lang={lang} title={t.title} description={t.description} alternatePath={helpPath(other)}>
+  <section class="help-top">
+    <div class="wrap">
+      <h1>
+        <span class="tile tile-lg" aria-hidden="true"><svg viewBox="0 0 24 24" set:html={ICONS.info} /></span>
+        {t.h1}
+      </h1>
+      <p class="lead">{fix(t.lead)}</p>
+
+      <nav class="gantry" aria-label={t.signsLabel}>
+        <ul>
+          {
+            t.sections.map((s) => (
+              <li>
+                <a href={`#${s.id}`}>
+                  <span class="tile" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" set:html={ICONS[s.icon]} />
+                  </span>
+                  <span class="sign-label">{s.sign}</span>
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </div>
+  </section>
+
+  <div class="wrap help-body">
+    {
+      t.sections.map((s) => (
+        <section id={s.id} class="topic" aria-labelledby={`${s.id}-title`}>
+          <header class="topic-head">
+            <span class="tile" aria-hidden="true">
+              <svg viewBox="0 0 24 24" set:html={ICONS[s.icon]} />
+            </span>
+            <h2 id={`${s.id}-title`}>{fix(s.title)}</h2>
+          </header>
+
+          {s.intro && <p class="intro">{fix(s.intro)}</p>}
+
+          {s.reasons && (
+            <dl class="reasons">
+              {s.reasons.map((r) => (
+                <div>
+                  <dt>{fix(r.title)}</dt>
+                  <dd>{fix(r.text)}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
+
+          {s.rarity && (
+            <div class="tiers-block">
+              <table class="tiers">
+                <caption class="visually-hidden">{t.rarityTable.caption}</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">{t.rarityTable.tier}</th>
+                    <th scope="col">{t.rarityTable.share}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {t.rarityTable.rows.map((r) => (
+                    <tr style={`--tier: ${RARITY_COLOR[r.key]}`}>
+                      <th scope="row">
+                        <span class="swatch" aria-hidden="true" />
+                        {r.label}
+                      </th>
+                      <td>{fix(r.share)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p class="tiers-note">{fix(t.rarityTable.note)}</p>
+              <p>{fix(t.rarityTable.examples)}</p>
+            </div>
+          )}
+
+          {s.items.length > 0 && (
+            <div class="qa">
+              {s.items.map((item) => (
+                <div class="qa-item">
+                  <h3>{fix(item.q)}</h3>
+                  {item.a.map((p) => (
+                    <p set:html={fix(p)} />
+                  ))}
+                </div>
+              ))}
+            </div>
+          )}
+        </section>
+      ))
+    }
+
+    <section class="topic contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">{fix(t.contact.h2)}</h2>
+      <p>
+        {t.contact.text} <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. {fix(t.contact.screenshot)}
+      </p>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .help-top {
+    border-bottom: 1px solid var(--c-line);
+    background: radial-gradient(90% 120% at 85% 0%, rgba(23, 59, 107, 0.45), transparent 60%);
+  }
+
+  .help-top > .wrap {
+    padding-block: clamp(40px, 6vw, 72px) clamp(32px, 4vw, 48px);
+  }
+
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    margin: 0 0 var(--s-4);
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: clamp(44px, 7vw, 76px);
+    line-height: 1;
+    letter-spacing: -0.025em;
+  }
+
+  .lead {
+    margin: 0 0 var(--s-8);
+    max-width: 38rem;
+    color: var(--c-ink-dim);
+    font-size: clamp(17px, 1.5vw, 20px);
+  }
+
+  /* Panneau d'information : pictogramme sombre sur carre bleu */
+  .tile {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    background: var(--c-brand);
+    color: var(--c-night);
+  }
+
+  .tile svg {
+    width: 26px;
+    height: 26px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+
+  .tile :global(.cut) {
+    stroke: var(--c-brand);
+    stroke-width: 5;
+  }
+
+  .tile-lg {
+    width: clamp(52px, 7vw, 72px);
+    height: clamp(52px, 7vw, 72px);
+    border-radius: 10px;
+  }
+
+  .tile-lg svg {
+    width: 62%;
+    height: 62%;
+    stroke-width: 2.4;
+  }
+
+  /* Portique : les rubriques alignees comme les panneaux au-dessus d'un couloir */
+  .gantry {
+    border-radius: 12px;
+    background: linear-gradient(180deg, #0b1526, #070e1b);
+    border: 1px solid var(--c-line);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  }
+
+  .gantry ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .gantry li + li {
+    border-left: 1px solid var(--c-line);
+  }
+
+  .gantry a {
+    display: flex;
+    align-items: center;
+    gap: var(--s-3);
+    height: 100%;
+    padding: var(--s-3) var(--s-4);
+    color: var(--c-ink);
+    text-decoration: none;
+    border-radius: 12px;
+    transition: background-color 0.2s ease;
+  }
+
+  .gantry a:hover {
+    background: rgba(56, 182, 255, 0.08);
+    color: var(--c-ink);
+  }
+
+  .sign-label {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 1.2;
+  }
+
+  /* Rubriques */
+  .help-body {
+    padding-bottom: var(--s-16);
+  }
+
+  .topic {
+    max-width: 46rem;
+    padding-block: clamp(44px, 6vw, 72px) 0;
+    scroll-margin-top: calc(var(--header-h) + var(--s-4));
+  }
+
+  .topic-head {
+    display: flex;
+    align-items: center;
+    gap: var(--s-4);
+    margin-bottom: var(--s-4);
+  }
+
+  h2 {
+    margin: 0;
+    font-family: var(--f-display);
+    font-weight: 800;
+    font-size: clamp(26px, 3.4vw, 36px);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .topic p,
+  .topic dd {
+    color: var(--c-ink-dim);
+    font-size: 17px;
+    line-height: 1.65;
+  }
+
+  .topic .intro {
+    margin: 0 0 var(--s-6);
+    color: var(--c-ink);
+  }
+
+  .qa {
+    display: grid;
+    gap: var(--s-6);
+  }
+
+  .qa-item {
+    border-top: 1px solid var(--c-line);
+    padding-top: var(--s-4);
+  }
+
+  h3 {
+    margin: 0 0 var(--s-2);
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: 19px;
+    line-height: 1.3;
+  }
+
+  .qa-item p {
+    margin: 0;
+  }
+
+  .qa-item p + p {
+    margin-top: var(--s-3);
+  }
+
+  /* Raisons pour lesquelles un avion manque */
+  .reasons {
+    margin: 0 0 var(--s-8);
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--s-6) var(--s-8);
+  }
+
+  .reasons > div {
+    border-top: 1px solid var(--c-line);
+    padding-top: var(--s-3);
+  }
+
+  .reasons dt {
+    font-family: var(--f-display);
+    font-weight: 700;
+    font-size: 17px;
+    margin-bottom: var(--s-1);
+  }
+
+  .topic .reasons dd {
+    margin: 0;
+    font-size: 16px;
+  }
+
+  /* Paliers de rarete */
+  .tiers-block {
+    margin-bottom: var(--s-8);
+  }
+
+  .tiers {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+  }
+
+  .tiers th,
+  .tiers td {
+    text-align: left;
+    padding: var(--s-3) var(--s-4) var(--s-3) 0;
+    border-bottom: 1px solid var(--c-line);
+  }
+
+  .tiers thead th {
+    font-family: var(--f-mono);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-ink-faint);
+  }
+
+  /* Le nom reste en clair (lisibilite) ; la couleur du palier est portee par la pastille. */
+  .tiers tbody th {
+    font-family: var(--f-display);
+    font-weight: 700;
+    color: var(--c-ink);
+    white-space: nowrap;
+  }
+
+  .tiers td {
+    color: var(--c-ink-dim);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .swatch {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: var(--s-3);
+    border-radius: 3px;
+    background: var(--tier);
+    vertical-align: -1px;
+  }
+
+  .topic .tiers-note {
+    margin: var(--s-3) 0 var(--s-2);
+    font-size: 14px;
+    color: var(--c-ink-faint);
+  }
+
+  .tiers-block p:last-child {
+    margin: 0;
+  }
+
+  .contact h2 {
+    margin-bottom: var(--s-3);
+  }
+
+  .contact p {
+    margin: 0;
+  }
+
+  @media (max-width: 860px) {
+    .gantry ul {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .gantry li + li {
+      border-left: 0;
+    }
+
+    .gantry li {
+      border-top: 1px solid var(--c-line);
+    }
+
+    .gantry li:nth-child(-n + 2) {
+      border-top: 0;
+    }
+
+    .gantry li:nth-child(even) {
+      border-left: 1px solid var(--c-line);
+    }
+
+    .gantry li:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+
+    .reasons {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

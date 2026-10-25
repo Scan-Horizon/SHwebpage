@@ -10,6 +10,8 @@ import {
   legalPath,
   type Lang,
 } from '../data/site';
+import { HOME } from '../data/home';
+import { helpPath } from '../data/help';
 
 interface Props {
   lang: Lang;
@@ -33,6 +35,9 @@ const year = 2026;
       <ul>
         <li><a href={STORE_LINKS.ios} rel="noopener">App Store</a></li>
         <li><a href={STORE_LINKS.android} rel="noopener">Google Play</a></li>
+        <li>
+          <a href={helpPath(lang)} aria-current={current === helpPath(lang) ? 'page' : undefined}>{HOME[lang].nav.help}</a>
+        </li>
       </ul>
     </nav>
 

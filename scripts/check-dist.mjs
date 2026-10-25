@@ -24,6 +24,8 @@ const REQUIRED = [
   '.well-known/security.txt',
   'fr/telecharger/index.html',
   'en/download/index.html',
+  'fr/aide/index.html',
+  'en/help/index.html',
 ];
 
 const LEGAL = {
